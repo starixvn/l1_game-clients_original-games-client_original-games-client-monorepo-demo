@@ -25,10 +25,12 @@
         "baseUrl": ".",
         "paths": {
             "@shared/*": [
-                "src/_shared/*"
+                "src/_shared/*",
+                "packages/shared/src/*"
             ],
             "@sedie-multiplayer/*": [
-                "src/games/sedie-multiplayer/*"
+                "src/games/sedie-multiplayer/*",
+                "packages/sedie/src/*"
             ]
         }
     },
@@ -40,6 +42,7 @@
         "jest.config.ts"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "packages/**"
     ]
 }
