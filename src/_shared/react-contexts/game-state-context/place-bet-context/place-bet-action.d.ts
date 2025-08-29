@@ -1,4 +1,4 @@
-import { SuggestBet } from "../../../../components/game-base/type";
+import { SuggestBet } from "@/components/game-base/type";
 export declare enum PlaceBetEventActionType {
     OWN_BETS = "OWN_BETS",
     DISPLAY_POPUP = "DISPLAY_POPUP",

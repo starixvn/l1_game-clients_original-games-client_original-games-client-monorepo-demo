@@ -1,7 +1,7 @@
 import isEmpty from "lodash/isEmpty";
 import { useEffect, useState } from "react";
-import { messageEventType } from "../../components/game-base/handlers";
-import { Round, RoundState } from "../../components/game-base/type";
+import { messageEventType } from "@/components/game-base/handlers";
+import { Round, RoundState } from "@/components/game-base/type";
 import { useGameContext } from "../react-contexts";
 
 interface UseResultProps<R> {

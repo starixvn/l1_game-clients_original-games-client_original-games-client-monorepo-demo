@@ -2,15 +2,15 @@
 import { TFnType, TranslationKey } from "@tolgee/react";
 import { Dispatch } from "react";
 import { GameMessageHandler, messageEventType } from "..";
-import { NoticeErrorCode } from "../../../../_shared/constants/error-code-dictionary";
-import { GetLocalizedErrorMessage, StorageHelper, getGlossaryTranslate, localStorageKeys, broadcastNotice } from "../../../../_shared/helpers";
-import { findHedgeBetGroup, getAccountBalance, isBalanceUnavailable, isHedgeBet, isInPhasePreventBet } from "../../../../_shared/helpers/validate-bet-helper";
-import { SystemContextModel } from "../../../../_shared/react-contexts";
-import { GameStateContextModel } from "../../../../_shared/react-contexts/game-state-context/game-state-context-model";
-import { PlaceBetEventAction, PlaceBetEventActionType } from "../../../../_shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
-import { PlaceBetContextModel } from "../../../../_shared/react-contexts/game-state-context/place-bet-context/place-bet-context-model";
+import { NoticeErrorCode } from "@shared/constants/error-code-dictionary";
+import { GetLocalizedErrorMessage, StorageHelper, getGlossaryTranslate, localStorageKeys, broadcastNotice } from "@shared/helpers";
+import { findHedgeBetGroup, getAccountBalance, isBalanceUnavailable, isHedgeBet, isInPhasePreventBet } from "@shared/helpers/validate-bet-helper";
+import { SystemContextModel } from "@shared/react-contexts";
+import { GameStateContextModel } from "@shared/react-contexts/game-state-context/game-state-context-model";
+import { PlaceBetEventAction, PlaceBetEventActionType } from "@shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
+import { PlaceBetContextModel } from "@shared/react-contexts/game-state-context/place-bet-context/place-bet-context-model";
 import { NoticeModel, RoundState } from "../../type";
-import { broadcastCloseDialog } from "../../../../_shared/helpers/global-events-helper";
+import { broadcastCloseDialog } from "@shared/helpers/global-events-helper";
 
 export type PlaceBetHandlerProps = {
     tolgeeNamespace: string;

@@ -5,11 +5,11 @@ import { getAppSettings } from "@shared/app-settings";
 import { GameIds } from "@shared/constants";
 import { SettingEventActionType, SystemContextProvider, usePlayerContext, useSettingDispatch } from "@shared/react-contexts";
 import { useBlockBetSound, usePlaceBetSound, useStartDrawSound, useStartRoundSound } from "@shared/react-hooks";
-import { GameSound } from "../components/game-base/type";
-import GameLoading from "../components/game-components/game-loading";
+import { GameSound } from "@/components/game-base/type";
+import GameLoading from "@/components/game-components/game-loading";
 import { getChipSettings } from "../services/user-setting-service";
 import { Props } from "./type";
-import { LoadingSpinner } from "../components/game-components/game-loading/loading-spinner";
+import { LoadingSpinner } from "@/components/game-components/game-loading/loading-spinner";
 
 const LoadingGameComponent = () => (
     <>

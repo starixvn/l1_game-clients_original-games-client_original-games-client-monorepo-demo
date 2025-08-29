@@ -9,8 +9,8 @@ import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
 import { buildVersion, Themes } from "@shared/constants";
 import { tolgee } from "@shared/tolgee";
-import { LoadingSpinner } from "../components/game-components/game-loading/loading-spinner";
-import { GoogleAnalytic } from "../components/page-components/google-analytics";
+import { LoadingSpinner } from "@/components/game-components/game-loading/loading-spinner";
+import { GoogleAnalytic } from "@/components/page-components/google-analytics";
 
 
 const SabaNumberApp = ({ Component, pageProps }: AppProps) => {

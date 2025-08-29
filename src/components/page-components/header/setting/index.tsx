@@ -1,5 +1,5 @@
-import { SettingEventActionType, useSettingDispatch } from "../../../../_shared/react-contexts";
-import { useClickSound } from "../../../../_shared/react-hooks";
+import { SettingEventActionType, useSettingDispatch } from "@shared/react-contexts";
+import { useClickSound } from "@shared/react-hooks";
 import Styles from "./setting.module.scss";
 
 const Setting = () => {

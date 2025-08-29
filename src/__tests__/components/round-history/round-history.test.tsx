@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { RoundHistory } from "../../../components/game-components/round-history/chain";
-import { IconStatistic } from "../../../components/game-components/statistic/icon-statistic";
+import { RoundHistory } from "@/components/game-components/round-history/chain";
+import { IconStatistic } from "@/components/game-components/statistic/icon-statistic";
 
 // Mock the BaseDialog component
-jest.mock("../../../components/game-components/base-dialog", () => {
+jest.mock("@/components/game-components/base-dialog", () => {
     return function MockBaseDialog({ children, isOpen, onCloseModal, enableBackdrop }: any) {
         if (!isOpen) return null;
         return (
@@ -20,7 +20,7 @@ jest.mock("../../../components/game-components/base-dialog", () => {
 });
 
 // Mock the MiniItemNext component
-jest.mock("../../../components/game-components/round-history/dot-next", () => ({
+jest.mock("@/components/game-components/round-history/dot-next", () => ({
     MiniItemNext: ({ className }: { className: string }) => (
         <div data-testid="mini-item-next" className={className}>Next</div>
     ),

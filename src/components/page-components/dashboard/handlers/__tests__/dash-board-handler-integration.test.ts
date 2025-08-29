@@ -1,11 +1,11 @@
 import { DashboardHandler } from "../dash-board-handler";
-import { StorageHelper } from "../../../../../_shared/helpers";
+import { StorageHelper } from "@shared/helpers";
 import { SSOResponse, AuthorizeResponse } from "sc-user-service-client/dist/auth";
 import { TolgeeInstance } from "@tolgee/core";
 import { NextRouter } from "next/router";
 
 // Mock dependencies
-jest.mock("../../../../../_shared/helpers", () => ({
+jest.mock("@shared/helpers", () => ({
     StorageHelper: {
         get: jest.fn(),
         set: jest.fn(),

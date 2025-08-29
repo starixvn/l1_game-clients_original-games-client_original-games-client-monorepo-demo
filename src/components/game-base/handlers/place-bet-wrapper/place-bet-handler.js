@@ -10,12 +10,12 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 import { messageEventType } from "..";
-import { NoticeErrorCode } from "../../../../_shared/constants/error-code-dictionary";
-import { GetLocalizedErrorMessage, StorageHelper, getGlossaryTranslate, localStorageKeys, broadcastNotice } from "../../../../_shared/helpers";
-import { findHedgeBetGroup, getAccountBalance, isBalanceUnavailable, isHedgeBet, isInPhasePreventBet } from "../../../../_shared/helpers/validate-bet-helper";
-import { PlaceBetEventActionType } from "../../../../_shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
+import { NoticeErrorCode } from "@shared/constants/error-code-dictionary";
+import { GetLocalizedErrorMessage, StorageHelper, getGlossaryTranslate, localStorageKeys, broadcastNotice } from "@shared/helpers";
+import { findHedgeBetGroup, getAccountBalance, isBalanceUnavailable, isHedgeBet, isInPhasePreventBet } from "@shared/helpers/validate-bet-helper";
+import { PlaceBetEventActionType } from "@shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
 import { RoundState } from "../../type";
-import { broadcastCloseDialog } from "../../../../_shared/helpers/global-events-helper";
+import { broadcastCloseDialog } from "@shared/helpers/global-events-helper";
 var PlaceBetHandler = /** @class */ (function () {
     function PlaceBetHandler(props) {
         var _this = this;

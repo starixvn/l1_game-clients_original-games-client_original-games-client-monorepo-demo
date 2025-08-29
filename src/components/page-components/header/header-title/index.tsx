@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslator } from "../../../../_shared/react-hooks";
+import { useTranslator } from "@shared/react-hooks";
 
 type Props = {
     openingGameId: number;

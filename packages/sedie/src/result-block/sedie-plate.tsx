@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./sedie-plate.module.scss";
-import { RoundState } from "../../../components/game-base/type";
+import { RoundState } from "@/components/game-base/type";
 import useResult from "@shared/react-hooks/use-result";
 import { useGameStateContext } from "@shared/react-contexts/game-state-context/game-state-context";
 import { SeDieResult } from "../sedie-multiplayer-constants";

@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { useGameContext } from "@shared/react-contexts";
 import { useCommonTranslate, useTranslator } from "@shared/react-hooks";
-import { DrawInfo } from "../../../components/game-base/type";
+import { DrawInfo } from "@/components/game-base/type";
 import { SeDieBetOptions } from "../sedie-multiplayer-constants";
-import { CachedImage } from "../../../components/game-components/cached-image";
+import { CachedImage } from "@/components/game-components/cached-image";
 
 export interface RoundInfoSeDie extends DrawInfo {
     roundId: number;

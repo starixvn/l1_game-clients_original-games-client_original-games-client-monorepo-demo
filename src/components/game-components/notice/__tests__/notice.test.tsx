@@ -1,17 +1,17 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { NoticeDialog } from "../index";
-import { useNoticeStore } from "../../../../_shared/stores/notice-store/notice-store";
-import { NoticeModel } from "../../../../components/game-base/type";
+import { useNoticeStore } from "@shared/stores/notice-store/notice-store";
+import { NoticeModel } from "@/components/game-base/type";
 
 // Mock dependencies
-jest.mock("../../../../_shared/react-contexts", () => ({
+jest.mock("@shared/react-contexts", () => ({
     useGameContext: () => ({
         tolgeeNamespace: "test-namespace",
     }),
 }));
 
-jest.mock("../../../../_shared/react-hooks", () => ({
+jest.mock("@shared/react-hooks", () => ({
     useTranslator: () => ({
         t: (key: string, params?: any) => ({
             replaceTolgeeFormat: () => key,
@@ -20,14 +20,14 @@ jest.mock("../../../../_shared/react-hooks", () => ({
     useClickSound: () => jest.fn(),
 }));
 
-jest.mock("../../../../_shared/helpers", () => ({
+jest.mock("@shared/helpers", () => ({
     createOptionForHedgeBetGroup: jest.fn(() => ({})),
     getExtendMessageByErrorCode: jest.fn(() => ""),
     numberWithCommas: jest.fn((num) => num.toString()),
 }));
 
 // Mock the global events store - fix the mock to properly simulate Zustand store
-jest.mock("../../../../_shared/stores/global-events-store/global-events-store", () => ({
+jest.mock("@shared/stores/global-events-store/global-events-store", () => ({
     useGlobalEventsStore: jest.fn((selector) => {
         const mockState = {
             closeDialog: false,

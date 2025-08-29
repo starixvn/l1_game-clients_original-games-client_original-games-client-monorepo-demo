@@ -1,10 +1,10 @@
 import { TFnType, TranslationKey } from "@tolgee/react";
 import { Dispatch } from "react";
 import { GameMessageHandler } from "..";
-import { SystemContextModel } from "../../../../_shared/react-contexts";
-import { GameStateContextModel } from "../../../../_shared/react-contexts/game-state-context/game-state-context-model";
-import { PlaceBetEventAction } from "../../../../_shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
-import { PlaceBetContextModel } from "../../../../_shared/react-contexts/game-state-context/place-bet-context/place-bet-context-model";
+import { SystemContextModel } from "@shared/react-contexts";
+import { GameStateContextModel } from "@shared/react-contexts/game-state-context/game-state-context-model";
+import { PlaceBetEventAction } from "@shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
+import { PlaceBetContextModel } from "@shared/react-contexts/game-state-context/place-bet-context/place-bet-context-model";
 import { NoticeModel, RoundState } from "../../type";
 export type PlaceBetHandlerProps = {
     tolgeeNamespace: string;

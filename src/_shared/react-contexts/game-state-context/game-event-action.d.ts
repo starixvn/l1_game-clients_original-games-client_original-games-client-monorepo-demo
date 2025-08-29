@@ -1,4 +1,4 @@
-import { DrawInfo, GameConfigs, GameDurations, PlayerResultBoard, RoundState } from "../../../components/game-base/type";
+import { DrawInfo, GameConfigs, GameDurations, PlayerResultBoard, RoundState } from "@/components/game-base/type";
 export declare enum GameEventActionType {
     CONNECT = "CONNECT",
     DISCONNECT = "DISCONNECT",

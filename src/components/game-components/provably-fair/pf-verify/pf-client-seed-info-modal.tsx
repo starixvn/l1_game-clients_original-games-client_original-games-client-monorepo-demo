@@ -1,17 +1,17 @@
 import { FC, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { v4 as uuidv4 } from "uuid";
-import { usePlayerContext } from "../../../../_shared/react-contexts";
-import { useCommonTranslate, useSNTranslate } from "../../../../_shared/react-hooks";
+import { usePlayerContext } from "@shared/react-contexts";
+import { useCommonTranslate, useSNTranslate } from "@shared/react-hooks";
 import CopyableTextInput from "../copyable-text-input";
 import Styles from "../provably-fair.module.scss";
 import { Section } from "../pf-form-components";
 import { useShallow } from "zustand/shallow";
-import usePopupStore from "../../../../_shared/stores/popup-store/popup-store";
-import { renderPFVerifyResultBlock } from "../../../../games/sedie-multiplayer/provably-fair";
-import useBetDetailStore from "../../../../_shared/stores/bet-detail-store/bet-detail-store";
+import usePopupStore from "@shared/stores/popup-store/popup-store";
+import { renderPFVerifyResultBlock } from "@sedie-multiplayer/provably-fair";
+import useBetDetailStore from "@shared/stores/bet-detail-store/bet-detail-store";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../table";
-import { cn } from "../../../../_shared/utils/merge-tailwind-util";
+import { cn } from "@shared/utils/merge-tailwind-util";
 import ModalContainer from "../../modal-container";
 import { ButtonPFGuide } from "../pf-guide";
 

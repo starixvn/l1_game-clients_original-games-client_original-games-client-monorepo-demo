@@ -8,22 +8,22 @@ import {
     useGameStatesDispatch,
 } from "@shared/react-contexts/game-state-context/game-state-context";
 import { useTranslator } from "@shared/react-hooks";
-import GameBase from "../../components/game-base/";
-import { GameMessageHandler } from "../../components/game-base/handlers";
-import { GameBaseHandlers, GameBaseProps, GameBaseState } from "../../components/game-base/type";
-import { RoundGameSoundHandler } from "../../components/round-base/round-game-sound-handler";
-import { RoundIdHandler } from "../../components/round-base/round-id-handler";
-import { RoundStateHandler } from "../../components/round-base/round-state-handler";
+import GameBase from "@/components/game-base/";
+import { GameMessageHandler } from "@/components/game-base/handlers";
+import { GameBaseHandlers, GameBaseProps, GameBaseState } from "@/components/game-base/type";
+import { RoundGameSoundHandler } from "@/components/round-base/round-game-sound-handler";
+import { RoundIdHandler } from "@/components/round-base/round-id-handler";
+import { RoundStateHandler } from "@/components/round-base/round-state-handler";
 import { SeDieBetOptions } from "./sedie-multiplayer-constants";
 import { SeDieGameRoundDataHandler } from "./sedie-multiplayer-game-round-data-handler";
 import SediePlate from "./result-block/sedie-plate";
 import SeDieMultiplayerBettingBlock from "./sedie-multiplayer-betting-block";
 import { SedieMultiplayerRoundHistory } from "./round-history/sedie-multiplayer-round-history";
 import SeDieMultiplayerBetDetailModal from "./history";
-import { PlayerResultBoard } from "../../components/game-components/player-result-board/player-result-board";
-const OwnTotalBet = lazy(() => import("../../components/game-components/own-total-bet/own-total-bet"));
-const DoubleBetIcon = lazy(() => import("../../components/game-components/rebet/double-bet-icon"));
-const AutoRebetIcon = lazy(() => import("../../components/game-components/rebet/auto-rebet-icon"));
+import { PlayerResultBoard } from "@/components/game-components/player-result-board/player-result-board";
+const OwnTotalBet = lazy(() => import("@/components/game-components/own-total-bet/own-total-bet"));
+const DoubleBetIcon = lazy(() => import("@/components/game-components/rebet/double-bet-icon"));
+const AutoRebetIcon = lazy(() => import("@/components/game-components/rebet/auto-rebet-icon"));
 
 class SeDieMultiPlayer extends GameBase<GameBaseProps, GameBaseState> {
     private readonly roundIdHandler?: RoundIdHandler;

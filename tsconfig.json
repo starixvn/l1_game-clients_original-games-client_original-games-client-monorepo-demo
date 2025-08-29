@@ -24,6 +24,9 @@
         ],
         "baseUrl": ".",
         "paths": {
+            "@/*": [
+                "src/*"
+            ],
             "@shared/*": [
                 "packages/shared/src/*",
                 "src/_shared/*"
