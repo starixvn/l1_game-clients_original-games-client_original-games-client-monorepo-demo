@@ -25,12 +25,12 @@
         "baseUrl": ".",
         "paths": {
             "@shared/*": [
-                "src/_shared/*",
-                "packages/shared/src/*"
+                "packages/shared/src/*",
+                "src/_shared/*"
             ],
             "@sedie-multiplayer/*": [
-                "src/games/sedie-multiplayer/*",
-                "packages/sedie/src/*"
+                "packages/sedie/src/*",
+                "src/games/sedie-multiplayer/*"
             ]
         }
     },

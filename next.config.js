@@ -38,8 +38,8 @@ const nextConfig = withSentryConfig({
         config.resolve = config.resolve || {};
         config.resolve.alias = {
             ...(config.resolve.alias || {}),
-            "@shared": require("path").resolve(__dirname, "src/_shared"),
-            "@sedie-multiplayer": require("path").resolve(__dirname, "src/games/sedie-multiplayer"),
+            "@shared": require("path").resolve(__dirname, "packages/shared/src"),
+            "@sedie-multiplayer": require("path").resolve(__dirname, "packages/sedie/src"),
         };
 
         config.module.rules.push({

@@ -1,0 +1,18 @@
+export var createPopupSlice = function (set) { return ({
+    isShowBetHistory: false,
+    isShowBetDetail: false,
+    isShowGameGuide: false,
+    isShowPFSetting: false,
+    isShowPFVerify: false,
+    isShowPFClientSeedInfo: false,
+    isShowPFVerification: false,
+    expandGuideFirst: false,
+    toggleBetHistory: function (isShow) { return set({ isShowBetHistory: isShow }); },
+    toggleBetDetail: function (isShow) { return set({ isShowBetDetail: isShow }); },
+    toggleGameGuide: function (isShow) { return set({ isShowGameGuide: isShow }); },
+    togglePFSetting: function (isShow) { return set({ isShowPFSetting: isShow }); },
+    togglePFVerify: function (isShow) { return set({ isShowPFVerify: isShow }); },
+    togglePFClientSeedInfo: function (isShow) { return set({ isShowPFClientSeedInfo: isShow }); },
+    togglePFVerification: function (isShow) { return set({ isShowPFVerification: isShow }); },
+    toggleExpandGuideFirst: function (isExpand) { return set({ expandGuideFirst: isExpand }); },
+}); };

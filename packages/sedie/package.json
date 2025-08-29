@@ -5,7 +5,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "build": "node -e \"console.log('Skipping sedie build during bootstrap')\"",
+        "build": "node -e \"console.log('Skipping sedie package build (using app sources)')\"",
         "clean": "rimraf dist"
     }
 }

@@ -5,7 +5,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "build": "node -e \"console.log('Skipping shared build during bootstrap')\"",
+        "build": "node -e \"console.log('Skipping shared package build (using app sources)')\"",
         "clean": "rimraf dist"
     }
 }
