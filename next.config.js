@@ -34,6 +34,14 @@ const nextConfig = withSentryConfig({
         // Disable source maps
         config.devtool = false;
 
+        // Aliases to support TS path mapping at runtime
+        config.resolve = config.resolve || {};
+        config.resolve.alias = {
+            ...(config.resolve.alias || {}),
+            "@shared": require("path").resolve(__dirname, "src/_shared"),
+            "@sedie-multiplayer": require("path").resolve(__dirname, "src/games/sedie-multiplayer"),
+        };
+
         config.module.rules.push({
             test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2|mp3|webp)$/,
             use: {

@@ -8,6 +8,8 @@ const config: Config = {
         "swiper/css/pagination": "identity-obj-proxy",
         "swiper/react": "<rootDir>/node_modules/swiper/swiper.js",
         "^@/(.*)$": "<rootDir>/src/$1",
+        "^@shared/(.*)$": "<rootDir>/src/_shared/$1",
+        "^@sedie-multiplayer/(.*)$": "<rootDir>/src/games/sedie-multiplayer/$1",
     },
     testPathIgnorePatterns: [
         "<rootDir>/node_modules/",
