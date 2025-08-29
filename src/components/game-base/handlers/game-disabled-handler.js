@@ -1,8 +1,8 @@
-import { updateURLContext } from "../../../_shared/react-contexts";
-import { GameEventActionType } from "../../../_shared/react-contexts/game-state-context/game-event-action";
+import { updateURLContext } from "@shared/react-contexts";
+import { GameEventActionType } from "@shared/react-contexts/game-state-context/game-event-action";
 import { RoundState } from "../type";
 import { messageEventType } from "./game-message-handler";
-import useGameStore from "../../../_shared/stores/game-store/game-store";
+import useGameStore from "@shared/stores/game-store/game-store";
 var GameDisableHandler = /** @class */ (function () {
     function GameDisableHandler(props) {
         this.props = props;

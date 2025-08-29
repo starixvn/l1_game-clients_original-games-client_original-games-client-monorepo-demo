@@ -2,8 +2,8 @@ import { ReactNode } from "react";
 import { Converter } from "sc-scoreboards";
 
 import { BigRoadElement, BigRoadRound } from "../../../components/game-components/round-history/scoreboard/elements";
-import { registerBigRoadElement } from "../../../_shared/helpers/scoreboard-registry";
-import { GameIds } from "../../../_shared/constants";
+import { registerBigRoadElement } from "@shared/helpers/scoreboard-registry";
+import { GameIds } from "@shared/constants";
 import styles from "./scoreboard-elements.module.scss";
 import dotStyles from "../../../components/game-components/round-history/dot/dot.module.scss";
 import { SeDieBetOptions, SeDieSettlementResult } from "../sedie-multiplayer-constants";

@@ -1,12 +1,12 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import { useGameStateContext } from "../../../_shared/react-contexts/game-state-context/game-state-context";
+import { useGameStateContext } from "@shared/react-contexts/game-state-context/game-state-context";
 import { RoundState } from "../../game-base/type";
 import Odds from "./odds";
 
-jest.mock("../../../_shared/helpers", () => ({ formatOdds: jest.fn((value, format) => `${value}`) }));
-jest.mock("../../../_shared/react-contexts", () => ({ usePlayerContext: jest.fn().mockReturnValue({ fractionalOddsFormat: false }) }));
-jest.mock("../../../_shared/react-contexts/game-state-context/game-state-context", () => ({ useGameStateContext: jest.fn() }));
+jest.mock("@shared/helpers", () => ({ formatOdds: jest.fn((value, format) => `${value}`) }));
+jest.mock("@shared/react-contexts", () => ({ usePlayerContext: jest.fn().mockReturnValue({ fractionalOddsFormat: false }) }));
+jest.mock("@shared/react-contexts/game-state-context/game-state-context", () => ({ useGameStateContext: jest.fn() }));
 
 describe(Odds.name, () => {
     const choice = "choice1";

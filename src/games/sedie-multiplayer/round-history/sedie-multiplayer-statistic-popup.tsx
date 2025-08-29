@@ -2,7 +2,7 @@ import React from "react";
 import ScoreboardSeDie from "../scoreboard/scoreboard";
 import { mainChoices, SeDieChoices, SeDieStatisticColors } from "../sedie-multiplayer-constants";
 import PercentageStatistic from "../../../components/game-components/statistic";
-import useGameStore from "../../../_shared/stores/game-store/game-store";
+import useGameStore from "@shared/stores/game-store/game-store";
 import { useShallow } from "zustand/react/shallow";
 import Styles from "./statistic-popup.module.scss";
 import AnimatedContent from "../../../components/game-components/animations/animated-content";

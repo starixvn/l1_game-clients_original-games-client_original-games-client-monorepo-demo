@@ -9,8 +9,8 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import MessageTransmitter from "../../../_shared/helpers/message-transmitter";
-import { GameEventActionType } from "../../../_shared/react-contexts/game-state-context/game-event-action";
+import MessageTransmitter from "@shared/helpers/message-transmitter";
+import { GameEventActionType } from "@shared/react-contexts/game-state-context/game-event-action";
 export var messageEventType = {
     GAME_CONFIG: "gameConfigs",
     ROUND_HISTORY: "roundHistory",

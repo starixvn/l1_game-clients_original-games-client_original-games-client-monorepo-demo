@@ -1,4 +1,4 @@
-import { MessageTransmitterType } from "../../../_shared/helpers/message-transmitter/type";
+import { MessageTransmitterType } from "@shared/helpers/message-transmitter/type";
 export declare const messageEventType: {
     GAME_CONFIG: string;
     ROUND_HISTORY: string;

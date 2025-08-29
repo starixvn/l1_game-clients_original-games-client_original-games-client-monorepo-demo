@@ -5,11 +5,11 @@ import { withRouter } from "next/router";
 import React from "react";
 import { isDesktop, isMobile, isMobileOnly } from "react-device-detect";
 
-import { ErrorNoGameOffer } from "../../../_shared/constants/error-code-dictionary";
-import { localStorageKeys, StorageHelper, broadcastNotice, getNotice } from "../../../_shared/helpers";
-import { broadcastUserInfoRed } from "../../../_shared/helpers/global-events-helper";
-import { useGlobalEventsStore } from "../../../_shared/stores/global-events-store/global-events-store";
-import { loadURLContext, PlayerContextProvider, SettingContextProvider, updateURLContext } from "../../../_shared/react-contexts";
+import { ErrorNoGameOffer } from "@shared/constants/error-code-dictionary";
+import { localStorageKeys, StorageHelper, broadcastNotice, getNotice } from "@shared/helpers";
+import { broadcastUserInfoRed } from "@shared/helpers/global-events-helper";
+import { useGlobalEventsStore } from "@shared/stores/global-events-store/global-events-store";
+import { loadURLContext, PlayerContextProvider, SettingContextProvider, updateURLContext } from "@shared/react-contexts";
 import { UserStakeLevel } from "../../game-base/type";
 import { DashboardHandler } from "./handlers/dash-board-handler";
 import { NotificationHandler } from "./handlers/notification-handler";

@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { URLContext, updateURLContext } from "../../../_shared/react-contexts/url-context";
-import { useClickSound } from "../../../_shared/react-hooks";
+import { URLContext, updateURLContext } from "@shared/react-contexts/url-context";
+import { useClickSound } from "@shared/react-hooks";
 import { Menu } from "./menu";
 import styles from "./settings.module.scss";
 

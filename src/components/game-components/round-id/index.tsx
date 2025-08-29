@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { usePlayerResultBoard } from "../../../_shared/react-hooks";
+import { usePlayerResultBoard } from "@shared/react-hooks";
 
 export const RoundId: FC = () => {
   const { roundId } = usePlayerResultBoard();

@@ -33,7 +33,7 @@ jest.mock("react-device-detect", () => ({
 }));
 
 // Mock the click sound hook
-jest.mock("../../../_shared/react-hooks", () => ({
+jest.mock("@shared/react-hooks", () => ({
     useClickSound: jest.fn(() => jest.fn()),
 }));
 

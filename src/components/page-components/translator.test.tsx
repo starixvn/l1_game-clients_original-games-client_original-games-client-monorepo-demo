@@ -4,7 +4,7 @@ import { Component, ReactNode, createContext } from "react";
 import { TranslatorProps, withTranslator } from "./translator";
 
 jest.mock("@tolgee/react");
-jest.mock("../../_shared/react-contexts", () => ({
+jest.mock("@shared/react-contexts", () => ({
     loadURLContext: jest.fn(),
 }));
 

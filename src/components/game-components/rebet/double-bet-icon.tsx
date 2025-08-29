@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useRebet } from "../../../_shared/react-hooks/use-rebet";
+import { useRebet } from "@shared/react-hooks/use-rebet";
 
 const DoubleBetIcon = () => {
     const { isEnabled, handleClickRebet } = useRebet(true);

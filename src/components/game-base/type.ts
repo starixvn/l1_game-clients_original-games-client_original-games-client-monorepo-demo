@@ -1,9 +1,9 @@
 
 import { TFnType, TranslationKey } from "@tolgee/react";
 import { WithRouterProps } from "next/dist/client/with-router";
-import { SystemContextModel, SystemEventAction } from "../../_shared/react-contexts";
-import { GameEventAction } from "../../_shared/react-contexts/game-state-context/game-event-action";
-import { GameStateContextModel } from "../../_shared/react-contexts/game-state-context/game-state-context-model";
+import { SystemContextModel, SystemEventAction } from "@shared/react-contexts";
+import { GameEventAction } from "@shared/react-contexts/game-state-context/game-event-action";
+import { GameStateContextModel } from "@shared/react-contexts/game-state-context/game-state-context-model";
 import { IRoundStateHandler } from "../round-base/round-state-handler";
 import { IGameSoundHandler } from "../round-base/round-game-sound-handler";
 import { GameDisableHandler, GameErrorHandler, GameFinishHandler, GameRoundHistoryHandler, PlaceBetHandler, PlayerHandler } from "./handlers";

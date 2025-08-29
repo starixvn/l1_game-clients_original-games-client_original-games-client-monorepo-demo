@@ -2,8 +2,8 @@ import fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 
-import { buildVersion, LobbyGameId } from "../../../_shared/constants";
-import { getPathIconGames, getPathImageGameId, pathImageMapping } from "../../../_shared/constants/resource-image-mapping";
+import { buildVersion, LobbyGameId } from "@shared/constants";
+import { getPathIconGames, getPathImageGameId, pathImageMapping } from "@shared/constants/resource-image-mapping";
 
 // Enhanced caching with TTL and memory management
 interface CacheEntry {

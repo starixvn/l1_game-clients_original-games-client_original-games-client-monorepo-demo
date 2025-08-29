@@ -1,13 +1,13 @@
 import { withRouter } from "next/router";
 import { JSX, lazy } from "react";
 
-import { useSystemContext, useSystemDispatch } from "../../_shared/react-contexts";
+import { useSystemContext, useSystemDispatch } from "@shared/react-contexts";
 import {
     GameStateProvider,
     useGameStateContext,
     useGameStatesDispatch,
-} from "../../_shared/react-contexts/game-state-context/game-state-context";
-import { useTranslator } from "../../_shared/react-hooks";
+} from "@shared/react-contexts/game-state-context/game-state-context";
+import { useTranslator } from "@shared/react-hooks";
 import GameBase from "../../components/game-base/";
 import { GameMessageHandler } from "../../components/game-base/handlers";
 import { GameBaseHandlers, GameBaseProps, GameBaseState } from "../../components/game-base/type";

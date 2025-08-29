@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { SedieMultiplayerRoundHistory } from "../../games/sedie-multiplayer/round-history/sedie-multiplayer-round-history";
+import { SedieMultiplayerRoundHistory } from "@sedie-multiplayer/round-history/sedie-multiplayer-round-history";
 
 // Mock the RoundHistory component
 jest.mock("../../components/game-components/round-history/chain", () => ({
@@ -39,7 +39,7 @@ jest.mock("../../components/game-components/statistic/icon-statistic", () => ({
 }));
 
 // Mock the SedieMultiplayerRoundHistoryItem component
-jest.mock("../../games/sedie-multiplayer/round-history/sedie-multiplayer-round-history-item", () => ({
+jest.mock("@sedie-multiplayer/round-history/sedie-multiplayer-round-history-item", () => ({
     SedieMultiplayerRoundHistoryItem: ({ result, index }: any) => (
         <div key={`history-item-${index}`} data-testid={`history-item-${index}`}>
             {result?.result || "unknown"}
@@ -49,12 +49,12 @@ jest.mock("../../games/sedie-multiplayer/round-history/sedie-multiplayer-round-h
 
 // Mock the SedieMultiplayerStatisticPopup component
 // Statistic popup is now managed at page level; keep a placeholder for compatibility
-jest.mock("../../games/sedie-multiplayer/round-history/sedie-multiplayer-statistic-popup", () => ({
+jest.mock("@sedie-multiplayer/round-history/sedie-multiplayer-statistic-popup", () => ({
     SedieMultiplayerStatisticPopup: () => null,
 }));
 
 // Mock the game store
-jest.mock("../../_shared/stores/game-store/game-store", () => ({
+jest.mock("@shared/stores/game-store/game-store", () => ({
     __esModule: true,
     default: () => ({
         roundHistory: [

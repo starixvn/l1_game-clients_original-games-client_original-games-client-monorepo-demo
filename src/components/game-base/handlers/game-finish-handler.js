@@ -7,10 +7,10 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import { getGameSettings } from "../../../_shared/app-settings";
-import { GameEventActionType } from "../../../_shared/react-contexts/game-state-context/game-event-action";
+import { getGameSettings } from "@shared/app-settings";
+import { GameEventActionType } from "@shared/react-contexts/game-state-context/game-event-action";
 import { messageEventType } from "./";
-import useGameStore from "../../../_shared/stores/game-store/game-store";
+import useGameStore from "@shared/stores/game-store/game-store";
 var GameFinishHandler = /** @class */ (function () {
     function GameFinishHandler(props) {
         var _this = this;

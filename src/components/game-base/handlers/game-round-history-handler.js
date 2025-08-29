@@ -1,5 +1,5 @@
-import { GameEventActionType } from "../../../_shared/react-contexts/game-state-context/game-event-action";
-import useGameStore from "../../../_shared/stores/game-store/game-store";
+import { GameEventActionType } from "@shared/react-contexts/game-state-context/game-event-action";
+import useGameStore from "@shared/stores/game-store/game-store";
 import { RoundState } from "../type";
 var GameRoundHistoryHandler = /** @class */ (function () {
     function GameRoundHistoryHandler(props) {

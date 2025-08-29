@@ -1,10 +1,10 @@
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
-import { getAppSettings } from "../_shared/app-settings";
-import { GameIds } from "../_shared/constants";
-import { SettingEventActionType, SystemContextProvider, usePlayerContext, useSettingDispatch } from "../_shared/react-contexts";
-import { useBlockBetSound, usePlaceBetSound, useStartDrawSound, useStartRoundSound } from "../_shared/react-hooks";
+import { getAppSettings } from "@shared/app-settings";
+import { GameIds } from "@shared/constants";
+import { SettingEventActionType, SystemContextProvider, usePlayerContext, useSettingDispatch } from "@shared/react-contexts";
+import { useBlockBetSound, usePlaceBetSound, useStartDrawSound, useStartRoundSound } from "@shared/react-hooks";
 import { GameSound } from "../components/game-base/type";
 import GameLoading from "../components/game-components/game-loading";
 import { getChipSettings } from "../services/user-setting-service";

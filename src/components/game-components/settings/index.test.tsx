@@ -1,12 +1,12 @@
 import { fireEvent, render } from "@testing-library/react";
 import { useContext } from "react";
 import { Settings } from ".";
-import { useGameStateContext, useGameStatesDispatch } from "../../../_shared/react-contexts/game-state-context/game-state-context";
-import { GameStateContextModel } from "../../../_shared/react-contexts/game-state-context/game-state-context-model";
-import { PFEventActionType } from "../../../_shared/react-contexts/game-state-context/pf/pf-action";
-import { usePFDispatch } from "../../../_shared/react-contexts/game-state-context/pf/pf-context";
-import { updateURLContext } from "../../../_shared/react-contexts/url-context";
-import { useClickSound } from "../../../_shared/react-hooks/use-sound";
+import { useGameStateContext, useGameStatesDispatch } from "@shared/react-contexts/game-state-context/game-state-context";
+import { GameStateContextModel } from "@shared/react-contexts/game-state-context/game-state-context-model";
+import { PFEventActionType } from "@shared/react-contexts/game-state-context/pf/pf-action";
+import { usePFDispatch } from "@shared/react-contexts/game-state-context/pf/pf-context";
+import { updateURLContext } from "@shared/react-contexts/url-context";
+import { useClickSound } from "@shared/react-hooks/use-sound";
 import { RoundState } from "../../game-base/type";
 
 const mockUseGameStateContext = useGameStateContext as jest.Mock;
@@ -20,20 +20,20 @@ jest.mock("react", () => ({
     useContext: jest.fn(),
 }));
 
-jest.mock("../../../_shared/react-contexts/game-state-context/game-state-context", () => ({
+jest.mock("@shared/react-contexts/game-state-context/game-state-context", () => ({
     useGameStateContext: jest.fn(),
     useGameStatesDispatch: jest.fn(),
 }));
 
-jest.mock("../../../_shared/react-contexts/game-state-context/pf/pf-context", () => ({
+jest.mock("@shared/react-contexts/game-state-context/pf/pf-context", () => ({
     usePFDispatch: jest.fn(),
 }));
 
-jest.mock("../../../_shared/react-hooks/use-sound", () => ({
+jest.mock("@shared/react-hooks/use-sound", () => ({
     useClickSound: jest.fn(),
 }));
 
-jest.mock("../../../_shared/react-contexts/url-context", () => ({
+jest.mock("@shared/react-contexts/url-context", () => ({
     updateURLContext: jest.fn(),
 }));
 

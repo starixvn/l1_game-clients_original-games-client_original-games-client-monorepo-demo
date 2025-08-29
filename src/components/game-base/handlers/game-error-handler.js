@@ -1,4 +1,4 @@
-import { isKickOutError, broadcastNotice, createNoticeFromErrorCode } from "../../../_shared/helpers";
+import { isKickOutError, broadcastNotice, createNoticeFromErrorCode } from "@shared/helpers";
 import { messageEventType } from "./game-message-handler";
 var GameErrorHandler = /** @class */ (function () {
     function GameErrorHandler(props) {

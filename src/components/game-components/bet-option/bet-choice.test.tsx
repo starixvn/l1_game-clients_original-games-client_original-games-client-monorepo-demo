@@ -2,11 +2,11 @@ import React from "react";
 import { render } from "@testing-library/react";
 import BetChoice from "./bet-choice";
 
-jest.mock("../../../_shared/react-hooks/use-translator", () => ({
+jest.mock("@shared/react-hooks/use-translator", () => ({
     useTranslator: jest.fn().mockReturnValue({ t: (key: string) => key }),
 }));
 
-jest.mock("../../../_shared/helpers", () => ({
+jest.mock("@shared/helpers", () => ({
     StorageHelper: {
         get: jest.fn(),
         set: jest.fn(),

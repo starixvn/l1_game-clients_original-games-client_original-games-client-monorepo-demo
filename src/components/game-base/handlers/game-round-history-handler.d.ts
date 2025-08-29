@@ -1,4 +1,4 @@
-import { GameStateContextModel } from "../../../_shared/react-contexts/game-state-context/game-state-context-model";
+import { GameStateContextModel } from "@shared/react-contexts/game-state-context/game-state-context-model";
 export type GameRoundHistorydHandlerProps = {
     dispatch: Function;
     gameStateContextModel(): GameStateContextModel;

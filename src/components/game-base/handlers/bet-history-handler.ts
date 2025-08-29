@@ -1,5 +1,5 @@
-import useGameStore from "../../../_shared/stores/game-store/game-store";
-import useBetHistoryStore from "../../../_shared/stores/bet-history-store/bet-history-store";
+import useGameStore from "@shared/stores/game-store/game-store";
+import useBetHistoryStore from "@shared/stores/bet-history-store/bet-history-store";
 import { GameMessageHandler, messageEventType } from "./game-message-handler";
 import { RoundState } from "../type";
 

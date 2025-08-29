@@ -1,16 +1,16 @@
 import { render } from "@testing-library/react";
 import React from "react";
 import { ConnectFailedMessage } from ".";
-import "../../../_shared/helpers/string-helper";
-import { updateURLContext } from "../../../_shared/react-contexts";
+import "@shared/helpers/string-helper";
+import { updateURLContext } from "@shared/react-contexts";
 import BaseDialog from "../base-dialog";
 import { ConnectFailedReasonKey } from "./type";
 
 jest.mock("../base-dialog", () => jest.fn());
-jest.mock("../../../_shared/react-hooks/use-translator", () => ({
+jest.mock("@shared/react-hooks/use-translator", () => ({
     useTranslator: jest.fn().mockReturnValue({ t: jest.fn((key, op) => key) }),
 }));
-jest.mock("../../../_shared/react-contexts", () => ({ URLContext: null, updateURLContext: jest.fn() }));
+jest.mock("@shared/react-contexts", () => ({ URLContext: null, updateURLContext: jest.fn() }));
 let realUseContext;
 let useContextMock: jest.Mock;
 beforeEach(() => {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { useGameContext } from "../../../_shared/react-contexts";
+import { useGameContext } from "@shared/react-contexts";
 import { messageEventType } from "../../game-base/handlers";
 import { RoundState } from "../../game-base/type";
 import styles from "./countdown-timer.module.scss";
-import useGameStore from "../../../_shared/stores/game-store/game-store";
+import useGameStore from "@shared/stores/game-store/game-store";
 
 export type Rotation = "clockwise" | "counterclockwise";
 

@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { useTranslator } from "../../../_shared/react-hooks/use-translator";
-import { ResourceTypes } from "../../../_shared/resources";
+import { useTranslator } from "@shared/react-hooks/use-translator";
+import { ResourceTypes } from "@shared/resources";
 import BaseDialog from "../base-dialog";
 import { ModalType } from "../base-dialog/type";
 import { ConnectFailedReasonKey } from "./type";
-import { URLContext, updateURLContext } from "../../../_shared/react-contexts";
-import { cn } from "../../../_shared/utils/merge-tailwind-util";
+import { URLContext, updateURLContext } from "@shared/react-contexts";
+import { cn } from "@shared/utils/merge-tailwind-util";
 import PopupButton from "../popup-button";
 import Image from "next/image";
 

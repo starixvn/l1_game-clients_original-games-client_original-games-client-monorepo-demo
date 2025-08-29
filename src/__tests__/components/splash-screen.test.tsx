@@ -2,15 +2,15 @@ import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import SplashScreen, { customStartup, onStartupError } from "../../components/page-components/splash-screen";
-import { URLContext } from "../../_shared/react-contexts/url-context";
-import { PlayerContext } from "../../_shared/react-contexts/auth";
+import { URLContext } from "@shared/react-contexts/url-context";
+import { PlayerContext } from "@shared/react-contexts/auth";
 import { authorize, getLobbyConfigs, sso } from "../../services/auth-service";
-import { getUserLatestGameId } from "../../_shared/helpers";
+import { getUserLatestGameId } from "@shared/helpers";
 
 // Mock dependencies
 jest.mock("../../services/auth-service");
-jest.mock("../../_shared/helpers", () => ({
-    ...jest.requireActual("../../_shared/helpers"),
+jest.mock("@shared/helpers", () => ({
+    ...jest.requireActual("@shared/helpers"),
     getEnabledRenderGameSettings: jest.fn(),
     getUserLatestGameId: jest.fn(),
 }));
@@ -31,14 +31,14 @@ jest.mock("@sentry/nextjs", () => ({
 }));
 
 // Mock Tolgee
-jest.mock("../../_shared/tolgee", () => ({
+jest.mock("@shared/tolgee", () => ({
     tolgee: {
         changeLanguage: jest.fn().mockResolvedValue(undefined),
     },
 }));
 
 // Mock useTranslator hook
-jest.mock("../../_shared/react-hooks/use-translator", () => ({
+jest.mock("@shared/react-hooks/use-translator", () => ({
     useTranslator: () => ({
         t: (key: string) => key,
     }),
@@ -76,7 +76,7 @@ jest.mock("next/router", () => ({
 }));
 
 // Mock the optimized PreloadResources component
-jest.mock("../../_shared/helpers/preload-resources", () => ({
+jest.mock("@shared/helpers/preload-resources", () => ({
     __esModule: true,
     default: ({ setIsDonePreload }: { setIsDonePreload: () => void }) => {
         const PreloadResourcesComponent = () => {
@@ -95,7 +95,7 @@ jest.mock("../../_shared/helpers/preload-resources", () => ({
 }));
 
 // Mock getEnabledRenderGameSettings
-const mockGetEnabledRenderGameSettings = require("../../_shared/helpers").getEnabledRenderGameSettings;
+const mockGetEnabledRenderGameSettings = require("@shared/helpers").getEnabledRenderGameSettings;
 
 // Mock session and authorization responses
 const mockSession = {

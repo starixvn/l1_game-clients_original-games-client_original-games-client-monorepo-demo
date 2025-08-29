@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { useCallback, useMemo } from "react";
-import { useGameStateContext, useGameStatesDispatch } from "../../../_shared/react-contexts/game-state-context/game-state-context";
-import { useSettingContext, SettingEventActionType, useSettingDispatch } from "../../../_shared/react-contexts";
-import { useClickSound } from "../../../_shared/react-hooks";
-import { StorageHelper, localStorageKeys } from "../../../_shared/helpers";
+import { useGameStateContext, useGameStatesDispatch } from "@shared/react-contexts/game-state-context/game-state-context";
+import { useSettingContext, SettingEventActionType, useSettingDispatch } from "@shared/react-contexts";
+import { useClickSound } from "@shared/react-hooks";
+import { StorageHelper, localStorageKeys } from "@shared/helpers";
 import { RoundState } from "../../game-base/type";
 import Styles from "./menu-icon.module.scss";
 
