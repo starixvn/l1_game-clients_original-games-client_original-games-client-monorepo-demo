@@ -1,10 +1,10 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const root = path.resolve(__dirname, '..');
-const srcDir = path.join(root, 'src');
-const pkgSharedDir = path.join(root, 'packages', 'shared', 'src');
-const pkgSedieDir = path.join(root, 'packages', 'sedie', 'src');
+const root = path.resolve(__dirname, "..");
+const srcDir = path.join(root, "src");
+const pkgSharedDir = path.join(root, "packages", "shared", "src");
+const pkgSedieDir = path.join(root, "packages", "sedie", "src");
 
 function walk(dir) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -13,41 +13,41 @@ function walk(dir) {
         if (entry.isDirectory()) {
             walk(full);
         } else if (/(\.tsx?|\.js)$/.test(entry.name)) {
-            let content = fs.readFileSync(full, 'utf8');
+            let content = fs.readFileSync(full, "utf8");
             const original = content;
             // _shared → @shared
             content = content
-                .replace(/(["'])\.\.\/\.\.\/\.\.\/_shared\//g, '$1@shared/')
-                .replace(/(["'])\.\.\/\.\.\/_shared\//g, '$1@shared/')
-                .replace(/(["'])\.\.\/_shared\//g, '$1@shared/')
-                .replace(/(["'])\.\/\.\/_shared\//g, '$1@shared/');
+                .replace(/(["'])\.\.\/\.\.\/\.\.\/_shared\//g, "$1@shared/")
+                .replace(/(["'])\.\.\/\.\.\/_shared\//g, "$1@shared/")
+                .replace(/(["'])\.\.\/_shared\//g, "$1@shared/")
+                .replace(/(["'])\.\/\.\/_shared\//g, "$1@shared/");
 
-            // games/sedie-multiplayer → @sedie-multiplayer
+            // games/sedie-multiplayer → @sedie
             content = content
-                .replace(/(["'])\.\.\/\.\.\/\.\.\/games\/sedie-multiplayer\//g, '$1@sedie-multiplayer/')
-                .replace(/(["'])\.\.\/\.\.\/games\/sedie-multiplayer\//g, '$1@sedie-multiplayer/')
-                .replace(/(["'])\.\.\/games\/sedie-multiplayer\//g, '$1@sedie-multiplayer/')
-                .replace(/(["'])\.\/\.\/games\/sedie-multiplayer\//g, '$1@sedie-multiplayer/');
+                .replace(/(["'])\.\.\/\.\.\/\.\.\/games\/sedie-multiplayer\//g, "$1@sedie/")
+                .replace(/(["'])\.\.\/\.\.\/games\/sedie-multiplayer\//g, "$1@sedie/")
+                .replace(/(["'])\.\.\/games\/sedie-multiplayer\//g, "$1@sedie/")
+                .replace(/(["'])\.\/\.\/games\/sedie-multiplayer\//g, "$1@sedie/");
 
             // components and other app paths → @/
             content = content
-                .replace(/(["'])\.\.\/\.\.\/\.\.\/components\//g, '$1@/components/')
-                .replace(/(["'])\.\.\/\.\.\/components\//g, '$1@/components/')
-                .replace(/(["'])\.\.\/components\//g, '$1@/components/')
-                .replace(/(["'])\.\/components\//g, '$1@/components/')
-                .replace(/(["'])\.\/(?:\.\.\/)+components\//g, '$1@/components/');
+                .replace(/(["'])\.\.\/\.\.\/\.\.\/components\//g, "$1@/components/")
+                .replace(/(["'])\.\.\/\.\.\/components\//g, "$1@/components/")
+                .replace(/(["'])\.\.\/components\//g, "$1@/components/")
+                .replace(/(["'])\.\/components\//g, "$1@/components/")
+                .replace(/(["'])\.\/(?:\.\.\/)+components\//g, "$1@/components/");
 
             // Generic depth replacements
             content = content
-                .replace(/(["'])(?:\.\.\/)+components\//g, '$1@/components/')
-                .replace(/(["'])(?:\.\.\/)+_shared\//g, '$1@shared/')
-                .replace(/(["'])(?:\.\.\/)+games\/sedie-multiplayer\//g, '$1@sedie-multiplayer/')
-                .replace(/(["'])\.\/(?:\.\.\/)+_shared\//g, '$1@shared/')
-                .replace(/(["'])\.\/(?:\.\.\/)+games\/sedie-multiplayer\//g, '$1@sedie-multiplayer/');
+                .replace(/(["'])(?:\.\.\/)+components\//g, "$1@/components/")
+                .replace(/(["'])(?:\.\.\/)+_shared\//g, "$1@shared/")
+                .replace(/(["'])(?:\.\.\/)+games\/sedie-multiplayer\//g, "$1@sedie/")
+                .replace(/(["'])\.\/(?:\.\.\/)+_shared\//g, "$1@shared/")
+                .replace(/(["'])\.\/(?:\.\.\/)+games\/sedie-multiplayer\//g, "$1@sedie/");
 
             if (content !== original) {
-                fs.writeFileSync(full, content, 'utf8');
-                console.log('Rewrote imports in', path.relative(root, full));
+                fs.writeFileSync(full, content, "utf8");
+                console.log("Rewrote imports in", path.relative(root, full));
             }
         }
     }
@@ -56,5 +56,3 @@ function walk(dir) {
 [srcDir, pkgSharedDir, pkgSedieDir].forEach((dir) => {
     if (fs.existsSync(dir)) walk(dir);
 });
-
-

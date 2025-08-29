@@ -40,7 +40,7 @@ const nextConfig = withSentryConfig({
             ...(config.resolve.alias || {}),
             "@": require("path").resolve(__dirname, "src"),
             "@shared": require("path").resolve(__dirname, "packages/shared/src"),
-            "@sedie-multiplayer": require("path").resolve(__dirname, "packages/sedie/src"),
+            "@sedie": require("path").resolve(__dirname, "packages/sedie/src"),
         };
 
         config.module.rules.push({
@@ -58,7 +58,7 @@ const nextConfig = withSentryConfig({
     basePath,
     assetPrefix: basePath || undefined,
     env: {
-        buildVersion,
+        buildVersion: String(buildVersion),
         REACT_APP_TOLGEE_API_URL: "https://tolgee.sabagame.com/",
         REACT_APP_TOLGEE_API_KEY: "tgpak_gvpw45brha2xg3btoztxeytunvudc5dbn5twqodtonztc",
     },

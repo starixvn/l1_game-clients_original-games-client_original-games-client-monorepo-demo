@@ -8,7 +8,7 @@ import Styles from "../provably-fair.module.scss";
 import { Section } from "../pf-form-components";
 import { useShallow } from "zustand/shallow";
 import usePopupStore from "@shared/stores/popup-store/popup-store";
-import { renderPFVerifyResultBlock } from "@sedie-multiplayer/provably-fair";
+import { renderPFVerifyResultBlock } from "@sedie/provably-fair";
 import useBetDetailStore from "@shared/stores/bet-detail-store/bet-detail-store";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../table";
 import { cn } from "@shared/utils/merge-tailwind-util";
@@ -115,7 +115,7 @@ const PFClientSeedInfo: FC<{ fileNameExport: (data?: any) => string }> = ({ file
                                     <Section
                                         title={
                                             <>
-                                                {translateSNGames("pf_client_seed_info_total_players")}{" "}
+                                                {translateSNGames("pf_client_seed_info_total_players")} {" "}
                                                 <span className={Styles["text-highlight"]}>
                                                     {betDetailData.drawInfo.pfResult.clientSeeds?.length}
                                                 </span>

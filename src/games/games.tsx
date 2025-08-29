@@ -19,7 +19,7 @@ const LoadingGameComponent = () => (
 );
 
 // SeBall removed
-const SeDieMultiPlayer = dynamic(() => import("./sedie-multiplayer/page"), { loading: () => <LoadingGameComponent /> });
+const SeDieMultiPlayer = dynamic(() => import("@sedie/page"), { loading: () => <LoadingGameComponent /> });
 
 export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, updateUserStakeLevel, openGameId }) => {
     const { theme } = useTheme();

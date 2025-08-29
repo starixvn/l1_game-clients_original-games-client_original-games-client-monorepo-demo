@@ -27,13 +27,13 @@
             "@/*": [
                 "src/*"
             ],
+            "@sedie/*": [
+                "packages/sedie/src/*",
+                "src/games/sedie-multiplayer/*"
+            ],
             "@shared/*": [
                 "packages/shared/src/*"
             ],
-            "@sedie-multiplayer/*": [
-                "packages/sedie/src/*",
-                "src/games/sedie-multiplayer/*"
-            ]
         }
     },
     "include": [
