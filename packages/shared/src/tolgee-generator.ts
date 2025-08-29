@@ -1,7 +1,7 @@
 const { DevTools, Tolgee } = require("@tolgee/react");
 const fs = require("fs");
 const path = require("path");
-const gameSettings = require("../../game-settings.json");
+const gameSettings = require(path.resolve(__dirname, "../../../game-settings.json"));
 
 console.log("[TolgeeGenerator] Tolgee generator starting");
 

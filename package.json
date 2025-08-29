@@ -9,7 +9,7 @@
         "node": ">=20.9.0"
     },
     "scripts": {
-        "generate-tolgee-data": "npx ts-node --project tsconfig.node.json ./src/_shared/tolgee-generator.ts",
+        "generate-tolgee-data": "npx ts-node --project tsconfig.node.json ./packages/shared/src/tolgee-generator.ts",
         "analyze": "cross-env ANALYZE=true next build",
         "dev": "npm run generate-tolgee-data &&  next dev",
         "dev:game-148": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_BASE_PATH=/game-148 next dev",
