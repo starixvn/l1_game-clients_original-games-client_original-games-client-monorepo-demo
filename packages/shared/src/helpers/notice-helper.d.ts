@@ -1,4 +1,4 @@
-import { NoticeModel } from "@/components/game-base/type";
+import { NoticeModel } from "@shared/components/game-base/type";
 export interface INotice {
     errorCode: string;
     hedgeBetGroup?: string[];

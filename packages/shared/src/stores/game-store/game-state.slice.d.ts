@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { GameConfigs, GameDurations, IUserStakeLevel, PlayerResultBoard, Round, RoundState } from "@/components/game-base/type";
+import { GameConfigs, GameDurations, IUserStakeLevel, PlayerResultBoard, Round, RoundState } from "@shared/components/game-base/type";
 export interface GameConfigSlice {
     gameConfigs: GameConfigs | null;
     roundHistory: Round<object, object>[];

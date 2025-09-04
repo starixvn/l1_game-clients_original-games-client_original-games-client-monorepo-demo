@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useCommonTranslate } from "@shared/react-hooks/use-translator";
-import BackgroundComet from "@/components/page-components/background-error";
-import ButtonReturnToURL from "@/components/page-components/button-return-to-url";
+import BackgroundComet from "@shared/components/page-components/background-error";
+import ButtonReturnToURL from "@shared/components/page-components/button-return-to-url";
 import { clearSession } from "../services/auth-service";
 
 const TimeOut = () => {

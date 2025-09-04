@@ -9,7 +9,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import { RoundState } from "@/components/game-base/type";
+import { RoundState } from "@shared/components/game-base/type";
 import { LanguageLocaleMapper } from "../../constants";
 import { tolgee } from "../../tolgee";
 var GameEvents = {

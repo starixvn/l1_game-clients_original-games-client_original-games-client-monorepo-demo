@@ -1,4 +1,4 @@
-import { GameConfigs, RoundState } from "@/components/game-base/type";
+import { GameConfigs, RoundState } from "@shared/components/game-base/type";
 import { GameStateContextModel } from "../react-contexts/game-state-context/game-state-context-model";
 import { PlaceBetContextModel } from "../react-contexts/game-state-context/place-bet-context/place-bet-context-model";
 export interface IAvailableSuggestBetAmount {

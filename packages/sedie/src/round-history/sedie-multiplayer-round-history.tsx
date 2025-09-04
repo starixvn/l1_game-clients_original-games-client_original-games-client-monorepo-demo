@@ -1,11 +1,11 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useShallow } from "zustand/react/shallow";
-import { RoundHistory } from "@/components/game-components/round-history/chain";
-import { IconStatistic } from "@/components/game-components/statistic/icon-statistic";
+import { RoundHistory } from "@shared/components/game-components/round-history/chain";
+import { IconStatistic } from "@shared/components/game-components/statistic/icon-statistic";
 import { SedieMultiplayerRoundHistoryItem } from "./sedie-multiplayer-round-history-item";
 import useGameStore from "@shared/stores/game-store/game-store";
-import { LoadingSpinner } from "@/components/game-components/game-loading/loading-spinner";
+import { LoadingSpinner } from "@shared/components/game-components/game-loading/loading-spinner";
 const SedieMultiplayerStatisticPopup = dynamic(() => import("./sedie-multiplayer-statistic-popup"), {
     loading: () => (
         <div className="relative h-[40px]">

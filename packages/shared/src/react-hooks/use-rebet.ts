@@ -2,7 +2,7 @@ import { useShallow } from "zustand/shallow";
 import useBettingStore from "../stores/betting-store/betting-store";
 import { useGameStore } from "../stores/game-store/game-store";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { RoundState } from "@/components/game-base/type";
+import { RoundState } from "@shared/components/game-base/type";
 import { useClientSeedPF } from "./use-client-seed-pf";
 import { usePlayerContext } from "../react-contexts";
 import { useGlobalEventsStore } from "../stores/global-events-store/global-events-store";

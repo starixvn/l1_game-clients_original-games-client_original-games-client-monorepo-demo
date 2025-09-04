@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { SedieMultiplayerRoundHistory } from "@sedie/round-history/sedie-multiplayer-round-history";
 
 // Mock the RoundHistory component
-jest.mock("@/components/game-components/round-history/chain", () => ({
+jest.mock("@shared/components/game-components/round-history/chain", () => ({
     RoundHistory: ({
         roundHistory,
         isShowBlink,
@@ -30,7 +30,7 @@ jest.mock("@/components/game-components/round-history/chain", () => ({
 }));
 
 // Mock the IconStatistic component
-jest.mock("@/components/game-components/statistic/icon-statistic", () => ({
+jest.mock("@shared/components/game-components/statistic/icon-statistic", () => ({
     IconStatistic: ({ onClick }: any) => (
         <button data-testid="icon-statistic" onClick={onClick}>
             Icon Statistic
