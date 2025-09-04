@@ -16,7 +16,8 @@ const createAppSettings = (config) => ({
 });
 
 const baseAppSettings = createAppSettings(configs);
-const buildVersion = new Date().getTime();
+// Use a static build version to prevent infinite reload loops
+const buildVersion = process.env.BUILD_VERSION || "dev-build";
 
 /**
  * @type {import('next').NextConfig}
@@ -136,7 +137,7 @@ const nextConfig = withSentryConfig({
     },
     sassOptions: {
         prependData: `$version-image: '${buildVersion}';`,
-        includePaths: [require("path").resolve(__dirname, "packages/shared/src/styles"), require("path").resolve(__dirname, "src/styles")],
+        includePaths: [require("path").resolve(__dirname, "packages/shared/src/styles")],
     },
     output: "standalone",
 });

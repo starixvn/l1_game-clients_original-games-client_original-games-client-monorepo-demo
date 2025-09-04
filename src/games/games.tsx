@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getAppSettings } from "@shared/app-settings";
 import { SettingEventActionType, SystemContextProvider, usePlayerContext, useSettingDispatch } from "@shared/react-contexts";
 import { useBlockBetSound, usePlaceBetSound, useStartDrawSound, useStartRoundSound } from "@shared/react-hooks";
@@ -9,6 +9,7 @@ import GameLoading from "@shared/components/game-components/game-loading";
 import { getChipSettings } from "@shared/services/user-setting-service";
 import { Props } from "./type";
 import { LoadingSpinner } from "@shared/components/game-components/game-loading/loading-spinner";
+import { ensureGamesLoaded, getGameLoader } from "./game-discovery";
 
 const LoadingGameComponent = () => (
     <>
@@ -17,16 +18,22 @@ const LoadingGameComponent = () => (
     </>
 );
 
-// SeBall removed
-import { GameRegistry } from "./registry";
+const createDynamicGameComponent = (loader: () => Promise<any>) => {
+    return dynamic(loader, { loading: () => <LoadingGameComponent /> });
+};
 
 export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, updateUserStakeLevel, openGameId }) => {
     const { theme } = useTheme();
     const { session } = usePlayerContext();
     const settingDispatch = useSettingDispatch();
+    const [gamesLoaded, setGamesLoaded] = useState(false);
 
     useEffect(() => {
         (async () => {
+            // Load all game packages to ensure they register themselves
+            await ensureGamesLoaded();
+            setGamesLoaded(true);
+
             const chipSettings = await getChipSettings(session);
             settingDispatch({
                 type: SettingEventActionType.UPDATE_CHIPS,
@@ -47,6 +54,10 @@ export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, upd
     };
 
     const getGameComponentById = (gameId: number) => {
+        if (!gamesLoaded) {
+            return <LoadingGameComponent />;
+        }
+
         const appSettings = getAppSettings();
         const { gameSettings } = appSettings;
 
@@ -59,9 +70,11 @@ export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, upd
             updateUserStakeLevel,
         };
 
-        const loader = GameRegistry[gameId];
+        const loader = getGameLoader(gameId);
         if (!loader) return null;
-        const DynGame = dynamic(loader as any, { loading: () => <LoadingGameComponent /> });
+
+        // Create dynamic component with loader
+        const DynGame = createDynamicGameComponent(loader);
         return <DynGame key={`game-${gameId}`} {...gameProps} />;
     };
 
