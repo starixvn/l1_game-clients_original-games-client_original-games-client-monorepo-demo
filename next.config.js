@@ -135,6 +135,7 @@ const nextConfig = withSentryConfig({
     },
     sassOptions: {
         prependData: `$version-image: '${buildVersion}';`,
+        includePaths: [require("path").resolve(__dirname, "packages/shared/src/styles"), require("path").resolve(__dirname, "src/styles")],
     },
     output: "standalone",
 });

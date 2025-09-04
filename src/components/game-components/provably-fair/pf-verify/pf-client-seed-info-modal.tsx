@@ -3,17 +3,17 @@ import { createPortal } from "react-dom";
 import { v4 as uuidv4 } from "uuid";
 import { usePlayerContext } from "@shared/react-contexts";
 import { useCommonTranslate, useSNTranslate } from "@shared/react-hooks";
-import CopyableTextInput from "../copyable-text-input";
-import Styles from "../provably-fair.module.scss";
-import { Section } from "../pf-form-components";
+import CopyableTextInput from "@shared/components/game-components/provably-fair/copyable-text-input";
+import Styles from "@shared/components/game-components/provably-fair/provably-fair.module.scss";
+import { Section } from "@shared/components/game-components/provably-fair/pf-form-components";
 import { useShallow } from "zustand/shallow";
 import usePopupStore from "@shared/stores/popup-store/popup-store";
 import { renderPFVerifyResultBlock } from "@sedie/provably-fair";
 import useBetDetailStore from "@shared/stores/bet-detail-store/bet-detail-store";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@shared/components/game-components/table";
 import { cn } from "@shared/utils/merge-tailwind-util";
-import ModalContainer from "../../modal-container";
-import { ButtonPFGuide } from "../pf-guide";
+import ModalContainer from "@shared/components/game-components/modal-container";
+import { ButtonPFGuide } from "@shared/components/game-components/provably-fair/pf-guide";
 
 const PFClientSeedInfoModal: FC<{
     fileNameExport: (data?: any) => string;
@@ -165,7 +165,7 @@ const PFClientSeedInfo: FC<{ fileNameExport: (data?: any) => string }> = ({ file
                 )}
             </>
         ),
-        [betDetailData, name]
+        [betDetailData, name, translateCommon, translateSNGames]
     );
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { SedieMultiplayerRoundHistory } from "@sedie/round-history/sedie-multiplayer-round-history";
+import { SedieMultiplayerRoundHistory } from "@sedie";
 
 // Mock the RoundHistory component
 jest.mock("@shared/components/game-components/round-history/chain", () => ({

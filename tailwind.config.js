@@ -1,6 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["./src/pages/**/*.{js,ts,jsx,tsx,mdx}", "./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
+    content: [
+        "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/**/*.{js,ts,jsx,tsx,mdx}",
+        // include packages so Tailwind sees classes in monorepo sources
+        "./packages/**/src/**/*.{js,ts,jsx,tsx,mdx}",
+    ],
     darkMode: "class",
     important: true,
     theme: {
@@ -40,21 +46,34 @@ module.exports = {
                 "success-gradient": "linear-gradient(121deg, #00AC48 31.4%, #26D45A 97.8%)",
                 "warning-gradient": "linear-gradient(121deg, #DFB513 31.4%, #CA9C08 97.8%)",
                 "btn-green": "linear-gradient(90deg, #00AC48 0%, #26D45A 100%)",
-                "btn-gray": "linear-gradient(90deg, #455F84 0%, #5B769D 100%)"
+                "btn-gray": "linear-gradient(90deg, #455F84 0%, #5B769D 100%)",
             },
             boxShadow: {
                 "popup-bet-form": "var(--popup-bet-form-shadow)",
-                "modal": "0 0 10px 1px rgba(0, 0, 0, 0.60), 0 0 30px 3px rgba(0, 0, 0, 0.80)",
+                modal: "0 0 10px 1px rgba(0, 0, 0, 0.60), 0 0 30px 3px rgba(0, 0, 0, 0.80)",
             },
             animation: {
-                'spin-slow': 'spin 6s linear infinite',
-                'spin-slow-reverse': 'spin 6s linear infinite reverse',
+                "spin-slow": "spin 6s linear infinite",
+                "spin-slow-reverse": "spin 6s linear infinite reverse",
             },
             zIndex: {
-                'toast': '300',
-                'modal': '301',
+                toast: "300",
+                modal: "301",
             },
         },
     },
     plugins: [],
+    safelist: [
+        // common utilities used by sedie that might be generated dynamically
+        // grids/cols
+        { pattern: /(grid|col|row)-.*/ },
+        { pattern: /(md|lg|xl):col-span-\d+/ },
+        // spacing/positioning
+        { pattern: /(p|px|py|m|mx|my)-.*/ },
+        { pattern: /(top|right|bottom|left)-\[.*\]/ },
+        // z-index used in sedie animations
+        { pattern: /z-\[.*\]/ },
+        // width/height with arbitrary values
+        { pattern: /(w|h)-\[.*\]/ },
+    ],
 };

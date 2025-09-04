@@ -27,6 +27,9 @@
             "@/*": [
                 "src/*"
             ],
+            "@sedie": [
+                "packages/sedie/src"
+            ],
             "@sedie/*": [
                 "packages/sedie/src/*",
                 "src/games/sedie-multiplayer/*"
