@@ -30,11 +30,10 @@ const nextConfig = withSentryConfig({
         disableClientWebpackPlugin: true,
         hideSourceMaps: true,
     },
-    generateBuildId: async () => uuidv4(),
+    generateBuildId: async () => "dev-build-id",
+    reactStrictMode: false,
+    swcMinify: false,
     webpack: (config, options) => {
-        // Disable source maps
-        config.devtool = false;
-
         // Aliases to support TS path mapping at runtime
         config.resolve = config.resolve || {};
         config.resolve.alias = {
@@ -54,6 +53,24 @@ const nextConfig = withSentryConfig({
                 },
             },
         });
+
+        // Optimize file watching for development
+        if (options.dev) {
+            config.watchOptions = {
+                poll: 1000,
+                aggregateTimeout: 300,
+                ignored: [
+                    "**/node_modules/**",
+                    "**/.next/**",
+                    "**/dist/**",
+                    "**/coverage/**",
+                    "**/public/i18n/**",
+                    "**/sonar-reports/**",
+                    "**/stryker-examples/**",
+                ],
+            };
+
+        }
 
         return config;
     },

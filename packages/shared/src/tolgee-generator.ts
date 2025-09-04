@@ -9,19 +9,29 @@ console.log("[TolgeeGenerator] Tolgee generator starting");
 const locales = { en: "en", vi: "vi", th: "th", id: "id", zh_cn: "zh_cn", zh_tw: "zh_tw", ja: "ja" };
 
 function writeFile(fileName: string, content: string, extension = "json") {
-    console.log("[TolgeeGenerator] writeFile called for:", fileName);
-    const dirname = path.dirname(fileName);
+    const fullPath = `${fileName}.${extension}`;
+    console.log("[TolgeeGenerator] writeFile called for:", fullPath);
 
+    // Check if file already exists and has the same content
+    if (fs.existsSync(fullPath)) {
+        const existingContent = fs.readFileSync(fullPath, "utf8");
+        if (existingContent === content) {
+            console.log("[TolgeeGenerator] file unchanged, skipping:", fullPath);
+            return;
+        }
+    }
+
+    const dirname = path.dirname(fileName);
     if (!fs.existsSync(dirname)) {
         console.log("[TolgeeGenerator] creating directory:", dirname);
         fs.mkdirSync(dirname, { recursive: true });
     }
 
-    fs.writeFileSync(`${fileName}.${extension}`, content, {
+    fs.writeFileSync(fullPath, content, {
         encoding: "utf8",
         flag: "w",
     });
-    console.log("[TolgeeGenerator] file written successfully:", `${fileName}.${extension}`);
+    console.log("[TolgeeGenerator] file written successfully:", fullPath);
 }
 
 interface GameSettings {
@@ -79,4 +89,5 @@ tg.on("initialLoad", async () => {
         });
     });
     console.log("[TolgeeGenerator] initialLoad completed");
+    process.exit(0);
 });
