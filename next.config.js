@@ -1,5 +1,3 @@
-const gameSettings = require("./game-settings.json");
-const configs = require("./configs.json");
 const { v4: uuidv4 } = require("uuid");
 const { withSentryConfig } = require("@sentry/nextjs");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
@@ -9,13 +7,37 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const enableDevGameIdRewrites = !basePath;
 
+// Function to load game-specific configurations
+const loadGameConfigs = (gameId) => {
+    let configs, gameSettings;
+
+    if (gameId === "148" || gameId === 148) {
+        // SeDie game
+        configs = require("./packages/sedie/configs.json");
+        gameSettings = require("./packages/sedie/game-settings.json");
+    } else if (gameId === "2001" || gameId === 2001) {
+        // Baccarat game
+        configs = require("./packages/baccarat/configs.json");
+        gameSettings = require("./packages/baccarat/game-settings.json");
+    } else {
+        // Default to SeDie if no gameId specified
+        configs = require("./packages/sedie/configs.json");
+        gameSettings = require("./packages/sedie/game-settings.json");
+    }
+
+    return { configs, gameSettings };
+};
+
 // Create a configuration that can be dynamically updated
-const createAppSettings = (config) => ({
+const createAppSettings = (config, gameSettings) => ({
     ...config,
     gameSettings,
 });
 
-const baseAppSettings = createAppSettings(configs);
+// Determine which game to load based on environment or default to SeDie
+const currentGameId = process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || "148";
+const { configs: defaultConfigs, gameSettings: defaultGameSettings } = loadGameConfigs(currentGameId);
+const baseAppSettings = createAppSettings(defaultConfigs, defaultGameSettings);
 // Use a static build version to prevent infinite reload loops
 const buildVersion = process.env.BUILD_VERSION || "dev-build";
 
@@ -30,10 +52,11 @@ const nextConfig = withSentryConfig({
         disableClientWebpackPlugin: true,
         hideSourceMaps: true,
     },
-    generateBuildId: async () => "dev-build-id",
-    reactStrictMode: false,
-    swcMinify: false,
+    generateBuildId: async () => uuidv4(),
     webpack: (config, options) => {
+        // Disable source maps
+        config.devtool = false;
+
         // Aliases to support TS path mapping at runtime
         config.resolve = config.resolve || {};
         config.resolve.alias = {
@@ -53,24 +76,6 @@ const nextConfig = withSentryConfig({
                 },
             },
         });
-
-        // Optimize file watching for development
-        if (options.dev) {
-            config.watchOptions = {
-                poll: 1000,
-                aggregateTimeout: 300,
-                ignored: [
-                    "**/node_modules/**",
-                    "**/.next/**",
-                    "**/dist/**",
-                    "**/coverage/**",
-                    "**/public/i18n/**",
-                    "**/sonar-reports/**",
-                    "**/stryker-examples/**",
-                ],
-            };
-
-        }
 
         return config;
     },

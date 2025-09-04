@@ -158,26 +158,28 @@ const SplashScreen: React.FC = () => {
                 }
             }
 
-            // Custom version: Always direct to specific game, default to SeDie if no valid gameId
+            // Custom version: Always direct to specific game, default to environment variable or SeDie if no valid gameId
             let toLoadGameId = gameId;
 
-            // If no gameId provided or gameId is 0, use default SeDie game
+            // If no gameId provided or gameId is 0, use environment variable or default SeDie game
             if (!toLoadGameId || toLoadGameId === 0) {
-                toLoadGameId = GameIds.SeDieMultiplayer;
+                const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || GameIds.SeDieMultiplayer);
+                toLoadGameId = defaultGameId;
             }
 
             // Validate if the gameId is available in the enabled games
             const enabledRenderGameSettings = getRenderGameSettings(authorizeInfo);
 
-            // Bypass validation for SeDie so we can deep-link even if not in lobby/offer
-            let isGameAvailable = toLoadGameId === GameIds.SeDieMultiplayer;
+            // Bypass validation for SeDie and Baccarat so we can deep-link even if not in lobby/offer
+            let isGameAvailable = toLoadGameId === GameIds.SeDieMultiplayer || toLoadGameId === GameIds.Baccarat;
             if (!isGameAvailable) {
                 isGameAvailable = enabledRenderGameSettings.some((game) => game.id === toLoadGameId);
             }
 
-            // If game is not available, use default SeDie game
+            // If game is not available, use environment variable or default SeDie game
             if (!isGameAvailable) {
-                toLoadGameId = GameIds.SeDieMultiplayer;
+                const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || GameIds.SeDieMultiplayer);
+                toLoadGameId = defaultGameId;
             }
 
             setCurrentGameId(toLoadGameId);

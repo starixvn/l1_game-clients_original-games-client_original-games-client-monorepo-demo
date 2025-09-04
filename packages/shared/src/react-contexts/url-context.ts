@@ -32,7 +32,9 @@ export function parseContextFromURL(): URLContextModel | undefined {
     const gameIdParam = params.get("gameId");
     let gameId = Number(gameIdParam);
     if (!gameIdParam || Number.isNaN(gameId) || gameId <= 0) {
-        gameId = GameIds.SeDieMultiplayer;
+        // Use environment variable if available, otherwise default to SeDie
+        const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || GameIds.SeDieMultiplayer);
+        gameId = defaultGameId;
     }
     const redirectUrl = params.get("rurl");
 

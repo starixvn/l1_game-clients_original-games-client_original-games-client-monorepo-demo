@@ -11,7 +11,7 @@
     "scripts": {
         "generate-tolgee-data": "npx ts-node --project tsconfig.node.json ./packages/shared/src/tolgee-generator.ts",
         "analyze": "cross-env ANALYZE=true next build",
-        "dev": "next dev",
+        "dev": "npm run generate-tolgee-data &&  next dev",
         "dev:sedie": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 HOST=sedie.local PORT=3001 next dev -p 3001",
         "dev:baccarat": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=2001 HOST=baccarat.local PORT=3002 next dev -p 3002",
         "dev:two": "concurrently -n sedie,baccarat -c blue,green \"npm run dev:sedie\" \"npm run dev:baccarat\"",

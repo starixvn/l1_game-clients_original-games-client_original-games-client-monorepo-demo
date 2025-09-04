@@ -41,5 +41,32 @@
                 "sedie-multi-player/highlight-winning-white4.png"
             ]
         }
+    },
+    "2001": {
+        "id": 2001,
+        "gameName": "Baccarat",
+        "tolgeeNamespace": "Baccarat",
+        "socketInfo": {
+            "namespace": "baccarat",
+            "path": "baccarat"
+        },
+        "durations": {
+            "wholeRound": 30,
+            "wholeTurn": 30,
+            "placingBets": 20,
+            "lockingBet": 5,
+            "showResult": 5,
+            "resultAnimation": 3,
+            "beforePlaceBet": 0,
+            "switchRoundAnimation": 0,
+            "startNewRoundAnim": 0
+        },
+        "numberOfRoundHistory": 100,
+        "gamePath": "baccarat",
+        "gameResourceConfigs": {
+            "path": "baccarat",
+            "optionalPaths": [],
+            "cachePaths": []
+        }
     }
 }
