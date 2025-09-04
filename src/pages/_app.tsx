@@ -1,7 +1,7 @@
 import "@shared/helpers/string-helper";
-import "../styles/errors.scss";
-import "../styles/main.scss";
-import "../styles/global.css";
+import "@shared/styles/errors.scss";
+import "@shared/styles/main.scss";
+import "@shared/styles/global.css";
 
 import { TolgeeProvider } from "@tolgee/react";
 import { ThemeProvider } from "next-themes";

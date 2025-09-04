@@ -7,7 +7,7 @@ import { SettingEventActionType, SystemContextProvider, usePlayerContext, useSet
 import { useBlockBetSound, usePlaceBetSound, useStartDrawSound, useStartRoundSound } from "@shared/react-hooks";
 import { GameSound } from "@shared/components/game-base/type";
 import GameLoading from "@shared/components/game-components/game-loading";
-import { getChipSettings } from "../services/user-setting-service";
+import { getChipSettings } from "@shared/services/user-setting-service";
 import { Props } from "./type";
 import { LoadingSpinner } from "@shared/components/game-components/game-loading/loading-spinner";
 
