@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { JSX } from "react";
 import styles from "./baccarat-round-history.module.scss";
 
 interface BaccaratRoundHistoryProps {

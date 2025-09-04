@@ -2,7 +2,6 @@ import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import { getAppSettings } from "@shared/app-settings";
-import { GameIds } from "@shared/constants";
 import { SettingEventActionType, SystemContextProvider, usePlayerContext, useSettingDispatch } from "@shared/react-contexts";
 import { useBlockBetSound, usePlaceBetSound, useStartDrawSound, useStartRoundSound } from "@shared/react-hooks";
 import { GameSound } from "@shared/components/game-base/type";
@@ -19,8 +18,7 @@ const LoadingGameComponent = () => (
 );
 
 // SeBall removed
-const SeDieMultiPlayer = dynamic(() => import("@sedie"), { loading: () => <LoadingGameComponent /> });
-const Baccarat = dynamic(() => import("@baccarat"), { loading: () => <LoadingGameComponent /> });
+import { GameRegistry } from "./registry";
 
 export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, updateUserStakeLevel, openGameId }) => {
     const { theme } = useTheme();
@@ -61,17 +59,16 @@ export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, upd
             updateUserStakeLevel,
         };
 
-        if (gameId === GameIds.SeDieMultiplayer) {
-            return <SeDieMultiPlayer key={`game-${gameId}`} {...gameProps} />;
-        }
-        if (gameId === GameIds.Baccarat) {
-            return <Baccarat key={`game-${gameId}`} {...gameProps} />;
-        }
-
-        return null;
+        const loader = GameRegistry[gameId];
+        if (!loader) return null;
+        const DynGame = dynamic(loader as any, { loading: () => <LoadingGameComponent /> });
+        return <DynGame key={`game-${gameId}`} {...gameProps} />;
     };
 
-    const gameComponent = getGameComponentById(openGameId);
+    const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || 0);
+    const effectiveGameId = openGameId || defaultGameId;
+
+    const gameComponent = getGameComponentById(effectiveGameId);
 
     return <SystemContextProvider>{gameComponent}</SystemContextProvider>;
 };

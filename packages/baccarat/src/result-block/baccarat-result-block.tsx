@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { JSX } from "react";
 import styles from "./baccarat-result-block.module.scss";
 
 interface BaccaratResultBlockProps {
@@ -76,6 +75,7 @@ const BaccaratResultBlock: React.FC<BaccaratResultBlockProps> = ({ className, re
                         <h4>Player</h4>
                         <div className={styles.cardRow}>
                             {mockResult.player.map((card, index) => (
+                                // eslint-disable-next-line react/no-array-index-key
                                 <div key={index} className={styles.card}>
                                     {getCardValue(card)}
                                 </div>
@@ -88,6 +88,7 @@ const BaccaratResultBlock: React.FC<BaccaratResultBlockProps> = ({ className, re
                         <h4>Banker</h4>
                         <div className={styles.cardRow}>
                             {mockResult.banker.map((card, index) => (
+                                // eslint-disable-next-line react/no-array-index-key
                                 <div key={index} className={styles.card}>
                                     {getCardValue(card)}
                                 </div>
