@@ -20,6 +20,7 @@ const LoadingGameComponent = () => (
 
 // SeBall removed
 const SeDieMultiPlayer = dynamic(() => import("@sedie"), { loading: () => <LoadingGameComponent /> });
+const Baccarat = dynamic(() => import("@baccarat"), { loading: () => <LoadingGameComponent /> });
 
 export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, updateUserStakeLevel, openGameId }) => {
     const { theme } = useTheme();
@@ -62,6 +63,9 @@ export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, upd
 
         if (gameId === GameIds.SeDieMultiplayer) {
             return <SeDieMultiPlayer key={`game-${gameId}`} {...gameProps} />;
+        }
+        if (gameId === GameIds.Baccarat) {
+            return <Baccarat key={`game-${gameId}`} {...gameProps} />;
         }
 
         return null;

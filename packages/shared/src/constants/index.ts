@@ -64,6 +64,7 @@ export const confirmBet = "confirmBet";
 
 export const GameIds = {
     SeDieMultiplayer: 148,
+    Baccarat: 2001,
 };
 
 export const LobbyGameId = 0;

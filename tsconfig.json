@@ -34,6 +34,12 @@
                 "packages/sedie/src/*",
                 "src/games/sedie-multiplayer/*"
             ],
+            "@baccarat": [
+                "packages/baccarat/src"
+            ],
+            "@baccarat/*": [
+                "packages/baccarat/src/*"
+            ],
             "@shared/*": [
                 "packages/shared/src/*"
             ],

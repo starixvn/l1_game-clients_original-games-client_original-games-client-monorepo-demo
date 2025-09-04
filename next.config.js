@@ -41,6 +41,7 @@ const nextConfig = withSentryConfig({
             "@": require("path").resolve(__dirname, "src"),
             "@shared": require("path").resolve(__dirname, "packages/shared/src"),
             "@sedie": require("path").resolve(__dirname, "packages/sedie/src"),
+            "@baccarat": require("path").resolve(__dirname, "packages/baccarat/src"),
         };
 
         config.module.rules.push({
