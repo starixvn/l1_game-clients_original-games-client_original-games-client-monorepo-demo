@@ -1,7 +1,7 @@
 import isEmpty from "lodash/isEmpty";
 import { createContext, useContext } from "react";
 import { StorageHelper, localStorageKeys } from "../helpers/storage-helper";
-import { GameIds } from "../constants";
+// Removed hardcoded default GameIds to allow per-app defaults via env
 import { AnalyticsHelper } from "../helpers/analytic-helper";
 import { GameUtils } from "../helpers/base-64-helper";
 import { broadcastBackToLobby } from "../helpers/global-events-helper";
@@ -32,8 +32,7 @@ export function parseContextFromURL(): URLContextModel | undefined {
     const gameIdParam = params.get("gameId");
     let gameId = Number(gameIdParam);
     if (!gameIdParam || Number.isNaN(gameId) || gameId <= 0) {
-        // Use environment variable if available, otherwise default to SeDie
-        const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || GameIds.SeDieMultiplayer);
+        const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || 0);
         gameId = defaultGameId;
     }
     const redirectUrl = params.get("rurl");

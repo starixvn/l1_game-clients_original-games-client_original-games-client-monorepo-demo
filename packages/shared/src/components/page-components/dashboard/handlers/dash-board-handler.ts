@@ -1,5 +1,4 @@
 import { getOfferGamesIds } from "@shared/helpers";
-import { GameIds } from "@shared/constants";
 
 import { DashboardProps } from "../type";
 
@@ -22,11 +21,7 @@ export class DashboardHandler {
             return false;
         }
 
-        // Allow direct access for SeDieMultiplayer (VG) even if not in offerGames
-        if (this.props.queryGame === GameIds.SeDieMultiplayer || this.props.queryGame === GameIds.Baccarat) {
-            console.log("[DashboardHandler] queryGame is SeDieMultiplayer, bypassing offer check");
-            return false;
-        }
+        // No special-case bypasses; monorepo sets its own default via env
 
         const offerGames = getOfferGamesIds(this.props.authorizeResponse);
         console.log("[DashboardHandler] offerGames:", offerGames, "queryGame:", this.props.queryGame);

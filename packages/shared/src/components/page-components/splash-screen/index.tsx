@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { AuthorizeResponse, SSOResponse } from "sc-user-service-client/dist/auth";
 import { getAppSettings } from "@shared/app-settings";
-import { Themes, buildVersion, languageMapper, locales, GameIds } from "@shared/constants";
+import { Themes, buildVersion, languageMapper, locales } from "@shared/constants";
 import { AnalyticsHelper, StorageHelper, getRenderGameSettings, localStorageKeys, randomInteger } from "@shared/helpers";
 import PreloadResources from "@shared/helpers/preload-resources";
 import { PlayerContextModel, URLContext, usePlayerContext } from "@shared/react-contexts";
@@ -158,27 +158,24 @@ const SplashScreen: React.FC = () => {
                 }
             }
 
-            // Custom version: Always direct to specific game, default to environment variable or SeDie if no valid gameId
+            // Always direct to specific game, default to environment variable if no valid gameId
             let toLoadGameId = gameId;
 
-            // If no gameId provided or gameId is 0, use environment variable or default SeDie game
+            // If no gameId provided or gameId is 0, use environment variable
             if (!toLoadGameId || toLoadGameId === 0) {
-                const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || GameIds.SeDieMultiplayer);
+                const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || 0);
                 toLoadGameId = defaultGameId;
             }
 
             // Validate if the gameId is available in the enabled games
             const enabledRenderGameSettings = getRenderGameSettings(authorizeInfo);
 
-            // Bypass validation for SeDie and Baccarat so we can deep-link even if not in lobby/offer
-            let isGameAvailable = toLoadGameId === GameIds.SeDieMultiplayer || toLoadGameId === GameIds.Baccarat;
-            if (!isGameAvailable) {
-                isGameAvailable = enabledRenderGameSettings.some((game) => game.id === toLoadGameId);
-            }
+            // Determine availability only from enabled game settings
+            const isGameAvailable = enabledRenderGameSettings.some((game) => game.id === toLoadGameId);
 
-            // If game is not available, use environment variable or default SeDie game
+            // If game is not available, fall back to environment variable (or keep current)
             if (!isGameAvailable) {
-                const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || GameIds.SeDieMultiplayer);
+                const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || toLoadGameId || 0);
                 toLoadGameId = defaultGameId;
             }
 

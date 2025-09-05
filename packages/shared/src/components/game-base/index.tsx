@@ -2,7 +2,6 @@ import React, { lazy } from "react";
 import { createPortal } from "react-dom";
 import { Socket } from "socket.io-client";
 
-import { GameIds } from "@shared/constants";
 import { InitSocketIO, writeDebugLog } from "@shared/helpers";
 import { AnalyticsHelper } from "@shared/helpers/analytic-helper";
 import { broadcastOpeningGameId } from "@shared/helpers/global-events-helper";
@@ -120,7 +119,7 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
                     this.props.gameSound.playPlaceBetSound();
                 },
                 gameId: this.props.id,
-                betPayloadFormat: this.props.id === GameIds.SeDieMultiplayer ? "single" : "map",
+                betPayloadFormat: (this.props as any)?.betPayloadFormat ?? "map",
             });
 
         this.gameFinishHandler =

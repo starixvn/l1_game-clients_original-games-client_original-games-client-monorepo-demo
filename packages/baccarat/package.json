@@ -8,9 +8,9 @@
         "obfuscator-config-file": "node ./configs/config-obfuscator.js",
         "build": "node -e \"console.log('Skipping baccarat package build (using app sources)')\"",
         "clean": "rimraf dist",
-        "dev:standalone": "cross-env FAST_REFRESH=false next dev -p 3002",
-        "build:standalone": "next build",
-        "start:standalone": "next start -p 3002"
+        "dev:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=10 FAST_REFRESH=false next dev -p 3002",
+        "build:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=10 next build",
+        "start:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=10 next start -p 3002"
     },
     "dependencies": {
         "@sentry/nextjs": "^9.41.0",

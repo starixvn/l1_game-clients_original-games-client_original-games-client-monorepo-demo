@@ -7,3 +7,6 @@ export type Props = {
     openGameId: number;
     openGameName: string;
 };
+
+export type GameComponentProps = Props & Record<string, any>;
+export type GameComponentRegistry = Record<number, any>;
