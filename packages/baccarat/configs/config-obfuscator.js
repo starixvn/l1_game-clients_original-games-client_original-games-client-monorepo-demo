@@ -51,7 +51,7 @@ const runObfuscationProcess = async (dirNames) => {
                 fs.rmSync(outputDir, { recursive: true });
             }
 
-            await fsPromise.mkdir(outputDir, { recursive: true });
+            await fsPromise.mkdir(outputDir);
             await doObfuscationDirectory(dirName, outputDir);
         } catch (ex) {
             console.log(`Dir ${dirName}, ${JSON.stringify(ex)}`);

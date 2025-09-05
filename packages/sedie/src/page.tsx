@@ -1,7 +1,7 @@
 import { withRouter } from "next/router";
 import { JSX, lazy } from "react";
 
-import { useSystemContext, useSystemDispatch } from "@shared/react-contexts";
+import { useSystemContext, useSystemDispatch } from "@shared/react-contexts/system/system-context";
 import {
     GameStateProvider,
     useGameStateContext,
@@ -17,8 +17,8 @@ import { RoundStateHandler } from "@shared/components/round-base/round-state-han
 import { SeDieBetOptions } from "./sedie-multiplayer-constants";
 import { SeDieGameRoundDataHandler } from "./sedie-multiplayer-game-round-data-handler";
 import SediePlate from "./result-block/sedie-plate";
-import SeDieMultiplayerBettingBlock from "./sedie-multiplayer-betting-block";
-import { SedieMultiplayerRoundHistory } from "./round-history/sedie-multiplayer-round-history";
+import SeDieMultiplayerBettingBlock from "@sedie/sedie-multiplayer-betting-block";
+import { SedieMultiplayerRoundHistory } from "@sedie/round-history/sedie-multiplayer-round-history";
 import SeDieMultiplayerBetDetailModal from "./history";
 import { PlayerResultBoard } from "@shared/components/game-components/player-result-board/player-result-board";
 const OwnTotalBet = lazy(() => import("@shared/components/game-components/own-total-bet/own-total-bet"));
