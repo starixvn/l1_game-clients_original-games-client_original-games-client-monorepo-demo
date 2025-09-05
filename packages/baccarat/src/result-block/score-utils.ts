@@ -27,15 +27,22 @@ export const calculateTotalScore = (cards: number[]): number => {
         throw new Error('Card values must be between 0 and 12');
     }
 
-    return cards.reduce((score, card) => sumScore(score, card), 0);
+    console.log('calculateTotalScore: input cards=', cards);
+    const total = cards.reduce((score, card) => sumScore(score, card), 0);
+    console.log('calculateTotalScore: total=', total);
+    return total;
 };
 
 export const getCardValues = (cards: any[]): number[] => {
-    if (!Array.isArray(cards)) return [];
+    if (!Array.isArray(cards)) {
+        console.log('getCardValues: cards not array ->', cards);
+        return [];
+    }
     const validCards = cards
         .filter((card) => card !== undefined && card !== null)
         .map((card) => (typeof card === 'object' && typeof card.card === 'number' ? card.card : typeof card === 'number' ? card : -1))
         .filter((v) => v >= 0);
+    console.log('getCardValues: mapped=', validCards, 'from=', cards);
     return validCards;
 };
 
@@ -89,6 +96,7 @@ export const GetPlayerCardsResult = (result: any): CardOrderWithTiming[] => {
     const { orders, getAnimationTime } = CardAnimationConfig;
     let runningScore = 0;
     const hasThirdCard = !!result.player.card3;
+    console.log('GetPlayerCardsResult: raw result.player=', result?.player);
     const playerCards = [
         {
             value: result.player.card1,
@@ -116,7 +124,7 @@ export const GetPlayerCardsResult = (result: any): CardOrderWithTiming[] => {
             playerHasThirdCard: hasThirdCard
         });
     }
-
+    console.log('GetPlayerCardsResult: computed=', playerCards);
     return playerCards;
 };
 
@@ -124,6 +132,7 @@ export const GetBankerCardsResult = (result: any): CardOrderWithTiming[] => {
     const { orders, getAnimationTime } = CardAnimationConfig;
     let runningScore = 0;
     const hasThirdCard = !!result.player.card3;
+    console.log('GetBankerCardsResult: raw result.banker=', result?.banker);
     const bankerCards = [
         {
             value: result.banker.card1,
@@ -151,6 +160,6 @@ export const GetBankerCardsResult = (result: any): CardOrderWithTiming[] => {
             playerHasThirdCard: hasThirdCard
         });
     }
-
+    console.log('GetBankerCardsResult: computed=', bankerCards);
     return bankerCards;
 };

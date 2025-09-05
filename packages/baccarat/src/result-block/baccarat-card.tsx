@@ -29,6 +29,7 @@ export const BaccaratCard: React.FC<BaccaratCardProps> = ({
     onCardFlip,
     playResultAnimation
 }) => {
+    console.log('[BaccaratCard] render:', { order: card?.order, value: card?.value, type, isShowResult, playResultAnimation });
     const [isFlipped, setIsFlipped] = useState(false);
     const [flipAnimationClass, setFlipAnimationClass] = useState('');
 

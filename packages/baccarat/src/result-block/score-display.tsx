@@ -9,6 +9,7 @@ interface ScoreDisplayProps {
 
 export const ScoreDisplay: React.FC<ScoreDisplayProps> = ({ score, type, visible }) => {
     if (!visible) return null;
+    console.log('[ScoreDisplay] show:', { score, type, visible });
 
     return (
         <div className={`${styles.score} ${styles[`${type}-score`]}`}>

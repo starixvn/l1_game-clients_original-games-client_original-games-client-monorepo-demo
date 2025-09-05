@@ -84,6 +84,7 @@ const BaccaratSettlementResult: React.FC<BaccaratSettlementResultProps> = ({
     const { durations } = useGameContext();
     const { roundState } = useGameStateContext();
     const gameState = useGameStateContext();
+    const last = (gameState as any)?.last;
     const [isShow, setIsShow] = useState(false);
     const [animationState, setAnimationState] = useState<AnimationState>("idle");
     const [showCards, setShowCards] = useState(false);
@@ -94,8 +95,9 @@ const BaccaratSettlementResult: React.FC<BaccaratSettlementResultProps> = ({
 
     useEffect(() => {
         // Get result from game state
-        if (gameState && 'last' in gameState && gameState.last) {
-            const gameResult = gameState.last as any;
+        if (last) {
+            const gameResult = last as any;
+            console.log('[BaccaratSettlementResult] gameState.last =', gameResult);
 
             // Handle both normalized shape (arrays) and nested service shape (card1/card2/card3)
             const resultData = gameResult.result || gameResult;
@@ -112,14 +114,31 @@ const BaccaratSettlementResult: React.FC<BaccaratSettlementResultProps> = ({
 
             const playerSource = resultData.player;
             const bankerSource = resultData.banker;
+            const sequenceCards: any[] = Array.isArray(resultData.cards) ? resultData.cards : [];
 
-            const playerCardsArr: any[] = Array.isArray(playerSource)
+            let playerCardsArr: any[] = Array.isArray(playerSource)
                 ? playerSource
-                : [playerSource?.card1, playerSource?.card2, playerSource?.card3].filter((c) => c !== undefined);
+                : [playerSource?.card1, playerSource?.card2, playerSource?.card3];
 
-            const bankerCardsArr: any[] = Array.isArray(bankerSource)
+            let bankerCardsArr: any[] = Array.isArray(bankerSource)
                 ? bankerSource
-                : [bankerSource?.card1, bankerSource?.card2, bankerSource?.card3].filter((c) => c !== undefined);
+                : [bankerSource?.card1, bankerSource?.card2, bankerSource?.card3];
+
+            // Fallback from sequence array when missing
+            // sequence: [P1, B1, P2, B2, P3?, B3?]
+            const s = sequenceCards;
+            if (!playerCardsArr[0] && s[0]) playerCardsArr[0] = s[0];
+            if (!bankerCardsArr[0] && s[1]) bankerCardsArr[0] = s[1];
+            if (!playerCardsArr[1] && s[2]) playerCardsArr[1] = s[2];
+            if (!bankerCardsArr[1] && s[3]) bankerCardsArr[1] = s[3];
+            if (!playerCardsArr[2] && s[4]) playerCardsArr[2] = s[4];
+            if (!bankerCardsArr[2] && s[5]) bankerCardsArr[2] = s[5];
+
+            // Filter undefined/null
+            playerCardsArr = playerCardsArr.filter((c) => c !== undefined && c !== null);
+            bankerCardsArr = bankerCardsArr.filter((c) => c !== undefined && c !== null);
+
+            console.log('[BaccaratSettlementResult] parsed arrays:', { playerCardsArr, bankerCardsArr });
 
             const newResult: Result = {
                 player: {
@@ -155,7 +174,7 @@ const BaccaratSettlementResult: React.FC<BaccaratSettlementResultProps> = ({
         } else {
             setIsLoading(false);
         }
-    }, [gameState]);
+    }, [last]);
 
     // Follow sedie plate timing pattern
     useEffect(() => {

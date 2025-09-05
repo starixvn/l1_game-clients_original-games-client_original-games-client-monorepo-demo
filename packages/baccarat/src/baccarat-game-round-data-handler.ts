@@ -37,13 +37,13 @@ export class BaccaratGameRoundDataHandler extends GameRoundDataHandler {
             const playerCards = [];
             const bankerCards = [];
 
-            if (result.result.player.card1?.card) playerCards.push(result.result.player.card1);
-            if (result.result.player.card2?.card) playerCards.push(result.result.player.card2);
-            if (result.result.player.card3?.card) playerCards.push(result.result.player.card3);
+            if (result.result.player.card1 && result.result.player.card1.card !== undefined) playerCards.push(result.result.player.card1);
+            if (result.result.player.card2 && result.result.player.card2.card !== undefined) playerCards.push(result.result.player.card2);
+            if (result.result.player.card3 && result.result.player.card3.card !== undefined) playerCards.push(result.result.player.card3);
 
-            if (result.result.banker.card1?.card) bankerCards.push(result.result.banker.card1);
-            if (result.result.banker.card2?.card) bankerCards.push(result.result.banker.card2);
-            if (result.result.banker.card3?.card) bankerCards.push(result.result.banker.card3);
+            if (result.result.banker.card1 && result.result.banker.card1.card !== undefined) bankerCards.push(result.result.banker.card1);
+            if (result.result.banker.card2 && result.result.banker.card2.card !== undefined) bankerCards.push(result.result.banker.card2);
+            if (result.result.banker.card3 && result.result.banker.card3.card !== undefined) bankerCards.push(result.result.banker.card3);
 
             player = playerCards;
             banker = bankerCards;
