@@ -1,22 +1,22 @@
-import "../../../games/scoreboards";
+import "@sedie/games/scoreboards";
 import dynamic from "next/dynamic";
 import { withRouter } from "next/router";
 import React from "react";
 import { isMobile, isMobileOnly } from "react-device-detect";
-import { ErrorNoGameOffer } from "../../../_shared/constants/error-code-dictionary";
-import { localStorageKeys, StorageHelper, broadcastNotice, getNotice } from "../../../_shared/helpers";
-import { broadcastUserInfoRed } from "../../../_shared/helpers/global-events-helper";
-import { useGlobalEventsStore } from "../../../_shared/stores/global-events-store/global-events-store";
-import { loadURLContext, PlayerContextProvider, SettingContextProvider, updateURLContext } from "../../../_shared/react-contexts";
+import { ErrorNoGameOffer } from "@shared/constants/error-code-dictionary";
+import { localStorageKeys, StorageHelper, broadcastNotice, getNotice } from "@shared/helpers";
+import { broadcastUserInfoRed } from "@shared/helpers/global-events-helper";
+import { useGlobalEventsStore } from "@shared/stores/global-events-store/global-events-store";
+import { loadURLContext, PlayerContextProvider, SettingContextProvider, updateURLContext } from "@shared/react-contexts";
 import { UserStakeLevel } from "../../game-base/type";
 import { DashboardHandler } from "./handlers/dash-board-handler";
 import { NotificationHandler } from "./handlers/notification-handler";
 import { DashboardProps, DashboardState } from "./type";
 import { LoadingSpinner } from "../../game-components/game-loading/loading-spinner";
-import BalanceSyncProvider from "../../../_shared/react-hooks/providers/balance-sync-provider";
+import BalanceSyncProvider from "@shared/react-hooks/providers/balance-sync-provider";
 
 const SoundSettings = dynamic(() => import("../header/setting/settings-popup"));
-const Games = dynamic(() => import("../../../games/games"), { loading: () => <LoadingSpinner /> });
+const Games = dynamic(() => import("@sedie/games/games"), { loading: () => <LoadingSpinner /> });
 const MusicPlayer = dynamic(() => import("../music-player"));
 const LandscapeMode = dynamic(() => import("./landscape-mode/landscape-mode"));
 
@@ -128,7 +128,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
             if (this.dashboardHandler.checkIsNotOfferGame()) {
                 broadcastNotice({
                     ...getNotice(ErrorNoGameOffer, false),
-                    onClose: () => {},
+                    onClose: () => { },
                 });
             }
         };

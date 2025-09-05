@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./sedie-cup.module.scss";
-import { RoundState } from "../../../components/game-base/type";
-import { useGameStateContext } from "../../../_shared/react-contexts/game-state-context/game-state-context";
-import { useGameContext } from "../../../_shared/react-contexts";
+import { RoundState } from "@shared/components/game-base/type";
+import { useGameStateContext } from "@shared/react-contexts/game-state-context/game-state-context";
+import { useGameContext } from "@shared/react-contexts";
 import Image from "next/image";
-import { Spritesheet } from "../../../components/game-components/sprites-sheet";
+import { Spritesheet } from "@shared/components/game-components/sprites-sheet";
 import { motion } from "motion/react";
 
 const OPEN_DURATION = 1200; // Open duration in milliseconds

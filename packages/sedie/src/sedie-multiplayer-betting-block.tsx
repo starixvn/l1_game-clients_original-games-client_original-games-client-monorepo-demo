@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { FC } from "react";
 
-import SeDieMultiplayerBetOptions from "./bet-options/sedie-multiplayer-bet-options";
+import SeDieMultiplayerBetOptions from "@sedie/bet-options/sedie-multiplayer-bet-options";
 
 const WinningBalanceEffect = dynamic(() => import("@shared/components/game-components/balance-effect/winning-balance-effect"));
 

@@ -1,12 +1,12 @@
 import { memo, useEffect, useMemo, useState, useRef } from "react";
 import { ChipSlider } from "./chip-slider";
 import { Chip } from "./chip";
-import { useSettingContext } from "../../../_shared/react-contexts";
-import { useGameStore } from "../../../_shared/stores/game-store/game-store";
+import { useSettingContext } from "@shared/react-contexts";
+import { useGameStore } from "@shared/stores/game-store/game-store";
 import { useShallow } from "zustand/shallow";
-import useBettingStore from "../../../_shared/stores/betting-store/betting-store";
-import { useClickOutside } from "../../../_shared/react-hooks/use-click-outside";
-import { useCommonTranslate } from "../../../_shared/react-hooks";
+import useBettingStore from "@shared/stores/betting-store/betting-store";
+import { useClickOutside } from "@shared/react-hooks/use-click-outside";
+import { useCommonTranslate } from "@shared/react-hooks";
 
 const ChipControlPanel: React.FC = () => {
     const { gameConfigs, userStakeLevel } = useGameStore(

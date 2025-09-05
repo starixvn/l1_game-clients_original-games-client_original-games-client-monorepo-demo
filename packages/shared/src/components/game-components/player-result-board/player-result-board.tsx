@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { usePlayerResultBoard, useCommonTranslate } from "../../../_shared/react-hooks";
+import { usePlayerResultBoard, useCommonTranslate } from "@shared/react-hooks";
 import { RoundId } from "../round-id";
 import { PlayerResultBoardTable } from "./player-result-board-table";
 

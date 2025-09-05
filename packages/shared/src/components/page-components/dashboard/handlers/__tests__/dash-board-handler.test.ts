@@ -1,12 +1,12 @@
 import { DashboardHandler } from "../dash-board-handler";
-import { getAppSettings } from "../../../../../_shared/app-settings";
-import { getOfferGamesIds, StorageHelper } from "../../../../../_shared/helpers";
-import { loadURLContext } from "../../../../../_shared/react-contexts";
+import { getAppSettings } from "@shared/app-settings";
+import { getOfferGamesIds, StorageHelper } from "@shared/helpers";
+import { loadURLContext } from "@shared/react-contexts";
 import { TolgeeInstance } from "@tolgee/core";
 import { SSOResponse, AuthorizeResponse } from "sc-user-service-client/dist/auth";
 
 // Mock dependencies
-jest.mock("../../../../../_shared/app-settings", () => ({
+jest.mock("@shared/app-settings", () => ({
     getAppSettings: jest.fn().mockReturnValue({
         appType: "test",
         system: "gn",
@@ -16,7 +16,7 @@ jest.mock("../../../../../_shared/app-settings", () => ({
         },
     }),
 }));
-jest.mock("../../../../../_shared/helpers", () => ({
+jest.mock("@shared/helpers", () => ({
     getOfferGamesIds: jest.fn().mockReturnValue([1005, 148]),
     StorageHelper: {
         get: jest.fn(),
@@ -27,7 +27,7 @@ jest.mock("../../../../../_shared/helpers", () => ({
         latestGameId: "latestGameId",
     },
 }));
-jest.mock("../../../../../_shared/react-contexts", () => ({
+jest.mock("@shared/react-contexts", () => ({
     loadURLContext: jest.fn().mockReturnValue({
         gameId: 0,
     }),

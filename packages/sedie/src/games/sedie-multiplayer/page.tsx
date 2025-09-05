@@ -6,25 +6,25 @@ import {
     GameStateProvider,
     useGameStateContext,
     useGameStatesDispatch,
-} from "../../_shared/react-contexts/game-state-context/game-state-context";
-import { useTranslator } from "../../_shared/react-hooks";
-import GameBase from "../../components/game-base/";
-import { GameMessageHandler } from "../../components/game-base/handlers";
-import { GameBaseHandlers, GameBaseProps, GameBaseState } from "../../components/game-base/type";
-import { RoundGameSoundHandler } from "../../components/round-base/round-game-sound-handler";
-import { RoundIdHandler } from "../../components/round-base/round-id-handler";
-import { RoundStateHandler } from "../../components/round-base/round-state-handler";
-import { SeDieBetOptions } from "./sedie-multiplayer-constants";
-import { SeDieGameRoundDataHandler } from "./sedie-multiplayer-game-round-data-handler";
-import SedieCup from "./result-block/sedie-cup";
+} from "@shared/react-contexts/game-state-context/game-state-context";
+import { useTranslator } from "@shared/react-hooks";
+import GameBase from "@shared/components/game-base/";
+import { GameMessageHandler } from "@shared/components/game-base/handlers";
+import { GameBaseHandlers, GameBaseProps, GameBaseState } from "@shared/components/game-base/type";
+import { RoundGameSoundHandler } from "@shared/components/round-base/round-game-sound-handler";
+import { RoundIdHandler } from "@shared/components/round-base/round-id-handler";
+import { RoundStateHandler } from "@shared/components/round-base/round-state-handler";
+import { SeDieBetOptions } from "@sedie/sedie-multiplayer-constants";
+import { SeDieGameRoundDataHandler } from "@sedie/sedie-multiplayer-game-round-data-handler";
+import SedieCup from "@sedie/result-block/sedie-cup";
 import SeDieMultiplayerBettingBlock from "./sedie-multiplayer-betting-block";
-import { SedieMultiplayerRoundHistory } from "./round-history/sedie-multiplayer-round-history";
-import SeDieMultiplayerBetDetailModal from "./history";
-import { PlayerResultBoard } from "../../components/game-components/player-result-board/player-result-board";
-const Background = dynamic(() => import("../../components/game-components/background"), { ssr: false });
-const OwnTotalBet = dynamic(() => import("../../components/game-components/own-total-bet/own-total-bet"), { ssr: false });
-const DoubleBetIcon = dynamic(() => import("../../components/game-components/rebet/double-bet-icon"), { ssr: false });
-const AutoRebetIcon = dynamic(() => import("../../components/game-components/rebet/auto-rebet-icon"), { ssr: false });
+import { SedieMultiplayerRoundHistory } from "@sedie/round-history/sedie-multiplayer-round-history";
+import SeDieMultiplayerBetDetailModal from "@sedie/history";
+import { PlayerResultBoard } from "@shared/components/game-components/player-result-board/player-result-board";
+const Background = dynamic(() => import("@shared/components/game-components/background"), { ssr: false });
+const OwnTotalBet = dynamic(() => import("@shared/components/game-components/own-total-bet/own-total-bet"), { ssr: false });
+const DoubleBetIcon = dynamic(() => import("@shared/components/game-components/rebet/double-bet-icon"), { ssr: false });
+const AutoRebetIcon = dynamic(() => import("@shared/components/game-components/rebet/auto-rebet-icon"), { ssr: false });
 
 class SeDieMultiPlayer extends GameBase<GameBaseProps, GameBaseState> {
     private readonly roundIdHandler?: RoundIdHandler;

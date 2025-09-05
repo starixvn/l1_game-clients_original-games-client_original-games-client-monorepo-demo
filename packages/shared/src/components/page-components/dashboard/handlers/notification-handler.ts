@@ -1,8 +1,8 @@
-import { buildUrl, isKickOutError, localStorageKeys, StorageHelper, broadcastNotice, getNotice } from "../../../../_shared/helpers";
-import { getAppSettings } from "../../../../_shared/app-settings";
+import { buildUrl, isKickOutError, localStorageKeys, StorageHelper, broadcastNotice, getNotice } from "@shared/helpers";
+import { getAppSettings } from "@shared/app-settings";
 import { io, Socket } from "socket.io-client";
 import MsgpackParser from "socket.io-msgpack-parser";
-import { reCheckIn } from "../../../../services/auth-service";
+import { reCheckIn } from "@shared/services/auth-service";
 import { ReCheckInResponse, SSOResponse } from "sc-user-service-client/dist/auth";
 
 export class NotificationHandler {

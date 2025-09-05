@@ -1,9 +1,11 @@
 import { memo, useEffect, useState } from "react";
-import { useAutoRebet, useBalance, useClickSound } from "../../../_shared/react-hooks";
-import AutoRebetPopup from "./auto-rebet-popup";
-import useBettingStore from "../../../_shared/stores/betting-store/betting-store";
-import { broadcastNotice, getNotice } from "../../../_shared/helpers";
-import { NoticeErrorCode } from "../../../_shared/constants/error-code-dictionary";
+import { useAutoRebet } from "@shared/react-hooks/use-auto-rebet";
+import { useBalance } from "@shared/react-hooks/use-balance";
+import { useClickSound } from "@shared/react-hooks";
+import AutoRebetPopup from "@shared/components/game-components/rebet/auto-rebet-popup";
+import useBettingStore from "@shared/stores/betting-store/betting-store";
+import { broadcastNotice, getNotice } from "@shared/helpers";
+import { NoticeErrorCode } from "@shared/constants/error-code-dictionary";
 
 const AutoRebetIcon = () => {
     const isAutoRebetActive = useBettingStore((state) => state.isAutoRebetActive);
@@ -47,16 +49,15 @@ const AutoRebetIcon = () => {
     return (
         <>
             <div
-                className={`rounded-full w-[52px] h-[52px] flex items-center justify-center border border-solid bg-[#1a274999] border-[#0097ff33] transition-all duration-300 ${
-                    isEnabled ? "cursor-pointer hover:scale-110 opacity-100" : "opacity-50 cursor-auto"
-                }"`}
+                className={`rounded-full w-[52px] h-[52px] flex items-center justify-center border border-solid bg-[#1a274999] border-[#0097ff33] transition-all duration-300 ${isEnabled ? "cursor-pointer hover:scale-110 opacity-100" : "opacity-50 cursor-auto"
+                    }"`}
                 onClick={handleIconClick}
             >
                 {isAutoRebetActive ? (
                     <>
                         <div className="absolute">
                             <div className="relative -top-[16px] left-1/2 -translate-x-1/2 -translate-y-1/2 text-white flex items-center justify-center font-semibold">
-                                {remainingRounds === Infinity ? "∞" : remainingRounds}
+                                {remainingRounds === Infinity ? "âˆž" : remainingRounds}
                             </div>
                         </div>
                         <i className="icon-stop-auto-bet text-xl"></i>

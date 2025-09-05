@@ -1,9 +1,9 @@
 import React, { useState, useCallback, memo } from "react";
-import BaseDialog from "../base-dialog";
-import { ModalType } from "../base-dialog/type";
-import { cn } from "../../../_shared/utils/merge-tailwind-util";
+import BaseDialog from "@shared/components/game-components/base-dialog";
+import { ModalType } from "@shared/components/game-components/base-dialog/type";
+import { cn } from "@shared/utils/merge-tailwind-util";
 import styles from "./auto-rebet-popup.module.scss";
-import { useClickSound, useCommonTranslate } from "../../../_shared/react-hooks";
+import { useClickSound, useCommonTranslate } from "@shared/react-hooks";
 
 interface AutoRebetPopupProps {
     onClose: () => void;
@@ -14,7 +14,7 @@ const PRESET_ROUNDS = [10, 25, 50, 75, 100, 500, 1000, Infinity];
 
 const AutoRebetPopup: React.FC<AutoRebetPopupProps> = ({ onClose, onConfirm }) => {
     const [rounds, setRounds] = useState<number>(1);
-    const {t} = useCommonTranslate();
+    const { t } = useCommonTranslate();
     const clickSound = useClickSound();
 
     const handleCustomInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +64,7 @@ const AutoRebetPopup: React.FC<AutoRebetPopupProps> = ({ onClose, onConfirm }) =
                                     "hover:scale-105"
                                 )} ${styles.button}`}
                             >
-                                <span>{number === Infinity ? "∞" : number}</span>
+                                <span>{number === Infinity ? "âˆž" : number}</span>
                                 <i className="icon-auto-bet-round text-3xl w-4 "></i>
                             </button>
                         ))}

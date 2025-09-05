@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styles from "./sedie-plate.module.scss";
-import { RoundState } from "../../../components/game-base/type";
-import useResult from "../../../_shared/react-hooks/use-result";
-import { useGameStateContext } from "../../../_shared/react-contexts/game-state-context/game-state-context";
+import { RoundState } from "@shared/components/game-base/type";
+import useResult from "@shared/react-hooks/use-result";
+import { useGameStateContext } from "@shared/react-contexts/game-state-context/game-state-context";
 import { SeDieResult } from "../sedie-multiplayer-constants";
 import { SedieButtons } from "./sedie-buttons";
-import { useGameContext } from "../../../_shared/react-contexts";
-import { BgCachedImage } from "../../../components/game-components/cached-image/bg-cached-image";
+import { useGameContext } from "@shared/react-contexts";
+import { BgCachedImage } from "@shared/components/game-components/cached-image/bg-cached-image";
 
 const BUTTON_SIZE = 29; // Button size in pixels
 const PLATE_SIZE = 228; // Plate size in pixels

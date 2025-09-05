@@ -1,7 +1,7 @@
-import { IFRAME_MESSAGES, sendMessageToParent } from "../../../_shared/utils/iframe-messages";
+import { IFRAME_MESSAGES, sendMessageToParent } from "@shared/utils/iframe-messages";
 import HeaderTitle from "./header-title";
 import { UserInfo } from "./user-info";
-import { useGlobalEventsStore } from "../../../_shared/stores/global-events-store/global-events-store";
+import { useGlobalEventsStore } from "@shared/stores/global-events-store/global-events-store";
 import styles from "./header.module.scss";
 const Header = ({ tolgeeNamespace }: { tolgeeNamespace: string }) => {
     const { openingGameId } = useGlobalEventsStore();

@@ -1,6 +1,6 @@
 import React from "react";
-import { CachedImage } from "../../../components/game-components/cached-image";
-import { BgCachedImage } from "../../../components/game-components/cached-image/bg-cached-image";
+import { CachedImage } from "@shared/components/game-components/cached-image";
+import { BgCachedImage } from "@shared/components/game-components/cached-image/bg-cached-image";
 import styles from "./sedie-plate.module.scss";
 
 export const SedieButtons = ({

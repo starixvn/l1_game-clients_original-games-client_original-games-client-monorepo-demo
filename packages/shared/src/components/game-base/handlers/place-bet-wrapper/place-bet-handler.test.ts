@@ -1,18 +1,18 @@
 import { stub } from "jest-auto-stub";
 import { Dispatch } from "react";
-import { GameStateContextModel } from "../../../../_shared/react-contexts/game-state-context/game-state-context-model";
-import { PlaceBetEventAction } from "../../../../_shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
-import { PlaceBetContextModel } from "../../../../_shared/react-contexts/game-state-context/place-bet-context/place-bet-context-model";
+import { GameStateContextModel } from "@shared/react-contexts/game-state-context/game-state-context-model";
+import { PlaceBetEventAction } from "@shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
+import { PlaceBetContextModel } from "@shared/react-contexts/game-state-context/place-bet-context/place-bet-context-model";
 import { GameConfigs, IUserStakeLevel, RoundState } from "../../type";
 import { GameMessageHandler } from "../game-message-handler";
 import { PlaceBetHandler, PlaceBetHandlerProps } from "./place-bet-handler";
 
-jest.mock("../../../../_shared/react-contexts", () => ({
+jest.mock("@shared/react-contexts", () => ({
     loadURLContext: jest.fn(),
 }));
 
 // Mock the validate-bet-helper functions
-jest.mock("../../../../_shared/helpers/validate-bet-helper", () => ({
+jest.mock("@shared/helpers/validate-bet-helper", () => ({
     isInPhasePreventBet: jest.fn(() => false),
     isBalanceUnavailable: jest.fn(() => false),
     isHedgeBet: jest.fn(() => false),
@@ -21,13 +21,13 @@ jest.mock("../../../../_shared/helpers/validate-bet-helper", () => ({
 }));
 
 // Mock the notice helper functions
-jest.mock("../../../../_shared/helpers/notice-helper", () => ({
+jest.mock("@shared/helpers/notice-helper", () => ({
     broadcastNotice: jest.fn(),
     createNoticeFromErrorCode: jest.fn(),
 }));
 
 // Mock the global events helper
-jest.mock("../../../../_shared/helpers/global-events-helper", () => ({
+jest.mock("@shared/helpers/global-events-helper", () => ({
     broadcastCloseDialog: jest.fn(),
 }));
 
@@ -79,7 +79,7 @@ describe("placeBet", () => {
 
     describe("isInPhasePreventBet", () => {
         beforeAll(() => {
-            jest.mock("../../../../_shared/helpers/validate-bet-helper", () => ({
+            jest.mock("@shared/helpers/validate-bet-helper", () => ({
                 isInPhasePreventBet: jest.fn(() => true),
                 isBalanceUnavailable: jest.fn(() => false),
             }));
@@ -291,7 +291,7 @@ describe("placeBet", () => {
         });
         it("calls broadcastNotice with correct notice when isHedgeBet is true", () => {
             // Arrange
-            jest.mock("../../../../_shared/helpers/validate-bet-helper", () => ({
+            jest.mock("@shared/helpers/validate-bet-helper", () => ({
                 isInPhasePreventBet: jest.fn(() => false),
                 isBalanceUnavailable: jest.fn(() => false),
             }));
@@ -323,7 +323,7 @@ describe("placeBet", () => {
 
         it("does not call broadcastNotice when ownBets empty and isHedgeBet is false", () => {
             // Arrange
-            jest.mock("../../../../_shared/helpers/validate-bet-helper", () => ({
+            jest.mock("@shared/helpers/validate-bet-helper", () => ({
                 isInPhasePreventBet: jest.fn(() => false),
                 isBalanceUnavailable: jest.fn(() => false),
             }));
@@ -359,7 +359,7 @@ describe("placeBet", () => {
         let userStakeLevelMock: IUserStakeLevel;
         beforeEach(() => {
             jest.clearAllMocks();
-            jest.mock("../../../../_shared/helpers/validate-bet-helper", () => ({
+            jest.mock("@shared/helpers/validate-bet-helper", () => ({
                 isInPhasePreventBet: jest.fn(() => false),
                 isBalanceUnavailable: jest.fn(() => false),
                 isHedgeBet: jest.fn(() => false),

@@ -1,4 +1,4 @@
-import { UserStakeLevel } from "../components/game-base/type";
+import { UserStakeLevel } from "@shared/components/game-base/type";
 
 export interface Props {
     setApiErrorMessage: (message: string | null) => void;
