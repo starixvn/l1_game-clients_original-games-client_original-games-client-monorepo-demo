@@ -1,0 +1,41 @@
+.bettingWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.subOptionsRow {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.mainOptionsRow {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0 20px;
+}
+
+.pairOptionsRow {
+    display: flex;
+    gap: 8px;
+}
+
+.btnRipple {
+    border-radius: 10px;
+}
+
+.mainOption {
+    border-radius: 20px;
+}
+
+.betOptionBox {
+    position: relative;
+}
+
+.highlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+

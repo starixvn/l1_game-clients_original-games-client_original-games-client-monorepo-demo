@@ -21,8 +21,10 @@ const LoadingGameComponent = React.memo(() => (
 LoadingGameComponent.displayName = "LoadingGameComponent";
 
 // Game registry for better scalability
+// Map both the shared Baccarat id and the saba-game id (10) to the same component
 const gameComponentRegistry: GameComponentRegistry = {
     [GameIds.Baccarat]: Baccarat,
+    10: Baccarat,
 };
 
 export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, updateUserStakeLevel, openGameId }) => {

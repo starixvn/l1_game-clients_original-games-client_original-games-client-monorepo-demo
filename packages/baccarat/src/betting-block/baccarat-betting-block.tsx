@@ -1,11 +1,16 @@
 import React, { useEffect } from "react";
-import styles from "./baccarat-betting-block.module.scss";
+import styles from "./baccarat-bet-options.module.scss";
+import { useGameContext } from "@shared/react-contexts";
+import { BaccaratBetOptions } from "../baccarat-constants";
+import BaccaratSubOptions from "./baccarat-sub-options";
+import BaccaratMainOption from "./baccarat-main-option";
 
 interface BaccaratBettingBlockProps {
     className?: string;
 }
 
 const BaccaratBettingBlock: React.FC<BaccaratBettingBlockProps> = ({ className }) => {
+    const { tolgeeNamespace } = useGameContext();
     // Dev diagnostics for CSS modules
     useEffect(() => {
         if (process.env.NODE_ENV === "development") {
@@ -35,36 +40,15 @@ const BaccaratBettingBlock: React.FC<BaccaratBettingBlockProps> = ({ className }
     }, []);
 
     return (
-        <div className={`${styles.bettingBlock} ${className || ""}`}>
-            <div className={styles.bettingArea}>
-                <h3>Baccarat Betting</h3>
-
-                <div className={styles.betOptions}>
-                    <div className={styles.playerBet}>
-                        <button className={styles.betButton}>
-                            <span>Player</span>
-                            <span className={styles.betAmount}>1:1</span>
-                        </button>
-                    </div>
-
-                    <div className={styles.bankerBet}>
-                        <button className={styles.betButton}>
-                            <span>Banker</span>
-                            <span className={styles.betAmount}>0.95:1</span>
-                        </button>
-                    </div>
-
-                    <div className={styles.tieBet}>
-                        <button className={styles.betButton}>
-                            <span>Tie</span>
-                            <span className={styles.betAmount}>8:1</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div className={styles.betControls}>
-                    <p>Select your bet and amount</p>
-                </div>
+        <div className={`${styles.bettingWrapper} ${className || ""}`}>
+            <BaccaratSubOptions
+                tolgeeNamespace={tolgeeNamespace}
+                choices={[BaccaratBetOptions.PLAYER_PAIR, BaccaratBetOptions.BANKER_PAIR]}
+            />
+            <div className={styles.mainOptionsRow}>
+                <BaccaratMainOption tolgeeNamespace={tolgeeNamespace} choice={BaccaratBetOptions.PLAYER} />
+                <BaccaratMainOption tolgeeNamespace={tolgeeNamespace} choice={BaccaratBetOptions.BANKER} />
+                <BaccaratMainOption tolgeeNamespace={tolgeeNamespace} choice={BaccaratBetOptions.TIE} />
             </div>
         </div>
     );

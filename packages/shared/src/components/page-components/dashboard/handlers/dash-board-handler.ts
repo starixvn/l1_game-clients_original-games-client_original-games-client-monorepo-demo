@@ -23,7 +23,7 @@ export class DashboardHandler {
         }
 
         // Allow direct access for SeDieMultiplayer (VG) even if not in offerGames
-        if (this.props.queryGame === GameIds.SeDieMultiplayer) {
+        if (this.props.queryGame === GameIds.SeDieMultiplayer || this.props.queryGame === GameIds.Baccarat) {
             console.log("[DashboardHandler] queryGame is SeDieMultiplayer, bypassing offer check");
             return false;
         }
