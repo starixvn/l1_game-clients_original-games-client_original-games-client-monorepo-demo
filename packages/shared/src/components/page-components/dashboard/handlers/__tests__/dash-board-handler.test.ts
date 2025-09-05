@@ -1,12 +1,12 @@
 import { DashboardHandler } from "../dash-board-handler";
-import { getAppSettings } from "@shared/app-settings";
-import { getOfferGamesIds, StorageHelper } from "@shared/helpers";
-import { loadURLContext } from "@shared/react-contexts";
+import { getAppSettings } from "../../../../../_shared/app-settings";
+import { getOfferGamesIds, StorageHelper } from "../../../../../_shared/helpers";
+import { loadURLContext } from "../../../../../_shared/react-contexts";
 import { TolgeeInstance } from "@tolgee/core";
 import { SSOResponse, AuthorizeResponse } from "sc-user-service-client/dist/auth";
 
 // Mock dependencies
-jest.mock("@shared/app-settings", () => ({
+jest.mock("../../../../../_shared/app-settings", () => ({
     getAppSettings: jest.fn().mockReturnValue({
         appType: "test",
         system: "gn",
@@ -16,7 +16,7 @@ jest.mock("@shared/app-settings", () => ({
         },
     }),
 }));
-jest.mock("@shared/helpers", () => ({
+jest.mock("../../../../../_shared/helpers", () => ({
     getOfferGamesIds: jest.fn().mockReturnValue([1005, 148]),
     StorageHelper: {
         get: jest.fn(),
@@ -27,7 +27,7 @@ jest.mock("@shared/helpers", () => ({
         latestGameId: "latestGameId",
     },
 }));
-jest.mock("@shared/react-contexts", () => ({
+jest.mock("../../../../../_shared/react-contexts", () => ({
     loadURLContext: jest.fn().mockReturnValue({
         gameId: 0,
     }),
@@ -169,7 +169,7 @@ describe("DashboardHandler", () => {
     describe("Constructor", () => {
         it("should initialize with valid props", () => {
             // Act
-            const handler = new DashboardHandler(defaultProps, jest.fn());
+            const handler = new DashboardHandler(defaultProps);
 
             // Assert
             expect(handler).toBeInstanceOf(DashboardHandler);
@@ -183,7 +183,7 @@ describe("DashboardHandler", () => {
                 ...defaultProps,
                 queryGame: 0,
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -198,7 +198,7 @@ describe("DashboardHandler", () => {
                 ...defaultProps,
                 queryGame: 9999, // Game not in offer
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -214,7 +214,7 @@ describe("DashboardHandler", () => {
                 ...defaultProps,
                 queryGame: 1001, // Game in offer
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -230,7 +230,7 @@ describe("DashboardHandler", () => {
                 queryGame: 0,
                 authorizeResponse: null,
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -246,7 +246,7 @@ describe("DashboardHandler", () => {
                 queryGame: 0,
                 authorizeResponse: undefined,
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -268,7 +268,7 @@ describe("DashboardHandler", () => {
                     },
                 },
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -284,7 +284,7 @@ describe("DashboardHandler", () => {
                 queryGame: 0,
                 lobbyConfigs: null,
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -300,7 +300,7 @@ describe("DashboardHandler", () => {
                 queryGame: 0,
                 lobbyConfigs: undefined,
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -315,7 +315,7 @@ describe("DashboardHandler", () => {
                 ...defaultProps,
                 queryGame: 0,
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -338,7 +338,7 @@ describe("DashboardHandler", () => {
                     },
                 },
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -355,7 +355,7 @@ describe("DashboardHandler", () => {
                 queryGame: 1001, // Not lobby
                 lobbyConfigs: null,
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -371,7 +371,7 @@ describe("DashboardHandler", () => {
                 ...defaultProps,
                 queryGame: 1001, // Not lobby
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -397,7 +397,7 @@ describe("DashboardHandler", () => {
                     },
                 },
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -420,7 +420,7 @@ describe("DashboardHandler", () => {
                     },
                 },
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -436,7 +436,7 @@ describe("DashboardHandler", () => {
                 ...defaultProps,
                 queryGame: 1001, // Not lobby
             };
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.checkIsNotOfferGame();
@@ -449,7 +449,7 @@ describe("DashboardHandler", () => {
     describe("shouldRenderGames", () => {
         it("should return true when openGameId is 0", () => {
             // Arrange
-            const handler = new DashboardHandler(defaultProps, jest.fn());
+            const handler = new DashboardHandler(defaultProps);
 
             // Act
             const result = handler.shouldRenderGames([1001, 1002], 0);
@@ -460,7 +460,7 @@ describe("DashboardHandler", () => {
 
         it("should return true when openGameId is null", () => {
             // Arrange
-            const handler = new DashboardHandler(defaultProps, jest.fn());
+            const handler = new DashboardHandler(defaultProps);
 
             // Act
             const result = handler.shouldRenderGames([1001, 1002], null);
@@ -471,7 +471,7 @@ describe("DashboardHandler", () => {
 
         it("should return true when game is in offer games and not back to lobby", () => {
             // Arrange
-            const handler = new DashboardHandler(defaultProps, jest.fn());
+            const handler = new DashboardHandler(defaultProps);
 
             // Act
             const result = handler.shouldRenderGames([1001, 1002], 1001);
@@ -486,7 +486,7 @@ describe("DashboardHandler", () => {
                 backToLobby: true,
                 gameId: 0,
             });
-            const handler = new DashboardHandler(defaultProps, jest.fn());
+            const handler = new DashboardHandler(defaultProps);
 
             // Act
             const result = handler.shouldRenderGames([1001, 1002], 1001);
@@ -501,7 +501,7 @@ describe("DashboardHandler", () => {
                 backToLobby: false,
                 gameId: 1001,
             });
-            const handler = new DashboardHandler(defaultProps, jest.fn());
+            const handler = new DashboardHandler(defaultProps);
 
             // Act
             const result = handler.shouldRenderGames([1001, 1002], 0);
@@ -515,7 +515,7 @@ describe("DashboardHandler", () => {
         it("should return offer games IDs from authorize response", () => {
             // Arrange
             mockGetOfferGamesIds.mockReturnValue([1001, 1002]);
-            const handler = new DashboardHandler(defaultProps, jest.fn());
+            const handler = new DashboardHandler(defaultProps);
 
             // Act
             const result = handler.getOfferGamesIds();
@@ -529,7 +529,7 @@ describe("DashboardHandler", () => {
     describe("reset", () => {
         it("should not throw any error", () => {
             // Arrange
-            const handler = new DashboardHandler(defaultProps, jest.fn());
+            const handler = new DashboardHandler(defaultProps);
 
             // Act & Assert
             expect(() => handler.reset()).not.toThrow();
@@ -541,7 +541,7 @@ describe("DashboardHandler", () => {
             // Arrange
             const props = { ...defaultProps, authorizeResponse: undefined };
             mockGetOfferGamesIds.mockReturnValue([]);
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.getOfferGamesIds();
@@ -554,7 +554,7 @@ describe("DashboardHandler", () => {
             // Arrange
             const props = { ...defaultProps, lobbyConfigs: undefined };
             mockGetOfferGamesIds.mockReturnValue([1001, 1002]);
-            const handler = new DashboardHandler(props, jest.fn());
+            const handler = new DashboardHandler(props);
 
             // Act
             const result = handler.getOfferGamesIds();
@@ -566,7 +566,7 @@ describe("DashboardHandler", () => {
         it("should handle empty offer games array", () => {
             // Arrange
             mockGetOfferGamesIds.mockReturnValue([]);
-            const handler = new DashboardHandler(defaultProps, jest.fn());
+            const handler = new DashboardHandler(defaultProps);
 
             // Act
             const result = handler.getOfferGamesIds();

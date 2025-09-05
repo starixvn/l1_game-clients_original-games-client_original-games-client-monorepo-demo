@@ -1,8 +1,9 @@
 import { render } from "@testing-library/react";
 import { Chip } from "../chip";
-import useBettingStore from "@shared/stores/betting-store/betting-store";
+import useBettingStore from "../../../../_shared/stores/betting-store/betting-store";
 
-jest.mock("@shared/stores/betting-store/betting-store", () => jest.fn());
+jest.mock("axios");
+jest.mock("../../../../_shared/stores/betting-store/betting-store", () => jest.fn());
 
 describe(Chip.name, () => {
     beforeAll(() => {

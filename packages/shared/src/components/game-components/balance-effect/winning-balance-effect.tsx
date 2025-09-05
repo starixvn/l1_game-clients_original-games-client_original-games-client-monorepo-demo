@@ -1,25 +1,25 @@
 import { FC, useState, useEffect, useCallback, useRef, useMemo } from "react";
 
-import { numberWithCommas } from "@shared/helpers";
-import { useGameStore } from "@shared/stores/game-store/game-store";
+import { numberWithCommas } from "../../../_shared/helpers";
+import { useGameStore } from "../../../_shared/stores/game-store/game-store";
 import ReactCanvasConfetti from "react-canvas-confetti";
 import { motion } from "motion/react";
-import { useGameStateContext } from "@shared/react-contexts/game-state-context/game-state-context";
+import { useGameStateContext } from "../../../_shared/react-contexts/game-state-context/game-state-context";
 
 const WinningBalanceEffect: FC = () => {
-    const { betWin } = useGameStateContext();
+    const { betWin, showResultInfo } = useGameStateContext();
     const ownBets = useGameStore((state) => state.ownBets);
-    const showResultInfo = useGameStore((state) => state.showResultInfo);
     const totalBetAmount = Object.values(ownBets).reduce((acc, curr) => acc + curr, 0);
     const [showContent, setShowContent] = useState(false);
     const animationInstance = useRef(null);
+    const delayFireConfettiAfterShowPopup = 1700;
     const getInstance = (instance: any) => {
         animationInstance.current = instance;
     };
 
     const multiplier = useMemo(() => {
-        const multiplier = betWin / totalBetAmount;
-        return multiplier.toFixed(2);
+        const multiplier = totalBetAmount > 0 ? betWin / totalBetAmount : 0;
+        return numberWithCommas(Math.floor(multiplier * 100) / 100, 2);
     }, [betWin, totalBetAmount]);
 
     const fireConfetti = useCallback(() => {
@@ -59,8 +59,8 @@ const WinningBalanceEffect: FC = () => {
         animationInstance.current &&
             animationInstance.current({
                 ...opts,
-                origin: { y: 0.7 },
-                particleCount: Math.floor(200 * particleRatio),
+                origin: { y: 0.5, x: 0.5 },
+                particleCount: Math.floor(140 * particleRatio),
             });
     };
 
@@ -70,13 +70,13 @@ const WinningBalanceEffect: FC = () => {
         } else {
             setShowContent(false);
         }
-    }, [showResultInfo]);
+    }, [showResultInfo, multiplier]);
 
     useEffect(() => {
         if (showContent) {
             setTimeout(() => {
                 fireConfetti();
-            }, 1200);
+            }, delayFireConfettiAfterShowPopup);
         }
     }, [showContent, fireConfetti]);
 
@@ -85,25 +85,30 @@ const WinningBalanceEffect: FC = () => {
             <ReactCanvasConfetti
                 refConfetti={getInstance}
                 style={{
-                    position: "fixed",
+                    position: "absolute",
                     pointerEvents: "none",
                     width: "100%",
                     height: "100%",
-                    top: -230,
+                    top: 50,
                     left: 0,
                     zIndex: 9999,
                 }}
             />
             {showContent && (
                 <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: [1, 1.5, 0.8, 1], opacity: 1 }}
-                    className="fixed inset-0 z-[100] absolute justify-items-center"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                        duration: 0.7,
+                        delay: 0.4,
+                        ease: [0, 1.7, 0.2, 1],
+                    }}
+                    className=" inset-0 z-[100] absolute justify-items-center"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="absolute inset-0 animate-fadeIn" />
 
-                    <div className="flex justify-center items-start mt-[55px] h-full w-full">
+                    <div className="flex justify-center items-center h-full w-full">
                         <div className="flex z-10 animate-popupIn ">
                             <div className="bg-[#2e3646] relative rounded-2xl" style={{ width: "228px", height: "116px" }}>
                                 <div className="flex flex-col items-center justify-center relative size-full">
@@ -188,10 +193,10 @@ const WinningBalanceEffect: FC = () => {
                                         <motion.div
                                             initial={{ y: 20, opacity: 0 }}
                                             animate={{ y: 0, opacity: 1 }}
-                                            transition={{ delay: 0.8 }}
+                                            transition={{ delay: 0.7, duration: 0.2, ease: "easeOut" }}
                                             className="z-[100]"
                                         >
-                                            <p className="block font-bold bg-[linear-gradient(180deg,#FFFADD_13.79%,#FFF832_56.9%,#E0C600_100%)] text-[36px] bg-clip-text text-transparent">
+                                            <p className="block font-semibold bg-[linear-gradient(180deg,#FFFADD_13.79%,#FFF832_56.9%,#E0C600_100%)] text-4xl bg-clip-text text-transparent">
                                                 {multiplier}x
                                             </p>
                                         </motion.div>
@@ -199,10 +204,10 @@ const WinningBalanceEffect: FC = () => {
                                         <motion.div
                                             initial={{ y: 20, opacity: 0 }}
                                             animate={{ y: 0, opacity: 1 }}
-                                            transition={{ delay: 1.2 }}
+                                            transition={{ delay: 0.9, duration: 0.4, ease: "easeOut" }}
                                             className="bg-none z-[100]"
                                         >
-                                            <p className="font-bold bg-white bg-clip-text text-transparent text-[24px]">
+                                            <p className="font-semibold bg-white bg-clip-text text-transparent text-2xl">
                                                 {numberWithCommas(betWin, 2)}
                                             </p>
                                         </motion.div>

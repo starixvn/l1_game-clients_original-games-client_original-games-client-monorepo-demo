@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useGameActionContext } from "@shared/react-contexts";
+import { useGameActionContext } from "../../../_shared/react-contexts";
 import { RoundState } from "../../game-base/type";
-import useGameStore from "@shared/stores/game-store/game-store";
-import useBettingStore from "@shared/stores/betting-store/betting-store";
+import useGameStore from "../../../_shared/stores/game-store/game-store";
+import useBettingStore from "../../../_shared/stores/betting-store/betting-store";
 import { useShallow } from "zustand/shallow";
 
 interface RippleButtonProps {
@@ -104,8 +104,8 @@ const RippleButton: React.FC<RippleButtonProps> = ({ choice, className, id }) =>
                     <span
                         className="ripple-effect"
                         style={{
-                            top: `calc(1 / var(--zoom-game) * ${ripplePosY}px)`,
-                            left: `calc(1 / var(--zoom-game) * ${ripplePosX}px)`,
+                            top: `${ripplePosY}px`,
+                            left: `${ripplePosX}px`,
                         }}
                     ></span>
                 }

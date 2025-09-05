@@ -1,16 +1,16 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import SplashScreen, { customStartup, onStartupError } from "@shared/components/page-components/splash-screen";
-import { URLContext } from "@shared/react-contexts/url-context";
-import { PlayerContext } from "@shared/react-contexts/auth";
+import SplashScreen, { customStartup, onStartupError } from "../../components/page-components/splash-screen";
+import { URLContext } from "../../_shared/react-contexts/url-context";
+import { PlayerContext } from "../../_shared/react-contexts/auth";
 import { authorize, getLobbyConfigs, sso } from "../../services/auth-service";
-import { getUserLatestGameId } from "@shared/helpers";
+import { getUserLatestGameId } from "../../_shared/helpers";
 
 // Mock dependencies
 jest.mock("../../services/auth-service");
-jest.mock("@shared/helpers", () => ({
-    ...jest.requireActual("@shared/helpers"),
+jest.mock("../../_shared/helpers", () => ({
+    ...jest.requireActual("../../_shared/helpers"),
     getEnabledRenderGameSettings: jest.fn(),
     getUserLatestGameId: jest.fn(),
 }));
@@ -31,14 +31,14 @@ jest.mock("@sentry/nextjs", () => ({
 }));
 
 // Mock Tolgee
-jest.mock("@shared/tolgee", () => ({
+jest.mock("../../_shared/tolgee", () => ({
     tolgee: {
         changeLanguage: jest.fn().mockResolvedValue(undefined),
     },
 }));
 
 // Mock useTranslator hook
-jest.mock("@shared/react-hooks/use-translator", () => ({
+jest.mock("../../_shared/react-hooks/use-translator", () => ({
     useTranslator: () => ({
         t: (key: string) => key,
     }),
@@ -76,14 +76,16 @@ jest.mock("next/router", () => ({
 }));
 
 // Mock the optimized PreloadResources component
-jest.mock("@shared/helpers/preload-resources", () => ({
+jest.mock("../../_shared/helpers/preload-resources", () => ({
     __esModule: true,
     default: ({ setIsDonePreload }: { setIsDonePreload: () => void }) => {
         const PreloadResourcesComponent = () => {
             React.useEffect(() => {
-                // Simulate optimized preload with faster completion
-                const timer = setTimeout(setIsDonePreload, 50);
-                return () => clearTimeout(timer);
+                // For testing purposes, don't auto-complete preload to allow testing the preload state
+                // Tests can manually trigger completion if needed
+                return () => {
+                    // Cleanup
+                };
             }, [setIsDonePreload]);
             return <div data-testid="preload-resources">Preload Resources</div>;
         };
@@ -94,8 +96,13 @@ jest.mock("@shared/helpers/preload-resources", () => ({
     getAndHandleBannerOffer: jest.fn(),
 }));
 
-// Mock getEnabledRenderGameSettings
-const mockGetEnabledRenderGameSettings = require("@shared/helpers").getEnabledRenderGameSettings;
+// Mock getEnabledRenderGameSettings and getRenderGameSettings
+const mockGetEnabledRenderGameSettings = require("../../_shared/helpers").getEnabledRenderGameSettings;
+const mockGetRenderGameSettings = require("../../_shared/helpers/lobby-helper").getRenderGameSettings;
+jest.mock("../../_shared/helpers/lobby-helper", () => ({
+    ...jest.requireActual("../../_shared/helpers/lobby-helper"),
+    getRenderGameSettings: jest.fn(),
+}));
 
 // Mock session and authorization responses
 const mockSession = {
@@ -164,6 +171,10 @@ const mockLobbyConfigs = {
 describe("SplashScreen Component", () => {
     beforeEach(() => {
         jest.clearAllMocks();
+
+        // Clear any global state that might persist between tests
+        jest.clearAllTimers();
+
         mockGetEnabledRenderGameSettings.mockReturnValue([
             {
                 id: 123,
@@ -176,6 +187,25 @@ describe("SplashScreen Component", () => {
                 gameResourceConfigs: { path: "/default" },
             },
         ]);
+
+        mockGetRenderGameSettings.mockReturnValue([
+            {
+                id: 1005,
+                gameName: "SeDie",
+                gameResourceConfigs: { path: "/sedie" },
+            },
+            {
+                id: 148,
+                gameName: "SeBall1",
+                gameResourceConfigs: { path: "/seball" },
+            },
+        ]);
+    });
+
+    afterEach(() => {
+        // Additional cleanup to ensure no open handles
+        jest.clearAllTimers();
+        jest.clearAllMocks();
     });
 
     const renderSplashScreen = (urlContext: any, playerContext: any = {}) => {
@@ -209,6 +239,9 @@ describe("SplashScreen Component", () => {
                 pathname: "/test",
             } as any);
 
+            // Suppress console.error for this test to avoid open handle detection
+            const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
             // Act
             const error = new Error("Test error");
             onStartupError(error);
@@ -218,6 +251,7 @@ describe("SplashScreen Component", () => {
 
             // Cleanup
             locationSpy.mockRestore();
+            consoleSpy.mockRestore();
         });
 
         it("should handle custom startup with valid session", async () => {

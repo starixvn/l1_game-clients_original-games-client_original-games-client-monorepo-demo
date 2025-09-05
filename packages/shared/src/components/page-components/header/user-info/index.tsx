@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import { numberRoundDownWithCommas } from "@shared/helpers/number-helper";
-import { usePlayerContext } from "@shared/react-contexts";
-import { useGlobalEventsStore } from "@shared/stores/global-events-store/global-events-store";
+import { numberRoundDownWithCommas } from "../../../../_shared/helpers/number-helper";
+import { usePlayerContext } from "../../../../_shared/react-contexts";
+import { useGlobalEventsStore } from "../../../../_shared/stores/global-events-store/global-events-store";
 
 export const UserInfo: React.FC<{
     customizeClass?: string;
@@ -29,7 +29,9 @@ const UserAmount: React.FC<{ amount: number }> = ({ amount }) => {
     return useMemo(() => {
         return (
             <>
-                <span data-testid="amount" className="font-semibold text-base leading-[26px]">{numberRoundDownWithCommas(amount)}</span>
+                <span data-testid="amount" className="font-semibold text-base leading-[26px]">
+                    {numberRoundDownWithCommas(amount)}
+                </span>
                 <span>{` `}</span>
             </>
         );
@@ -42,7 +44,11 @@ const UserCurrency: React.FC<{ currency: string; isDisplayPlayerCurrency: boolea
             return <></>;
         }
 
-        return <span data-testid="currency" className="font-semibold text-base leading-[26px]">{currency}</span>;
+        return (
+            <span data-testid="currency" className="font-semibold text-base leading-[26px]">
+                {currency}
+            </span>
+        );
     }, [currency, isDisplayPlayerCurrency]);
 };
 

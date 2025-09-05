@@ -1,17 +1,17 @@
 import { FC } from "react";
-import { useGameContext } from "@shared/react-contexts";
-import { useCommonTranslate, useTranslator } from "@shared/react-hooks";
-import { DrawInfo } from "@shared/components/game-base/type";
+import { useGameContext } from "../../../_shared/react-contexts";
+import { useCommonTranslate, useTranslator } from "../../../_shared/react-hooks";
+import { DrawInfo } from "../../../components/game-base/type";
 import { SeDieBetOptions } from "../sedie-multiplayer-constants";
-import { CachedImage } from "@shared/components/game-components/cached-image";
+import { CachedImage } from "../../../components/game-components/cached-image";
 
 export interface RoundInfoSeDie extends DrawInfo {
     roundId: number;
     result:
-    | {
-        balls?: Array<number>;
-    }
-    | Record<string, boolean>;
+        | {
+              balls?: Array<number>;
+          }
+        | Record<string, boolean>;
     odds: Record<string, number>;
     settlementResult: Record<string, boolean>;
 }
@@ -41,7 +41,7 @@ export const BetDetailResultBlock: FC<{ roundInfo: RoundInfoSeDie }> = ({ roundI
     const winningSubOption = getWinningSubOption(settlementResult);
 
     return (
-        <div className="flex justify-between text-secondary-text text-[14px] mt-2">
+        <div className="flex justify-between text-secondary-text text-sm mt-2">
             <div className="flex items-center gap-1.5 font-medium">
                 {translateCommon("round").capitalizeFirstLetter()}: <span>{roundId}</span>
             </div>

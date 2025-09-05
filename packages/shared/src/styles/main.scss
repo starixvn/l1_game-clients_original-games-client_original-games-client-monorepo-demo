@@ -1,5 +1,5 @@
-@import "slick-carousel/slick/slick-theme.scss";
-@import "slick-carousel/slick/slick.scss";
+@import "~slick-carousel/slick/slick-theme.scss";
+@import "~slick-carousel/slick/slick.scss";
 @import "./components/fonts";
 @import "./components/icons";
 @import "./components/common";
@@ -66,8 +66,6 @@ html {
     --spacing-size-5: 20px;
     --spacing-size-6: 24px;
 
-    --zoom-game: 1.25;
-
     // footer
     --color-copyright: rgba(161, 161, 161, 0.6);
 
@@ -81,29 +79,6 @@ html {
     --text-color: #ffffff;
     --color-input: #101721;
     --color-input-border: #2b3648;
-    
-    // ball background
-    --bg: transparent;
-    
-    // page variables
-    --page-background-color: #000;
-    --background-image: none;
-    --opacity-background: rgba(12, 12, 12, 0.8);
-    --opacity-background-grey: rgba(50, 50, 50, 0.6);
-    --scrollbar-background: #00000080;
-    --scrollbar-thumb-background: rgba(77, 134, 202, 0.6);
-    --overlay-index: 100;
-    --input: #101721;
-    --input-border: #2b3648;
-    --error-message-container-background: #1a1a1a;
-    --error-message-container-border: #333;
-    --error-message-container-color: #fff;
-    --icon-close-color: #fff;
-    --tooltip-round-history-background: #1a1a1a;
-    --tooltip-round-history-text-color: #fff;
-    --move-up-distance: -20px;
-    --result-scale: 1.2;
-    --pulse-duration: 1s;
 }
 
 // To dock the footer
@@ -112,9 +87,11 @@ body {
     height: 100%;
     scrollbar-width: none;
 }
-
-#__next {
-    height: 100%;
+@media (-webkit-min-device-pixel-ratio: 1.5) {
+    #__next {
+        scale: 0.8;
+        transform-origin: top;
+    }
 }
 // end
 
@@ -136,18 +113,10 @@ body {
     padding: 0;
     margin: 0;
     background-color: var(--page-background-color);
-    font: 14px/1.5 var(--font-family);
+    font: 0.875rem/1.5 var(--font-family);
     color: var(--text-color);
     overscroll-behavior: contain;
     touch-action: pan-y;
-}
-
-.no-scroll-html {
-    overflow: hidden !important;
-}
-
-.no-scroll {
-    overflow: hidden !important;
 }
 
 .game-header {

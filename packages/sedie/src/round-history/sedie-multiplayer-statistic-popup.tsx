@@ -1,12 +1,12 @@
 import React from "react";
 import ScoreboardSeDie from "../scoreboard/scoreboard";
 import { mainChoices, SeDieChoices, SeDieStatisticColors } from "../sedie-multiplayer-constants";
-import PercentageStatistic from "@shared/components/game-components/statistic";
-import useGameStore from "@shared/stores/game-store/game-store";
+import PercentageStatistic from "../../../components/game-components/statistic";
+import useGameStore from "../../../_shared/stores/game-store/game-store";
 import { useShallow } from "zustand/react/shallow";
 import Styles from "./statistic-popup.module.scss";
-import AnimatedContent from "@shared/components/game-components/animations/animated-content";
-import { CachedImage } from "@shared/components/game-components/cached-image";
+import AnimatedContent from "../../../components/game-components/animations/animated-content";
+import { CachedImage } from "../../../components/game-components/cached-image";
 
 interface SedieMultiplayerStatisticPopupProps {
     onClose?: () => void;
@@ -76,9 +76,9 @@ export const SedieMultiplayerStatisticPopup: React.FC<SedieMultiplayerStatisticP
                             mainChoices={mainChoices as any}
                             renderAsBar={true}
                             barColors={SeDieStatisticColors}
-                            barHeightPx={12}
+                            barHeightPx={8}
                             roundedRadiusPx={12}
-                            barLabelFontSizePx={14}
+                            barLabelFontSizePx={12}
                         />
                         <ScoreboardSeDie roundHistory={roundHistory as any} isShowBlink={isShowBlink} />
                     </div>

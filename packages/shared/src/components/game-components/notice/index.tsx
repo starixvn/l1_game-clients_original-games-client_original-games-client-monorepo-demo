@@ -1,34 +1,23 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
-import { createOptionForHedgeBetGroup, getExtendMessageByErrorCode } from "@shared/helpers";
-import { numberWithCommas } from "@shared/helpers/number-helper";
-import { useGameContext } from "@shared/react-contexts";
-import { useClickSound, useTranslator } from "@shared/react-hooks";
-import { useClickOutside } from "@shared/react-hooks/use-click-outside";
+import { createOptionForHedgeBetGroup, getExtendMessageByErrorCode } from "../../../_shared/helpers";
+import { numberWithCommas } from "../../../_shared/helpers/number-helper";
+import { useGameContext } from "../../../_shared/react-contexts";
+import { useClickSound, useTranslator } from "../../../_shared/react-hooks";
 import BaseDialog from "../base-dialog";
 import { ModalType } from "../base-dialog/type";
-import { useGlobalEventsStore } from "@shared/stores/global-events-store/global-events-store";
-import { useNoticeStore } from "@shared/stores/notice-store/notice-store";
+import { useGlobalEventsStore } from "../../../_shared/stores/global-events-store/global-events-store";
+import { useNoticeStore } from "../../../_shared/stores/notice-store/notice-store";
 import { useShallow } from "zustand/react/shallow";
-import { cn } from "@shared/utils/merge-tailwind-util";
+import { cn } from "../../../_shared/utils/merge-tailwind-util";
 
 const BaseNotice: React.FC<{
     onClose: () => void;
-    duration: number;
     isOpen?: boolean;
     isWarning: boolean;
     children: React.ReactNode;
-    adjustBetNoticePosition: boolean;
-}> = ({ children, onClose, duration = 3, adjustBetNoticePosition }) => {
+}> = ({ children, onClose }) => {
     const closeDialog = useGlobalEventsStore((state) => state.closeDialog);
-    const noticeRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const timer = setTimeout(onClose, duration * 1000);
-        return () => {
-            clearTimeout(timer);
-        }
-    }, [duration, onClose]);
 
     useEffect(() => {
         if (closeDialog) {
@@ -36,25 +25,19 @@ const BaseNotice: React.FC<{
         }
     }, [closeDialog]);
 
-    useClickOutside([noticeRef], () => {
-        onClose();
-    });
-
     const clickSound = useClickSound();
 
     return (
-        <BaseDialog type={ModalType.Center} isOpen={true} onCloseModal={onClose}>
+        <BaseDialog type={ModalType.Toast} isOpen={true} onCloseModal={onClose}>
             <div
-                ref={noticeRef}
                 className={cn(
-                    "absolute text-center py-4 pl-3 pr-10 rounded-2xl text-sm left-1/2 transform -translate-x-1/2 min-w-[343px] font-normal",
-                    "bottom-1/2 translate-y-1/2 z-toast overflow-hidden",
+                    "absolute text-center py-4 pl-3 pr-10 rounded-2xl text-sm left-1/2 transform -translate-x-1/2 min-w-[343px] font-normal overflow-hidden bottom-0",
                     "bg-modal-red-bg border border-modal-border-color shadow-modal bg-modal-bg",
                     "flex justify-center gap-x-1"
                 )}
             >
-                <Image 
-                    src="/static/images/icons/toast-mask.svg" 
+                <Image
+                    src="/static/images/icons/toast-mask.svg"
                     alt="toast mask"
                     width={240}
                     height={240}
@@ -67,15 +50,10 @@ const BaseNotice: React.FC<{
                         clickSound();
                         onClose();
                     }}
-                    className="cursor-pointer absolute right-[12px]"
+                    className="cursor-pointer absolute right-[12px] rounded-full w-5 h-5 bg-[#EA1D41] flex items-center justify-center"
                     data-testid="close-btn"
                 >
-                    <Image 
-                        src="/static/images/icons/modal-close.svg" 
-                        alt="close button"
-                        width={20}
-                        height={20}
-                    />
+                    <span className="icon-close text-xs font-bold before:text-[#242C32] before:content-['\e908']"></span>
                 </div>
             </div>
         </BaseDialog>
@@ -92,12 +70,20 @@ export const NoticeDialog = () => {
         }))
     );
 
+    useEffect(() => {
+        const onCloseNotice = notice?.onClose || (() => clearNotice());
+        const duration = notice?.duration || 3;
+        const timer = setTimeout(onCloseNotice, duration * 1000);
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [notice]);
+
     if (notice) {
         const {
             gameName,
             message,
             roundId,
-            duration,
             minBet,
             maxBet,
             errorCode,
@@ -135,7 +121,6 @@ export const NoticeDialog = () => {
             <BaseNotice
                 {...{
                     onClose: onCloseNotice,
-                    duration: duration || 3,
                     isWarning: isWarning || false,
                     adjustBetNoticePosition: adjustBetNoticePosition || false,
                 }}

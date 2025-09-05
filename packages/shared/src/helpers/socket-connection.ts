@@ -2,8 +2,8 @@ import { io } from "socket.io-client";
 import MsgpackParser from "socket.io-msgpack-parser";
 import { getAppSettings } from "../app-settings";
 import { buildServerUrl } from "../helpers";
-import { SocketInfo } from "@shared/components/game-base/type";
-import { GameMessageHandler, messageEventType } from "@shared/components/game-base/handlers";
+import { SocketInfo } from "./../../components/game-base/type";
+import { GameMessageHandler, messageEventType } from "../../components/game-base/handlers";
 import useGameStore from "../stores/game-store/game-store";
 import useBettingStore from "../stores/betting-store/betting-store";
 
@@ -44,10 +44,12 @@ export function InitSocketIO(socketInfo: SocketInfo, session: any, gameName: str
             gameMessageHandler.broadcastGameEvent({ [messageEventType.SIGNED_IN]: true });
         });
 
-        socket.on(messageEventType.SOCKET_CONNECT_ERROR, () => {
+        socket.on(messageEventType.SOCKET_CONNECT_ERROR, (error) => {
+            console.error("SOCKET_CONNECT_ERROR", error);
             gameMessageHandler.broadcastGameEvent({ [messageEventType.SOCKET_CONNECT_ERROR]: true });
         });
-        socket.on(messageEventType.SOCKET_DISCONNECTED, () => {
+        socket.on(messageEventType.SOCKET_DISCONNECTED, (reason, details) => {
+            console.error("SOCKET_DISCONNECTED", reason, details);
             gameMessageHandler.broadcastGameEvent({ [messageEventType.SOCKET_DISCONNECTED]: true });
         });
     }

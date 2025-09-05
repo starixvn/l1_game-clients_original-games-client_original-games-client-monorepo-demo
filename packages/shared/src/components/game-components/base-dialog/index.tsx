@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { isMobileOnly } from "react-device-detect";
 
-import { useClickSound } from "@shared/react-hooks";
+import { useClickSound } from "../../../_shared/react-hooks";
 import { ModalType } from "./type";
-import { cn } from "@shared/utils/merge-tailwind-util";
+import { cn } from "../../../_shared/utils/merge-tailwind-util";
 
 const HeaderHeightInPixel = 55;
 
@@ -42,24 +42,25 @@ const BaseDialog: React.FC<Props> = ({
     toggleBtnRef,
     isBlockUI,
     isOverlap = false,
-    extendedClassName = "rounded-t-[12px]",
+    extendedClassName = "",
 }: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const clickSound = useClickSound();
     const isIpad = useMemo(() => /iPad/i.test(navigator.userAgent), []);
 
     useEffect(() => {
+        const classList = ["overflow-hidden"];
         if (enableBackdrop) {
-            document.getElementById("dashboard")?.classList.add("no-scroll");
-            document.body.classList.add("no-scroll");
-            isMobileOnly && document.documentElement.classList.add("no-scroll-html");
+            document.getElementById("dashboard")?.classList.add(...classList);
+            document.body.classList.add(...classList);
+            isMobileOnly && document.documentElement.classList.add(...classList);
         }
 
         return () => {
             if (enableBackdrop && !isOverlap) {
-                document.body.classList.remove("no-scroll");
-                document.getElementById("dashboard")?.classList.remove("no-scroll");
-                isMobileOnly && document.documentElement.classList.remove("no-scroll-html");
+                document.body.classList.remove(...classList);
+                document.getElementById("dashboard")?.classList.remove(...classList);
+                isMobileOnly && document.documentElement.classList.remove(...classList);
             }
         };
     }, []);
@@ -87,11 +88,12 @@ const BaseDialog: React.FC<Props> = ({
                 style={getCustomStyle({ betContainerPosition })}
                 ref={wrapperRef}
                 className={cn(
-                    "absolute cursor-auto p-4 text-popup-text z-[301] rounded-t-md",
+                    "absolute cursor-auto p-4 text-popup-text z-[301] rounded-t-xl md:rounded-b-xl",
                     type === ModalType.Full && "fixed inset-x-0 top-4 bottom-0 pl-0 pr-0 z-[300] bg-popup-gradient",
                     type === ModalType.Rebet && "fixed bg-popup-gradient md:absolute md:right-[50%] md:bottom-0",
                     type === ModalType.Center && "bg-transparent border-none shadow-none p-0 rounded-none fixed inset-0 top-0",
                     type === ModalType.Message && "rounded-md p-0 left-1 right-1 shadow-none",
+                    type === ModalType.Toast && "h-full",
                     isIpad && "pb-[69px]",
                     isOpen ? "block" : "hidden",
                     extendedClassName

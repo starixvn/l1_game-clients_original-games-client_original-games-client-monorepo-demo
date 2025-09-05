@@ -1,16 +1,18 @@
 import { FC, ReactNode, useMemo, useCallback } from "react";
 import ModalContainer from "../modal-container";
-import { useCommonTranslate } from "@shared/react-hooks";
-import usePopupStore from "@shared/stores/popup-store/popup-store";
+import { useCommonTranslate } from "../../../_shared/react-hooks";
+import usePopupStore from "../../../_shared/stores/popup-store/popup-store";
 import { createPortal } from "react-dom";
 import { useShallow } from "zustand/react/shallow";
 
 const BetDetailModal: FC<{ children: ReactNode }> = ({ children }) => {
     const { t: translateCommon } = useCommonTranslate();
-    const { isShowBetDetail, toggleBetDetail } = usePopupStore(useShallow((state) => ({
-        isShowBetDetail: state.isShowBetDetail,
-        toggleBetDetail: state.toggleBetDetail,
-    })));
+    const { isShowBetDetail, toggleBetDetail } = usePopupStore(
+        useShallow((state) => ({
+            isShowBetDetail: state.isShowBetDetail,
+            toggleBetDetail: state.toggleBetDetail,
+        }))
+    );
 
     const dashboardElement = useMemo(() => {
         return document.getElementById("dashboard");
@@ -30,6 +32,7 @@ const BetDetailModal: FC<{ children: ReactNode }> = ({ children }) => {
                 isOpen={true}
                 onCloseModal={handleCloseModal}
                 isOverlap={false}
+                extendedClassName="md:top-[10px] md:bottom-auto md:max-w-3xl md:h-[85vh] md:max-h-[730px] md:mx-auto"
             >
                 {children}
             </ModalContainer>,

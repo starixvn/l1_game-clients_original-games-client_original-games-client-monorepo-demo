@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { AnalyticsHelper, localStorageKeys, StorageHelper, TrackingAction, TrackingFunction } from "@shared/helpers";
-import { SettingEventActionType, useSettingDispatch } from "@shared/react-contexts";
-import { useClickSound, useTranslator } from "@shared/react-hooks";
-import useDebounce from "@shared/react-hooks/use-debounce";
+import { AnalyticsHelper, localStorageKeys, StorageHelper, TrackingAction, TrackingFunction } from "../../../../../../_shared/helpers";
+import { SettingEventActionType, useSettingDispatch } from "../../../../../../_shared/react-contexts";
+import { useClickSound, useTranslator } from "../../../../../../_shared/react-hooks";
+import useDebounce from "../../../../../../_shared/react-hooks/use-debounce";
 import Styles from "../settings-popup.module.scss";
 import VolumeSetting from "../volume-setting";
 
@@ -87,7 +87,7 @@ const MusicSetting = () => {
         <div className={`${Styles["row"]} `}>
             <div className={Styles["text"]}>{t("lobby_background_music")}</div>
             <div className={Styles["setting-item-container"]}>
-                <div className={`${Styles["icon"]} ${Styles["switch"]}`}>
+                <div className={`${Styles["icon"]} ${Styles["switch"]} rounded-[10px] h-8 w-8 bg-[#212D3D66]`}>
                     <button className={`${Styles["button"]}`} onClick={toggle}>
                         <span className={`icon-music-${enabledMusic ? "on" : "off"}`}></span>
                     </button>

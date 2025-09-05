@@ -1,9 +1,9 @@
 import { StateCreator } from "zustand";
-import { GameConfigs, GameDurations, IUserStakeLevel, PlayerResultBoard, Round, RoundState } from "@shared/components/game-base/type";
+import { GameConfigs, GameDurations, IUserStakeLevel, PlayerResultBoard, Round, RoundState } from "../../../components/game-base/type";
 import { LanguageLocaleMapper } from "../../constants";
 import { tolgee } from "../../tolgee";
 
-export interface GameConfigSlice {
+export interface GameStateSlice {
     gameConfigs: GameConfigs | null;
     roundHistory: Round<object, object>[];
     roundId: number;
@@ -39,7 +39,7 @@ const GameEvents = {
     USER_STAKE_LEVEL: "userStakeLevel",
 };
 
-export const createGameConfigSlice: StateCreator<GameConfigSlice> = (set) => ({
+export const createGameStateSlice: StateCreator<GameStateSlice> = (set) => ({
     gameConfigs: null,
     roundHistory: [],
     roundId: 0,

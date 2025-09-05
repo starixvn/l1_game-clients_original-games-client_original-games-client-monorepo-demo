@@ -1,14 +1,15 @@
 import { useTheme } from "next-themes";
+import dynamic from "next/dynamic";
 import React, { useCallback, useEffect, useMemo } from "react";
-import { getAppSettings } from "@shared/app-settings";
-import { SettingEventActionType, usePlayerContext, useSettingDispatch } from "@shared/react-contexts";
-import { useBlockBetSound, usePlaceBetSound, useStartDrawSound, useStartRoundSound } from "@shared/react-hooks";
-import { GameSound } from "@shared/components/game-base/type";
-import GameLoading from "@shared/components/game-components/game-loading";
-import { getChipSettings } from "@shared/services/user-setting-service";
+import { getAppSettings } from "../_shared/app-settings";
+import { GameIds } from "../_shared/constants";
+import { SettingEventActionType, usePlayerContext, useSettingDispatch } from "../_shared/react-contexts";
+import { useBlockBetSound, usePlaceBetSound, useStartDrawSound, useStartRoundSound } from "../_shared/react-hooks";
+import { GameSound } from "../components/game-base/type";
+import GameLoading from "../components/game-components/game-loading";
+import { getChipSettings } from "../services/user-setting-service";
 import { Props, GameComponentProps, GameComponentRegistry } from "./type";
-import { LoadingSpinner } from "@shared/components/game-components/game-loading/loading-spinner";
-import SeDieMultiPlayer from "../page";
+import { LoadingSpinner } from "../components/game-components/game-loading/loading-spinner";
 
 const LoadingGameComponent = React.memo(() => (
     <>
@@ -19,9 +20,15 @@ const LoadingGameComponent = React.memo(() => (
 
 LoadingGameComponent.displayName = "LoadingGameComponent";
 
+// SeBall removed
+const SeDieMultiPlayer = dynamic(() => import("./sedie-multiplayer/page"), {
+    loading: () => <LoadingGameComponent />,
+    ssr: false,
+});
+
 // Game registry for better scalability
 const gameComponentRegistry: GameComponentRegistry = {
-    148: SeDieMultiPlayer as unknown as React.ComponentType<GameComponentProps>,
+    [GameIds.SeDieMultiplayer]: SeDieMultiPlayer,
 };
 
 export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, updateUserStakeLevel, openGameId }) => {
@@ -62,7 +69,7 @@ export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, upd
         } catch (error) {
             console.error("Failed to load chip settings:", error);
         }
-    }, [session, settingDispatch]);
+    }, [session, settingDispatch, setApiErrorMessage]);
 
     useEffect(() => {
         loadChipSettings();
@@ -74,8 +81,6 @@ export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, upd
 
         return {
             ...gameSettings[openGameId],
-            openGameId,
-            openGameName: gameSettings[openGameId]?.gameName,
             gameSound,
             setApiErrorMessage,
             theme,

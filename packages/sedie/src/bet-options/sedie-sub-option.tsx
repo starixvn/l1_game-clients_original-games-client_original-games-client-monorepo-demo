@@ -1,13 +1,13 @@
 import dynamic from "next/dynamic";
 import { SeDieBetOptions } from "../sedie-multiplayer-constants";
 import styles from "./style.module.scss";
-const Odds = dynamic(() => import("@shared/components/game-components/bet-option/odds"));
-const OwnBet = dynamic(() => import("@shared/components/game-components/bet-option/own-bet"));
-const TotalBet = dynamic(() => import("@shared/components/game-components/bet-option/total-bet"));
-const RippleButton = dynamic(() => import("@shared/components/game-components/bet-option/ripple-button"));
+const Odds = dynamic(() => import("../../../components/game-components/bet-option/odds"));
+const OwnBet = dynamic(() => import("../../../components/game-components/bet-option/own-bet"));
+const TotalBet = dynamic(() => import("../../../components/game-components/bet-option/total-bet"));
+const RippleButton = dynamic(() => import("../../../components/game-components/bet-option/ripple-button"));
 const HighlightBetOption = dynamic(() => import("./highlight-bet-option"));
 const PrevHighlightBetOption = dynamic(() => import("./highight-prev-round-bet-option"));
-const ChipEffect = dynamic(() => import("@shared/components/game-components/bet-option/chip-effect"));
+const ChipEffect = dynamic(() => import("../../../components/game-components/bet-option/chip-effect"));
 
 const subChoiceImages = {
     [SeDieBetOptions.WHITE4]: [false, false, false, false],
@@ -45,7 +45,7 @@ const SedieMultiplayerSubBetOption = ({ tolgeeNamespace, choice }: { tolgeeNames
     };
     return (
         <div className="relative">
-            <div className={`flex-1 text-white relative h-[full] w-[74px] md:w-[93px] ${styles[className]}`}>
+            <div className={`flex-1 text-white relative h-[120px] w-[74px] md:w-[93px] ${styles[className]}`}>
                 <TotalBet choice={choice} className={"h-6 pt-1 flex items-center justify-center"} tolgeeNamespace={tolgeeNamespace} />
                 {renderImages(choice)}
                 <Odds choice={choice} tolgeeNamespace={tolgeeNamespace} isFormatOddsAuto={true} />

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { cn } from "@shared/utils/merge-tailwind-util";
-import { useCommonTranslate } from "@shared/react-hooks";
+import { cn } from "../../../_shared/utils/merge-tailwind-util";
+import { useCommonTranslate } from "../../../_shared/react-hooks";
 import { formatNumber, calculateTotalWinFromTable } from "./bet-detail-utils";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "../table";
 
@@ -56,7 +56,7 @@ const renderBetDetailHeader = (translateCommon: any) => {
                     <TableHead
                         key={column.key}
                         className={cn(
-                            "w-1/4 py-3 px-0 text-sm font-normal text-secondary-text rounded-t-lg border-b border-primary-border text-sm",
+                            "w-1/4 py-3 px-0 font-normal text-secondary-text rounded-t-lg border-b border-primary-border text-sm",
                             column.align === "right" ? "text-right" : "text-center"
                         )}
                     >

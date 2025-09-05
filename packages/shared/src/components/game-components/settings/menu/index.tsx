@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { isMobileOnly } from "react-device-detect";
-import { useGameStateContext } from "@shared/react-contexts/game-state-context/game-state-context";
-import { useClickSound } from "@shared/react-hooks";
+import { useGameStateContext } from "../../../../_shared/react-contexts/game-state-context/game-state-context";
+import { useClickSound } from "../../../../_shared/react-hooks";
 import Styles from "./menu.module.scss";
 import { RoundState } from "../../../game-base/type";
-import { AnalyticsHelper, TrackingAction, TrackingFunction } from "@shared/helpers";
+import { AnalyticsHelper, TrackingAction, TrackingFunction } from "../../../../_shared/helpers";
 import { MenuIcon } from "../../menu/menu-icon";
-import usePopupStore from "@shared/stores/popup-store/popup-store";
-import usePFStore from "@shared/stores/pf-store/pf-store";
+import usePopupStore from "../../../../_shared/stores/popup-store/popup-store";
+import usePFStore from "../../../../_shared/stores/pf-store/pf-store";
 
 const dropdownItemClassName = "dropdown-item";
 
@@ -64,7 +64,7 @@ export const Menu: React.FC = () => {
         <div ref={wrapperRef} className={`${Styles["game-menu"]} ${Styles[specialClassByDevice]}`}>
             <MenuIcon name="sound" />
             <MenuIcon name="guide" onClick={openGuide} />
-            <MenuIcon name="pf-guide" onClick={handleClickPFSetting} />
+            <MenuIcon name="pf" onClick={handleClickPFSetting} />
         </div>
     );
 };

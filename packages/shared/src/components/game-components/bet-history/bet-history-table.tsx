@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback, useLayoutEffect } from 'react';
 import {
     Table,
     TableBody,
@@ -7,11 +7,11 @@ import {
     TableHeader,
     TableRow,
 } from '../table';
-import { useGameContext } from '@shared/react-contexts';
+import { useGameContext } from '../../../_shared/react-contexts';
 import { LoadingSpinner } from '../game-loading/loading-spinner';
-import { useCommonTranslate, useClickSound } from '@shared/react-hooks';
-import useBetHistoryStore from '@shared/stores/bet-history-store/bet-history-store';
-import usePopupStore from '@shared/stores/popup-store/popup-store';
+import { useCommonTranslate, useClickSound } from '../../../_shared/react-hooks';
+import useBetHistoryStore from '../../../_shared/stores/bet-history-store/bet-history-store';
+import usePopupStore from '../../../_shared/stores/popup-store/popup-store';
 import { BetHistoryHandler } from '../../game-base/handlers/bet-history-handler';
 import {
     transformBetLogsToDisplayData,
@@ -20,8 +20,9 @@ import {
     BetHistoryDisplayData
 } from './bet-history-utils';
 import styles from './bet-history.module.scss';
-import useBetDetailStore from '@shared/stores/bet-detail-store';
-import { cn } from '@shared/utils/merge-tailwind-util';
+import useBetDetailStore from '../../../_shared/stores/bet-detail-store';
+import { cn } from '../../../_shared/utils/merge-tailwind-util';
+import BouncingDotsLoader from './bouncing-dots-loader';
 
 
 // Function to create row data for bet history table
@@ -73,7 +74,7 @@ const renderBetHistoryRows = (
         );
 
         return (
-            <TableRow key={rowIndex} className="text-center border-b border-primary-border">
+            <TableRow key={rowIndex} className={cn("border-none text-center", rowIndex % 2 === 0 ? "bg-bet-history-row-1" : "bg-bet-history-row-2")}>
                 {rowData.map((cell, cellIndex) => (
                     <TableCell
                         key={cellIndex}
@@ -96,10 +97,10 @@ const renderBetHistoryHeader = (headerColumns: any[]) => {
                 <TableHead
                     key={column.key}
                     className={cn(
-                        "text-primary-text p-2 h-full font-semibold text-sm",
+                        "text-primary-text p-2 lg:p-3 h-full font-semibold text-sm",
                         column.align === "right" ? "text-right" : "text-center",
-                        index === 0 && "rounded-tl-lg rounded-bl-lg",
-                        index === headerColumns.length - 1 && "rounded-tr-lg rounded-br-lg"
+                        index === 0 && "lg:rounded-tl-lg lg:rounded-bl-lg",
+                        index === headerColumns.length - 1 && "lg:rounded-tr-lg lg:rounded-br-lg"
                     )}
                 >
                     {column.label}
@@ -125,7 +126,34 @@ export const BetHistoryTable = () => {
 
     // Local state
     const [betHistoryHandler, setBetHistoryHandler] = useState<BetHistoryHandler | null>(null);
+    const [dynamicMaxHeight, setDynamicMaxHeight] = useState<string>('640px');
     const isInitialized = useRef(false);
+    const tableBodyRef = useRef<HTMLTableSectionElement>(null);
+
+    // Calculate dynamic max height based on 10 rows
+    const calculateDynamicMaxHeight = useCallback(() => {
+        if (!tableBodyRef.current) {
+            return '640px';
+        }
+
+        const tableBody = tableBodyRef.current;
+        const allRows = Array.from(tableBody.querySelectorAll('tr'));
+
+        // Sum the heights of the first 10 rows (or fewer if less data)
+        const rowsHeight = allRows.slice(0, 10).reduce((sum, row) => sum + row.getBoundingClientRect().height, 0);
+
+        // Measure the header height dynamically instead of hard-coding
+        const headerRow = tableBody.parentElement?.querySelector('thead tr') as HTMLTableRowElement | null;
+        const headerHeight = headerRow ? headerRow.getBoundingClientRect().height : 36;
+
+        const buffer = 1;
+
+        const totalHeight = rowsHeight + headerHeight + buffer;
+
+        const minHeight = 300;
+
+        return `${Math.max(totalHeight, minHeight)}px`;
+    }, []);
 
     // Initialize bet history handler
     useEffect(() => {
@@ -141,7 +169,8 @@ export const BetHistoryTable = () => {
                 handler.cleanup();
             };
         }
-        return undefined;
+
+        return () => {};
     }, [gameMessageHandler]);
 
     // Handle cell click for round column
@@ -182,6 +211,26 @@ export const BetHistoryTable = () => {
     const displayedBetLogs = isExpanded ? betLogs : betLogs.slice(0, 10);
     const tableData = transformBetLogsToDisplayData(displayedBetLogs);
 
+    // Update dynamic max height when data changes or window resizes
+    useLayoutEffect(() => {
+        if (displayedBetLogs.length === 0) {
+            return () => {};
+        }
+
+        const newHeight = calculateDynamicMaxHeight();
+        setDynamicMaxHeight(newHeight);
+
+        // Re-calculate on window resize
+        const handleResize = () => {
+            setDynamicMaxHeight(calculateDynamicMaxHeight());
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [displayedBetLogs, calculateDynamicMaxHeight]);
+
     // Handle toggle expand/collapse
     const handleToggleExpand = () => {
         if (!betHistoryHandler) {
@@ -211,16 +260,17 @@ export const BetHistoryTable = () => {
     }
 
     return (
-        <div className={`${styles['bet-history-container']} rounded-xl bg-primary-bg p-2`}>
+        <div className={`${styles['bet-history-container']} rounded-xl bg-primary-bg p-2 h-full border border-primary-border`}>
             <div
                 key={isExpanded ? 'expanded' : 'collapsed'}
-                className={`bet-history-scroll-wrapper min-h-[300px] max-h-[640px] ${styles['table-scroll-wrapper']} ${isExpanded ? styles.expanded : ''}`}
+                className={`bet-history-scroll-wrapper min-h-[300px] ${styles['table-scroll-wrapper']} ${isExpanded ? styles.expanded : ''}`}
+                style={{ maxHeight: dynamicMaxHeight, overflowY: 'auto' }}
             >
                 <Table className="bet-history-table">
                     <TableHeader>
                         {renderBetHistoryHeader(headerColumns)}
                     </TableHeader>
-                    <TableBody>
+                    <TableBody ref={tableBodyRef}>
                         {tableData.length === 0 ? (
                             <TableRow>
                                 <TableCell colSpan={4} className="text-center text-secondary-text">
@@ -234,7 +284,7 @@ export const BetHistoryTable = () => {
                 </Table>
             </div>
 
-            {renderToggleButton(totalPages, isExpanded, isLoading, handleToggleExpand, styles)}
+            {renderToggleButton(totalPages, isExpanded, isLoading, handleToggleExpand, styles, translateCommon)}
         </div>
     );
 };
@@ -245,28 +295,27 @@ function renderToggleButton(
     isExpanded: boolean,
     isLoading: boolean,
     handleToggleExpand: () => void,
-    styles: any
+    styles: any,
+    t: any
 ) {
     if (totalPages <= 1) {
         return null;
     }
 
     return (
-        <div className={styles['toggle-button-container']}>
+        <div className={`${styles['toggle-button-container']} py-5`}>
+            {isLoading ? (
+                <BouncingDotsLoader />
+            ) : (
             <button
                 className={`${styles['toggle-button']} rounded-lg`}
                 onClick={handleToggleExpand}
                 disabled={isLoading}
             >
-                {isLoading ? (
-                    <span className="flex items-center gap-2">
-                        <LoadingSpinner />
-                        Loading...
-                    </span>
-                ) : (
-                    isExpanded ? "Show Less" : "Show More"
-                )}
+                {isExpanded ? t("show_less") : t("show_more")}
             </button>
+            
+        )}
         </div>
     );
 }

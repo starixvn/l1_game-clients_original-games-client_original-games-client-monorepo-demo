@@ -1,12 +1,12 @@
 import { Dispatch } from "react";
-import { getGameSettings } from "@shared/app-settings";
-import { GameEventAction, GameEventActionType } from "@shared/react-contexts/game-state-context/game-event-action";
-import { GameStateContextModel } from "@shared/react-contexts/game-state-context/game-state-context-model";
+import { getGameSettings } from "../../../_shared/app-settings";
+import { GameEventAction, GameEventActionType } from "../../../_shared/react-contexts/game-state-context/game-event-action";
+import { GameStateContextModel } from "../../../_shared/react-contexts/game-state-context/game-state-context-model";
 import { IRoundStateHandler } from "../../round-base/round-state-handler";
 import { GameDurations, Round } from "../type";
 import { GameMessageHandler, messageEventType } from "./";
 import { GameRoundDataHandler } from "./game-round-data-handler";
-import useGameStore from "@shared/stores/game-store/game-store";
+import useGameStore from "../../../_shared/stores/game-store/game-store";
 
 export type GameFinishHandlerProps = {
     dispatch: Dispatch<GameEventAction>;
@@ -27,7 +27,7 @@ export class GameFinishHandler {
     private _roundHistory: Round<object, object>[];
     private _finish: Round<object, object>;
 
-    constructor(private readonly props: GameFinishHandlerProps) { }
+    constructor(private readonly props: GameFinishHandlerProps) {}
 
     set betWin(betWin: number) {
         this._betWin = betWin;
@@ -72,7 +72,11 @@ export class GameFinishHandler {
         const durations = this.props.durations;
         this._finish = finish;
 
-        const roundData = gameRoundDataHandler.buildGameRoundDataAfterReceiveFinishEvent(gameStateContextModel().roundData, result, roundId);
+        const roundData = gameRoundDataHandler.buildGameRoundDataAfterReceiveFinishEvent(
+            gameStateContextModel().roundData,
+            result,
+            roundId
+        );
 
         dispatch({
             type: GameEventActionType.FINISH,
@@ -103,7 +107,7 @@ export class GameFinishHandler {
     };
 
     handleRoundHistory = () => {
-        const roundHistoryClone = [...this._roundHistory];
+        const roundHistoryClone = this._roundHistory?.length ? [...this._roundHistory] : [];
         const gameSettings = getGameSettings(this.props.gameId);
 
         this._finish && roundHistoryClone?.unshift(this._finish);

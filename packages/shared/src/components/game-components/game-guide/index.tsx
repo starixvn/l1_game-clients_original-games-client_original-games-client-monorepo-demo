@@ -1,15 +1,15 @@
 import { FC, memo, useMemo, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { buildVersion } from "@shared/constants";
-import { buildGameGuideUrl } from "@shared/helpers";
-import { usePlayerContext } from "@shared/react-contexts";
-import { useGameStateContext } from "@shared/react-contexts/game-state-context/game-state-context";
-import { useCommonTranslate, useAppTheme } from "@shared/react-hooks";
-import { tolgee } from "@shared/tolgee";
+import { buildVersion } from "../../../_shared/constants";
+import { buildGameGuideUrl } from "../../../_shared/helpers";
+import { usePlayerContext } from "../../../_shared/react-contexts";
+import { useGameStateContext } from "../../../_shared/react-contexts/game-state-context/game-state-context";
+import { useCommonTranslate, useAppTheme } from "../../../_shared/react-hooks";
+import { tolgee } from "../../../_shared/tolgee";
 import { LoadingSpinner } from "../game-loading/loading-spinner";
 import ModalContainer from "../modal-container";
-import usePopupStore from "@shared/stores/popup-store/popup-store";
+import usePopupStore from "../../../_shared/stores/popup-store/popup-store";
 import { themeGuide } from "./constants";
 
 const GameGuideModal: FC = () => {
@@ -28,7 +28,7 @@ const GameGuideModal: FC = () => {
                 isOpen={true}
                 onCloseModal={handleCloseModal}
                 title={translate("game_guide")}
-                extendedClassName="md:top-[50px] md:bottom-auto md:max-w-3xl md:h-[730px] md:mx-auto"
+                extendedClassName="md:top-[10px] md:bottom-auto md:max-w-3xl md:h-[85vh] md:max-h-[730px] md:mx-auto"
             >
                 <WrapperGameGuide />
             </ModalContainer>

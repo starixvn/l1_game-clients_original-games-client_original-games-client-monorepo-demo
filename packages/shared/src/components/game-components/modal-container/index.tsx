@@ -1,8 +1,7 @@
 import { FC } from "react";
-import { cn } from "@shared/utils/merge-tailwind-util";
-import Image from "next/image";
+import { cn } from "../../../_shared/utils/merge-tailwind-util";
 
-import { useClickSound } from "@shared/react-hooks";
+import { useClickSound } from "../../../_shared/react-hooks";
 import BaseDialog from "../base-dialog";
 import { ModalType } from "../base-dialog/type";
 
@@ -28,7 +27,7 @@ const ModalContainer: FC<{
             >
                 {/* Header - Fixed height */}
                 <div className="flex items-center px-5 text-base font-semibold text-primary-text text-center my-2 flex-shrink-0">
-                    <div className="flex flex-1 items-center justify-center font-semibold text-[18px] leading-[22px]">{title}</div>
+                    <div className="flex flex-1 items-center justify-center font-semibold text-lg leading-[22px]">{title}</div>
                     <span
                         className="cursor-pointer ml-auto relative z-10"
                         onClick={() => {
@@ -36,7 +35,7 @@ const ModalContainer: FC<{
                             onCloseModal();
                         }}
                     >
-                        <Image src="/static/images/icons/close.svg" className="w-4 h-4" alt="close" width={16} height={16} />
+                        <i className="icon-close text-sm w-4 h-4"></i>
                     </span>
                 </div>
 

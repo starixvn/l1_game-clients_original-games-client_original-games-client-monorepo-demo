@@ -1,12 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
-        "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-        "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-        "./src/**/*.{js,ts,jsx,tsx,mdx}",
-        // include packages so Tailwind sees classes in monorepo sources
-        "./packages/**/src/**/*.{js,ts,jsx,tsx,mdx}",
-    ],
+    content: ["./src/pages/**/*.{js,ts,jsx,tsx,mdx}", "./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
     darkMode: "class",
     important: true,
     theme: {
@@ -16,6 +10,7 @@ module.exports = {
                 "primary-text": "var(--text-color)",
                 "primary-border": "var(--border-color)",
                 "secondary-bg": "var(--secondary-background-color)",
+                "third-bg": "var(--third-background-color)",
                 "secondary-text": "var(--secondary-text-color)",
                 "popup-text": "var(--popup-color)",
                 "container-bg": "var(--container-color-bg)",
@@ -28,6 +23,8 @@ module.exports = {
                 "table-text-clickable": "var(--color-table-text-clickable)",
                 "winning-highlight": "var(--color-winning-highlight)",
                 "table-header": "var(--table-header)",
+                "bet-history-row-1": "var(--bet-history-row-1)",
+                "bet-history-row-2": "var(--bet-history-row-2)",
                 "bet-detail-row-1": "var(--bet-detail-row-1)",
                 "bet-detail-row-2": "var(--bet-detail-row-2)",
                 "modal-text": "var(--modal-text-color)",
@@ -37,6 +34,7 @@ module.exports = {
                 "icon-close": "#ea1d41",
                 "modal-border-color": "#8E8E8E",
                 "btn-green-hover": "#0e7029",
+                "sound-setting-bg": "var(--sound-setting-background)",
             },
             backgroundImage: {
                 "popup-gradient": "var(--popup-background)",
@@ -63,17 +61,4 @@ module.exports = {
         },
     },
     plugins: [],
-    safelist: [
-        // common utilities used by sedie that might be generated dynamically
-        // grids/cols
-        { pattern: /(grid|col|row)-.*/ },
-        { pattern: /(md|lg|xl):col-span-\d+/ },
-        // spacing/positioning
-        { pattern: /(p|px|py|m|mx|my)-.*/ },
-        { pattern: /(top|right|bottom|left)-\[.*\]/ },
-        // z-index used in sedie animations
-        { pattern: /z-\[.*\]/ },
-        // width/height with arbitrary values
-        { pattern: /(w|h)-\[.*\]/ },
-    ],
 };

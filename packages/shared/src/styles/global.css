@@ -21,10 +21,13 @@
     --secondary-text-color: #e0e0e0;
     --color-table-text-clickable: #0990ff;
     --table-header: #233046;
-    --bet-detail-row-1: #102136;
-    --bet-detail-row-2: #172c47;
+    --bet-history-row-1: #182130;
+    --bet-history-row-2: #1F2A3B;
+    --bet-detail-row-1: #1F2A3B;
+    --bet-detail-row-2: #182130;
 
     --modal-text-color: #e6e6e6;
+    --sound-setting-background: linear-gradient(180deg, #0854B2 0%, #05264D 38.43%, #060D15 99.85%);
 }
 
 html[data-theme="dark"] {
@@ -33,6 +36,7 @@ html[data-theme="dark"] {
     --text-color: #fff;
     --border-color: #27303f;
     --secondary-background-color: #101721;
+    --third-background-color: #141c2a;
     --secondary-text-color: #b3bec1;
 
     --opacity-background: rgba(12, 12, 12, 0.8);
@@ -55,10 +59,11 @@ html[data-theme="dark"] {
     --text-content-color: #ced8e6;
 
     --table-header: #233046;
-    --bet-detail-row-1: #102136;
-    --bet-detail-row-2: #172c47;
+    --bet-detail-row-1: #1F2A3B;
+    --bet-detail-row-2: #182130;
 
     --modal-text-color: #e6e6e6;
+    --sound-setting-background: linear-gradient(180deg, #0854B2 0%, #05264D 38.43%, #060D15 99.85%);
 }
 
 html[data-theme="light"] {
@@ -67,6 +72,7 @@ html[data-theme="light"] {
     --text-color: #000;
     --border-color: #ced5e2;
     --secondary-background-color: #ebebeb;
+    --third-background-color: #f9f9f9;
     --secondary-text-color: #5574a7;
     --opacity-background: rgba(12, 12, 12, 0.36);
     --opacity-background-grey: rgba(221, 221, 221, 0.6);
@@ -89,7 +95,7 @@ html[data-theme="light"] {
 
     --modal-text-color: #e6e6e6;
     --pf-guide-background: linear-gradient(180deg, #094998 0%, #062b57 1.51%, #142030 3.02%);
-
+    --sound-setting-background: linear-gradient(180deg, #0854B2 0%, #05264D 38.43%, #060D15 99.85%);
 }
 
 /* Ensure Tailwind has highest priority */

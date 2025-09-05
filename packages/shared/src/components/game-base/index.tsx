@@ -1,17 +1,19 @@
-import React, { lazy } from "react";
+import React from "react";
 import { createPortal } from "react-dom";
 import { Socket } from "socket.io-client";
+import dynamic from "next/dynamic";
 
-import { GameIds } from "@shared/constants";
-import { InitSocketIO, writeDebugLog } from "@shared/helpers";
-import { AnalyticsHelper } from "@shared/helpers/analytic-helper";
-import { broadcastOpeningGameId } from "@shared/helpers/global-events-helper";
-import { GameActionsContextProvider, GameContextProvider, PlayerContext, PlayerContextModel } from "@shared/react-contexts";
-import { GameEventActionType } from "@shared/react-contexts/game-state-context/game-event-action";
-import { PlaceBetEventActionType } from "@shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
-import { PlaceBetProvider } from "@shared/react-contexts/game-state-context/place-bet-context/place-bet-context";
-import { GameResourceKeys } from "@shared/resources";
-import { getBalance } from "@shared/services/auth-service";
+import { GameIds } from "../../_shared/constants";
+import { InitSocketIO, writeDebugLog } from "../../_shared/helpers";
+import { AnalyticsHelper } from "../../_shared/helpers/analytic-helper";
+import { broadcastOpeningGameId } from "../../_shared/helpers/global-events-helper";
+
+import { GameActionsContextProvider, GameContextProvider, PlayerContext, PlayerContextModel } from "../../_shared/react-contexts";
+import { GameEventActionType } from "../../_shared/react-contexts/game-state-context/game-event-action";
+import { PlaceBetEventActionType } from "../../_shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
+import { PlaceBetProvider } from "../../_shared/react-contexts/game-state-context/place-bet-context/place-bet-context";
+import { GameResourceKeys } from "../../_shared/resources";
+import { getBalance } from "../../services/auth-service";
 import CountdownTimer from "../game-components/countdown-timer/countdown-timer";
 import DisabledModal from "../game-components/disabled-modal";
 import { ConnectFailedMessage } from "../game-components/error-message";
@@ -19,7 +21,6 @@ import { ConnectFailedReasonKey } from "../game-components/error-message/type";
 import GameContainer from "../game-components/game-container";
 import GameGuideModal from "../game-components/game-guide";
 import GameLoading from "../game-components/game-loading";
-import { LoadingSpinner } from "../game-components/game-loading/loading-spinner";
 import { NewRoundTransitionWithoutExtraSeconds } from "../game-components/new-round-transition";
 import { NoticeDialog } from "../game-components/notice";
 import { PFSettingModal } from "../game-components/provably-fair";
@@ -40,14 +41,14 @@ import { GameStateHandler, IGameStateHandler } from "./handlers/game-state-handl
 import { PFWrapper } from "./handlers/pf-wrapper/pf-wrapper";
 import { PlaceBetHandlerWrapper } from "./handlers/place-bet-wrapper/place-bet-handler-wrapper";
 import { GameBaseHandlers, GameBaseProps, GameBaseState, RoundState } from "./type";
-import PreloadResources from "@shared/helpers/preload-resources";
+import PreloadResources from "../../_shared/helpers/preload-resources";
 import { BetHistoryTable } from "../game-components/bet-history/bet-history-table";
 import { Menu } from "../game-components/menu/menu";
 import ChipControlPanel from "../game-components/chip-slider";
 import { Menu as MenuSettings } from "../game-components/settings/menu";
-import useGameStore from "@shared/stores/game-store/game-store";
-const Header = lazy(() => import("../page-components/header"));
-const Background = lazy(() => import("../game-components/background"));
+import useGameStore from "../../_shared/stores/game-store/game-store";
+const Header = dynamic(() => import("../page-components/header"), { ssr: false });
+const Background = dynamic(() => import("../game-components/background"), { ssr: false });
 
 abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extends React.PureComponent<P, S> {
     protected socket: Socket;
@@ -208,14 +209,31 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
     };
 
     onStart() {
-        this.socket?.disconnect();
-        this.socket = null;
-        this.gameMessageHandler.clearAllHandlers();
-        this.props.dispatch({ type: GameEventActionType.DISCONNECT, payload: {} });
-        this.clearDisconnectTimeout();
-        this.registerHandlers();
-        this.connectToGameService();
-        this.gameMessageHandler.broadcastGameEvent({ [messageEventType.UPDATE_PLAYER_BALANCE]: true });
+        const transaction = (window as any).Sentry?.startTransaction({
+            name: this.props.gameName,
+            op: "game.load",
+            description: `Loading game: ${this.props.gameName}`,
+        });
+
+        (window as any).Sentry?.getCurrentHub()?.configureScope((scope) => {
+            scope.setSpan(transaction);
+        });
+
+        try {
+            this.socket?.disconnect();
+            this.socket = null;
+            this.gameMessageHandler.clearAllHandlers();
+            this.props.dispatch({ type: GameEventActionType.DISCONNECT, payload: {} });
+            this.clearDisconnectTimeout();
+            this.registerHandlers();
+            this.connectToGameService();
+            this.gameMessageHandler.broadcastGameEvent({ [messageEventType.UPDATE_PLAYER_BALANCE]: true });
+        } catch (error) {
+            (window as any).Sentry?.captureException(error);
+            transaction?.setStatus("internal_error");
+        } finally {
+            transaction?.finish();
+        }
     }
 
     onPreloadResourceDone = () => {
@@ -223,10 +241,7 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
     };
 
     preloadResource = () => {
-        const playerContext = this.context as PlayerContextModel;
-        return (
-            <PreloadResources setIsDonePreload={this.onPreloadResourceDone} gameId={this.props.id} locale={playerContext?.locale || "en"} />
-        );
+        return <PreloadResources setIsDonePreload={this.onPreloadResourceDone} gameId={this.props.id} />;
     };
 
     protected async connectToGameService() {
@@ -238,7 +253,7 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
     }
 
     onVisibilityChange = () => {
-        document.visibilityState === "hidden" ? this.onDestroy() : this.onStart();
+        // nothing
     };
 
     onConnectFailed() {
@@ -453,12 +468,12 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
                 prevRoundState: RoundState[gameStateContextModel.roundState],
                 newRoundState:
                     RoundState[
-                    this.roundStateHandler.determineRoundBaseState({
-                        roundRemainingTime: this.roundTimeCounter,
-                        wholeRound: durations.wholeRound,
-                        remainingTime,
-                        durations,
-                    })
+                        this.roundStateHandler.determineRoundBaseState({
+                            roundRemainingTime: this.roundTimeCounter,
+                            wholeRound: durations.wholeRound,
+                            remainingTime,
+                            durations,
+                        })
                     ],
                 ...newGameState,
             });
@@ -531,7 +546,7 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
         const { authorizeInfo, enableQuickBet } = this.context as PlayerContextModel;
         const enabledQuickBet = authorizeInfo?.user?.settings.quickBet || enableQuickBet;
 
-        this.placeBetHandler.placeBet(betChoice, amount, enabledQuickBet, this.props.gameStateContextModel, this.props.systemContextModel);
+        this.placeBetHandler.placeBet(betChoice, amount, enabledQuickBet, this.props.gameStateContextModel);
     }
 
     clearDisconnectTimeout = () => {
@@ -616,7 +631,7 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
         return (
             <Menu
                 leftSide={
-                    <div className="bg-gradient-to-br from-[#6F8FC4] via-[#455F8A] to-[#364D74] bg-clip-text text-transparent font-bold text-sm tracking-wider align-middle">
+                    <div className="bg-gradient-to-br from-[#6F8FC4] via-[#455F8A] to-[#364D74] bg-clip-text text-transparent font-semibold text-sm tracking-wider align-middle">
                         Nova88 Original
                     </div>
                 }
@@ -639,6 +654,8 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
                     {this.props.gameStateContextModel.availableInGameData && this.renderResultBlock()}
                     {this.renderBetOptions()}
                 </div>
+
+                {this.renderNotice()}
             </div>
         );
     }
@@ -672,7 +689,7 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
                     <div className="grid grid-cols-12 gap-0">
                         {this.renderLeftSide()}
                         {this.renderRightSide()}
-                        <div className="col-span-12 px-3">{this.renderBetHistoryTable()}</div>
+                        <div className="col-span-12 mb-3 px-3">{this.renderBetHistoryTable()}</div>
                     </div>
                     <PFWrapper
                         socket={this.socket}
@@ -705,7 +722,7 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
     }
 
     render() {
-        const { signedIn, roundState, disabledMessage, disconnectReason, availableInGameData } = this.props.gameStateContextModel;
+        const { signedIn, roundState, disabledMessage, disconnectReason } = this.props.gameStateContextModel;
         const { isLoaded } = this.state;
         const isDisabledGame = roundState === RoundState.Disabled;
 
@@ -715,12 +732,8 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
                 <GameContainer>
                     {!isLoaded && this.preloadResource()}
                     {signedIn && isLoaded ? this.renderGame() : <GameLoading />}
-                    {(roundState === RoundState.None || !availableInGameData) && (
-                        <LoadingSpinner removeSpinner={isDisabledGame || !!disconnectReason} />
-                    )}
                     {this.renderDisableGamePopup(isDisabledGame && !!disabledMessage, disabledMessage)}
                     {this.renderConnectFailed(roundState, disconnectReason)}
-                    {this.renderNotice()}
                 </GameContainer>
             </>
         );

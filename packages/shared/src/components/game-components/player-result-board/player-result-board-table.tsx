@@ -1,6 +1,6 @@
 import * as React from "react";
-import { cn } from "@shared/utils/merge-tailwind-util";
-import { useCommonTranslate } from "@shared/react-hooks";
+import { cn } from "../../../_shared/utils/merge-tailwind-util";
+import { useCommonTranslate } from "../../../_shared/react-hooks";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "../table";
 
 interface PlayerData {
@@ -21,13 +21,13 @@ const PlayerResultBoardTable = React.forwardRef<HTMLDivElement, PlayerResultBoar
         return (
             <TableHeader>
                 <TableRow className="bg-table-header border-none">
-                    <TableHead className="text-primary-text h-full text-sm text-center p-2 font-semibold rounded-tl-lg rounded-bl-lg">
+                    <TableHead className="text-primary-text h-full text-sm text-center p-2 lg:p-3 font-semibold lg:rounded-tl-lg lg:rounded-bl-lg w-1/3">
                         {translateCommon("player")}
                     </TableHead>
-                    <TableHead className="text-primary-text h-full text-sm text-center p-2 font-semibold min-w-14">
+                    <TableHead className="text-primary-text h-full text-sm text-center p-2 lg:p-3 font-semibold w-1/3">
                         {translateCommon("bet_amount")}
                     </TableHead>
-                    <TableHead className="text-primary-text h-full text-sm text-right p-2 pl-0 font-semibold rounded-tr-lg rounded-br-lg min-w-[84px]">
+                    <TableHead className="text-primary-text h-full text-sm text-right p-2 lg:p-3 pl-0 font-semibold lg:rounded-tr-lg lg:rounded-br-lg w-1/3">
                         {translateCommon("win")}
                     </TableHead>
                 </TableRow>
@@ -54,11 +54,11 @@ const PlayerResultBoardTable = React.forwardRef<HTMLDivElement, PlayerResultBoar
                             key={index}
                             className="text-center border-b border-primary-border hover:bg-secondary-bg/50 transition-colors"
                         >
-                            <TableCell className="py-[10px] px-2 text-secondary-text text-center">{row.playerName}</TableCell>
-                            <TableCell className="py-[10px] px-2 text-secondary-text text-center">{row.betAmount}</TableCell>
+                            <TableCell className="py-[10.3px] lg:py-[13.6px] px-2 lg:px-3 text-secondary-text text-center">{row.playerName}</TableCell>
+                            <TableCell className="py-[10.3px] lg:py-[13.6px] px-2 lg:px-3 text-secondary-text text-center">{row.betAmount}</TableCell>
                             <TableCell
                                 className={cn(
-                                    "py-[10px] px-2 font-semibold text-right pl-0",
+                                    "py-[10.3px] lg:py-[13.6px] px-2 lg:px-3 font-semibold text-right pl-0",
                                     parseFloat(row.win) > 0 ? "text-winning-highlight" : "text-secondary-text"
                                 )}
                             >

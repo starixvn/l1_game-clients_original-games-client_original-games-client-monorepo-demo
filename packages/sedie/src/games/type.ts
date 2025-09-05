@@ -1,12 +1,22 @@
-import { UserStakeLevel } from "@shared/components/game-base/type";
+import { UserStakeLevel } from "../components/game-base/type";
 
-export type Props = {
-    setApiErrorMessage: Function;
+export interface Props {
+    setApiErrorMessage: (message: string | null) => void;
     userStakeLevel: UserStakeLevel;
-    updateUserStakeLevel: Function;
+    updateUserStakeLevel: (level: UserStakeLevel) => void;
     openGameId: number;
     openGameName: string;
-};
+}
 
-export type GameComponentProps = Props & Record<string, any>;
-export type GameComponentRegistry = Record<number, any>;
+export interface GameComponentProps {
+    gameSound: any;
+    setApiErrorMessage: (message: string | null) => void;
+    theme: string | undefined;
+    userStakeLevel: UserStakeLevel;
+    updateUserStakeLevel: (level: UserStakeLevel) => void;
+    [key: string]: any;
+}
+
+export interface GameComponentRegistry {
+    [gameId: number]: React.ComponentType<any>;
+}

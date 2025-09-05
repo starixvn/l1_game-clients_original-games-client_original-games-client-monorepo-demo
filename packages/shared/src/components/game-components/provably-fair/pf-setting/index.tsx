@@ -1,8 +1,8 @@
 import { FC, useEffect, useRef, useState } from "react";
 
-import { useGameContext } from "@shared/react-contexts";
-import { useGameStateContext } from "@shared/react-contexts/game-state-context/game-state-context";
-import { useCommonTranslate, useSNTranslate } from "@shared/react-hooks";
+import { useGameContext } from "../../../../_shared/react-contexts";
+import { useGameStateContext } from "../../../../_shared/react-contexts/game-state-context/game-state-context";
+import { useCommonTranslate, useSNTranslate } from "../../../../_shared/react-hooks";
 import { messageEventType } from "../../../game-base/handlers";
 import { PFSeverSeed } from "../../../game-base/type";
 import { LoadingSpinner } from "../../game-loading/loading-spinner";
@@ -10,9 +10,9 @@ import ModalContainer from "../../modal-container";
 import CopyableTextInput from "../copyable-text-input";
 import { ButtonPFGuide } from "../pf-guide";
 import Styles from "../provably-fair.module.scss";
-import usePFStore from "@shared/stores/pf-store/pf-store";
+import usePFStore from "../../../../_shared/stores/pf-store/pf-store";
 import { useShallow } from "zustand/shallow";
-import useGameStore from "@shared/stores/game-store/game-store";
+import useGameStore from "../../../../_shared/stores/game-store/game-store";
 
 const NUMBER_VALUES = "0123456789";
 const GetPFInfoMessage = "getRoundPF";
@@ -33,7 +33,7 @@ const PFSettingModal: FC<{ customClientSeedInfo?: string }> = ({ customClientSee
     const { isShowPFSetting, togglePFSetting } = usePFStore(
         useShallow((state) => ({
             isShowPFSetting: state.isShowPFSetting,
-            togglePFSetting: state.togglePFSetting
+            togglePFSetting: state.togglePFSetting,
         }))
     );
 
@@ -54,7 +54,7 @@ const PFSettingModal: FC<{ customClientSeedInfo?: string }> = ({ customClientSee
                 }
                 isOpen={true}
                 onCloseModal={handleCloseModal}
-                extendedClassName="md:top-[50px] md:bottom-auto md:max-w-3xl md:h-[730px] md:mx-auto"
+                extendedClassName="md:top-[10px] md:bottom-auto md:max-w-3xl md:h-[85vh] md:max-h-[730px] md:mx-auto"
             >
                 <div className="ml-4 mr-4 mt-3 h-full flex flex-col gap-5">
                     <PFSetting customClientSeedInfo={customClientSeedInfo} />
@@ -212,9 +212,9 @@ const PFSetting: FC<{ customClientSeedInfo?: string }> = ({ customClientSeedInfo
                 ) : (
                     <div className={Styles["client-seed-options"]}>
                         <div className={Styles["client-seed-option"]}>
-                            <div className="form-check">
+                            <div className="form-check flex align-items-center">
                                 <input
-                                    className="form-check-input"
+                                    className="form-check-input h-0"
                                     ref={randomRadio}
                                     type="radio"
                                     id="random-seed"
@@ -222,7 +222,7 @@ const PFSetting: FC<{ customClientSeedInfo?: string }> = ({ customClientSeedInfo
                                     checked={!isManualMode}
                                     onChange={handleCheckRadio}
                                 />
-                                <label className="form-check-label" htmlFor="random-seed">
+                                <label className="form-check-label h-8" htmlFor="random-seed">
                                     {translateCommon("pf_client_seed_para_4")}
                                 </label>
                             </div>
@@ -238,7 +238,7 @@ const PFSetting: FC<{ customClientSeedInfo?: string }> = ({ customClientSeedInfo
                             />
                         </div>
                         <div className={Styles["client-seed-option"]}>
-                            <div className="form-check">
+                            <div className="form-check flex align-items-center">
                                 <input
                                     ref={manualRadio}
                                     type="radio"
@@ -246,9 +246,9 @@ const PFSetting: FC<{ customClientSeedInfo?: string }> = ({ customClientSeedInfo
                                     name="client-seed"
                                     checked={isManualMode}
                                     onChange={handleCheckRadio}
-                                    className="form-check-input"
+                                    className="form-check-input h-0"
                                 />
-                                <label className={`form-check-label ${Styles["form-check-label"]}`} htmlFor="manual-seed">
+                                <label className={`form-check-label ${Styles["form-check-label"]} h-8`} htmlFor="manual-seed">
                                     <div className={Styles["form-check-label-note"]}>
                                         {`${translateCommon("pf_client_seed_para_3")}`} <br /> <span>(0 - 9999)</span>
                                     </div>

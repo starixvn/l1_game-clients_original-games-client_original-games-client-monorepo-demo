@@ -1,15 +1,14 @@
 import { FC, memo, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { v4 as uuidv4 } from "uuid";
-import { buildVersion } from "@shared/constants";
-import { buildGameGuideUrl } from "@shared/helpers";
-import { useGameStateContext } from "@shared/react-contexts/game-state-context/game-state-context";
-import { useAppTheme, useClickSound, useCommonTranslate } from "@shared/react-hooks";
-import { tolgee } from "@shared/tolgee";
+import { buildVersion } from "../../../../_shared/constants";
+import { buildGameGuideUrl } from "../../../../_shared/helpers";
+import { useGameStateContext } from "../../../../_shared/react-contexts/game-state-context/game-state-context";
+import { useAppTheme, useClickSound, useCommonTranslate } from "../../../../_shared/react-hooks";
+import { tolgee } from "../../../../_shared/tolgee";
 import { LoadingSpinner } from "../../game-loading/loading-spinner";
 import Styles from "./pf-guide.module.scss";
 import ModalContainer from "../../modal-container";
-import Image from "next/image";
 
 const PFGuide: FC = () => {
     const { gameConfigs } = useGameStateContext();
@@ -62,6 +61,7 @@ const PFGuideModal: FC<{ handleCloseModal?: Function; isOpen: boolean; data?: an
                 isOpen={isOpen}
                 isOverlap={true}
                 onCloseModal={handleCloseModal}
+                extendedClassName="md:top-[10px] md:bottom-auto md:max-w-3xl md:h-[85vh] md:max-h-[730px] md:mx-auto"
             >
                 <WrapperPFGuide />
             </ModalContainer>,
@@ -70,7 +70,9 @@ const PFGuideModal: FC<{ handleCloseModal?: Function; isOpen: boolean; data?: an
     );
 };
 
-const ButtonPFGuide: FC<{ className?: string }> = ({ className = "absolute top-5 left-4" }) => {
+const ButtonPFGuide: FC<{ className?: string }> = ({
+    className = "absolute top-5 left-4 rounded-full flex items-center justify-center border border-solid bg-[#1a274999] border-[#0097ff33]",
+}) => {
     const [isShowPFGuide, setIsShowPFGuide] = useState(false);
     const onCloseModal = () => {
         setIsShowPFGuide(false);
@@ -86,7 +88,7 @@ const ButtonPFGuide: FC<{ className?: string }> = ({ className = "absolute top-5
                     setIsShowPFGuide(true);
                 }}
             >
-                <Image src="/static/images/icons/question-mark.svg" alt="close" width={32} height={32} />
+                <i className="icon-guide-pf w-8 h-8"></i>
             </button>
             <PFGuideModal isOpen={isShowPFGuide} handleCloseModal={onCloseModal} />
         </>
