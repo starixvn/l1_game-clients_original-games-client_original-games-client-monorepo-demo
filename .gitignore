@@ -36,3 +36,5 @@ stryker-tmp
 
 sonar-reports
 .scannerwork
+packages/baccarat/.next
+packages/sedie/.next

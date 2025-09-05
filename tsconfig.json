@@ -50,7 +50,9 @@
         "**/*.ts",
         "**/*.tsx",
         "**/*.js",
-        "jest.config.ts"
+        "jest.config.ts",
+        "packages/sedie/src/**/*",
+        "packages/baccarat/src/**/*"
     ],
     "exclude": [
         "node_modules",

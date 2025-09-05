@@ -22,8 +22,18 @@ export class UserClientCommunication {
     private static getUserServiceUrl(): string {
         const { proxy } = getAppSettings();
         const basePath = proxy.path || "";
-        const path = `${basePath}/user`;
-        return buildUrlWithPath(path);
+        const relativePath = `${basePath}/user`;
+
+        // When running locally (standalone dev), prefer relative URLs so Next.js rewrites can proxy them
+        if (typeof window !== "undefined") {
+            const host = window.location.hostname;
+            if (host === "localhost" || host === "127.0.0.1") {
+                return relativePath;
+            }
+        }
+
+        // Fallback to absolute URL for non-local environments
+        return buildUrlWithPath(relativePath);
     }
 }
 export default UserClientCommunication;

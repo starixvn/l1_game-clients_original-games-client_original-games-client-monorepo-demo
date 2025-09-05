@@ -6,6 +6,27 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "node -e \"console.log('Skipping baccarat package build (using app sources)')\"",
-        "clean": "rimraf dist"
+        "clean": "rimraf dist",
+        "dev:standalone": "cross-env FAST_REFRESH=false next dev -p 3002",
+        "build:standalone": "next build",
+        "start:standalone": "next start -p 3002"
+    },
+    "dependencies": {
+        "@sentry/nextjs": "^9.41.0",
+        "@tolgee/format-icu": "^5.28.6",
+        "@tolgee/react": "^5.28.6",
+        "@use-gesture/react": "^10.3.1",
+        "axios": "^1.8.2",
+        "base64-string": "^1.1.2",
+        "classnames": "^2.3.2",
+        "cross-env": "^7.0.3",
+        "next": "14.2.31",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0",
+        "@next/bundle-analyzer": "^14.2.31"
     }
 }
