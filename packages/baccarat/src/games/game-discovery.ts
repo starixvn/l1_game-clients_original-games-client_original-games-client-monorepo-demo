@@ -6,7 +6,7 @@ import { gameRegistry } from "@shared/game-registry";
 export const ensureGamesLoaded = async (): Promise<void> => {
     // Import all game packages to trigger their registration
     await Promise.all([
-
+        import("@baccarat"),
     ]);
 };
 

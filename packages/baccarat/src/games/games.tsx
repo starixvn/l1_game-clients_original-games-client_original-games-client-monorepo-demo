@@ -10,6 +10,7 @@ import { getChipSettings } from "@shared/services/user-setting-service";
 import { Props } from "./type";
 import { LoadingSpinner } from "@shared/components/game-components/game-loading/loading-spinner";
 import { ensureGamesLoaded, getGameLoader } from "./game-discovery";
+import Baccarat from "../page";
 
 const LoadingGameComponent = () => (
     <>
@@ -70,6 +71,7 @@ export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, upd
             updateUserStakeLevel,
         };
 
+        // return <Baccarat {...gameProps} />;
         const loader = getGameLoader(gameId);
         if (!loader) return null;
 
