@@ -1,4 +1,5 @@
 import { GameRoundDataHandler } from "@shared/components/game-base/handlers/game-round-data-handler";
+import { BaccaratGameLogic } from "./baccarat-helper";
 
 export class BaccaratGameRoundDataHandler extends GameRoundDataHandler {
     buildGameRoundDataAfterReceiveFinishEvent(previousRoundData: any, result: any, roundId: number) {
@@ -27,27 +28,67 @@ export class BaccaratGameRoundDataHandler extends GameRoundDataHandler {
     }
 
     private normalizeResult(result: any) {
-        const player = (result?.playerCards || result?.player || []) as number[];
-        const banker = (result?.bankerCards || result?.banker || []) as number[];
-        const winner = (result?.winner || this.calculateWinner(player, banker)) as "player" | "banker" | "tie";
-        return { player, banker, winner };
+        // Handle the new API data format
+        let player: any[] = [];
+        let banker: any[] = [];
+
+        if (result?.result?.player && result?.result?.banker) {
+            // New format: result.player.card1, result.player.card2, etc.
+            const playerCards = [];
+            const bankerCards = [];
+
+            if (result.result.player.card1?.card) playerCards.push(result.result.player.card1);
+            if (result.result.player.card2?.card) playerCards.push(result.result.player.card2);
+            if (result.result.player.card3?.card) playerCards.push(result.result.player.card3);
+
+            if (result.result.banker.card1?.card) bankerCards.push(result.result.banker.card1);
+            if (result.result.banker.card2?.card) bankerCards.push(result.result.banker.card2);
+            if (result.result.banker.card3?.card) bankerCards.push(result.result.banker.card3);
+
+            player = playerCards;
+            banker = bankerCards;
+        } else {
+            // Fallback to old format
+            player = (result?.playerCards || result?.player || []) as any[];
+            banker = (result?.bankerCards || result?.banker || []) as any[];
+        }
+
+        // Determine winner from settlement result or calculate
+        let winner: "player" | "banker" | "tie";
+        if (result?.settlementResult) {
+            if (result.settlementResult.player) {
+                winner = "player";
+            } else if (result.settlementResult.banker) {
+                winner = "banker";
+            } else {
+                winner = "tie";
+            }
+        } else {
+            winner = BaccaratGameLogic.calculateWinner(player, banker);
+        }
+
+        // Add additional baccarat-specific data
+        const playerTotal = BaccaratGameLogic.getBaccaratTotal(player);
+        const bankerTotal = BaccaratGameLogic.getBaccaratTotal(banker);
+        const isNatural = result?.settlementResult?.natural || BaccaratGameLogic.isNatural(player) || BaccaratGameLogic.isNatural(banker);
+        const playerPair = result?.settlementResult?.playerPair || BaccaratGameLogic.hasPair(player);
+        const bankerPair = result?.settlementResult?.bankerPair || BaccaratGameLogic.hasPair(banker);
+        const thirdCardInfo = BaccaratGameLogic.shouldDrawThirdCard(player, banker);
+
+        return {
+            player,
+            banker,
+            winner,
+            playerTotal,
+            bankerTotal,
+            isNatural,
+            playerPair,
+            bankerPair,
+            thirdCardInfo
+        };
     }
 
-    private calculateWinner(player: number[], banker: number[]): "player" | "banker" | "tie" {
-        const p = this.getBaccaratTotal(player);
-        const b = this.getBaccaratTotal(banker);
-        if (p > b) return "player";
-        if (b > p) return "banker";
-        return "tie";
-    }
-
-    private getBaccaratTotal(cards: number[]): number {
-        const toPoint = (v: number) => (v >= 10 ? 0 : v);
-        const sum = (cards || []).reduce((acc, v) => acc + toPoint(v), 0);
-        return sum % 10;
-    }
-
-    private calculateStatistics(prevStats: any, normalized: { player: number[]; banker: number[]; winner: string }) {
+    private calculateStatistics(prevStats: any, normalized: any) {
         const stats = {
             wins: {
                 player: 0,
@@ -55,10 +96,22 @@ export class BaccaratGameRoundDataHandler extends GameRoundDataHandler {
                 tie: 0,
             },
             totals: {
-                player: this.getBaccaratTotal(normalized.player),
-                banker: this.getBaccaratTotal(normalized.banker),
+                player: normalized.playerTotal || BaccaratGameLogic.getBaccaratTotal(normalized.player),
+                banker: normalized.bankerTotal || BaccaratGameLogic.getBaccaratTotal(normalized.banker),
             },
             rounds: 1,
+            naturals: {
+                player: 0,
+                banker: 0,
+            },
+            pairs: {
+                player: 0,
+                banker: 0,
+            },
+            thirdCards: {
+                player: 0,
+                banker: 0,
+            },
         } as any;
 
         if (prevStats) {
@@ -66,11 +119,36 @@ export class BaccaratGameRoundDataHandler extends GameRoundDataHandler {
             stats.wins.banker = prevStats.wins?.banker || 0;
             stats.wins.tie = prevStats.wins?.tie || 0;
             stats.rounds = (prevStats.rounds || 0) + 1;
+            stats.naturals.player = prevStats.naturals?.player || 0;
+            stats.naturals.banker = prevStats.naturals?.banker || 0;
+            stats.pairs.player = prevStats.pairs?.player || 0;
+            stats.pairs.banker = prevStats.pairs?.banker || 0;
+            stats.thirdCards.player = prevStats.thirdCards?.player || 0;
+            stats.thirdCards.banker = prevStats.thirdCards?.banker || 0;
         }
 
+        // Update win counts
         if (normalized.winner === "player") stats.wins.player += 1;
         if (normalized.winner === "banker") stats.wins.banker += 1;
         if (normalized.winner === "tie") stats.wins.tie += 1;
+
+        // Update natural counts
+        if (normalized.isNatural) {
+            if (BaccaratGameLogic.isNatural(normalized.player)) {
+                stats.naturals.player += 1;
+            }
+            if (BaccaratGameLogic.isNatural(normalized.banker)) {
+                stats.naturals.banker += 1;
+            }
+        }
+
+        // Update pair counts
+        if (normalized.playerPair) stats.pairs.player += 1;
+        if (normalized.bankerPair) stats.pairs.banker += 1;
+
+        // Update third card counts
+        if (normalized.thirdCardInfo?.player) stats.thirdCards.player += 1;
+        if (normalized.thirdCardInfo?.banker) stats.thirdCards.banker += 1;
 
         return stats;
     }

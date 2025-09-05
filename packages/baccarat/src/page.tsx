@@ -17,7 +17,7 @@ import {
 } from "@shared/react-contexts/game-state-context/game-state-context";
 
 import BaccaratBettingBlock from "./betting-block/baccarat-betting-block";
-import BaccaratResultBlock from "./result-block/baccarat-result-block";
+import BaccaratSettlementResult from "./result-block/baccarat-settlement-result";
 import BaccaratRoundHistory from "./round-history/baccarat-round-history";
 import { PlayerResultBoard } from "@shared/components/game-components/player-result-board/player-result-board";
 import { BaccaratBetOptions } from "./baccarat-constants";
@@ -55,7 +55,12 @@ class Baccarat extends GameBase<GameBaseProps, GameBaseState> {
         return <BaccaratRoundHistory />;
     }
     renderResultBlock(): JSX.Element {
-        return <BaccaratResultBlock />;
+        return <BaccaratSettlementResult
+            isAnimationResult={true}
+            isShowResult={true}
+            isFinishShowResult={true}
+            isHideAllCards={false}
+        />;
     }
     renderBettingBlock(): JSX.Element {
         return <BaccaratBettingBlock />;

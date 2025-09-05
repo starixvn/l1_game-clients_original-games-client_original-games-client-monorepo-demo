@@ -1,133 +1,173 @@
-.roundHistory {
-    padding: 20px;
+// Enhanced Baccarat Round History Styles
+.round-history {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border-radius: 12px;
-    border: 2px solid #0f3460;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(233, 69, 96, 0.2);
     margin: 16px 0;
 }
 
-.historyArea {
+.round {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
-.historyArea h3 {
+.text {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    margin-right: 8px;
+    min-width: 120px;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    transition: all 0.3s ease;
+    
+    &:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+}
+
+.arrow {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMSA0TDcgNCIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjxwYXRoIGQ9Ik00IDFMNyA0TDQgNyIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPgo=');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    height: 8px;
+    width: 8px;
+    margin: 0 2px;
+    opacity: 0.6;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    &::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: rgba(0, 0, 0, 0.9);
+    }
+}
+
+.tooltip-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.round-info {
+    font-weight: bold;
     color: #e94560;
     text-align: center;
-    margin: 0 0 16px 0;
-    font-size: 1.5rem;
-    font-weight: bold;
 }
 
-.historyList {
+.scores {
     display: flex;
-    flex-direction: column;
     gap: 8px;
-    max-height: 300px;
-    overflow-y: auto;
+    justify-content: center;
 }
 
-.historyItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    background: rgba(15, 52, 96, 0.3);
-    border-radius: 8px;
-    border: 1px solid rgba(233, 69, 96, 0.2);
-    transition: all 0.2s ease;
-}
-
-.historyItem:hover {
-    background: rgba(15, 52, 96, 0.5);
-    border-color: rgba(233, 69, 96, 0.4);
-}
-
-.roundNumber {
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 0.9rem;
-    min-width: 80px;
-}
-
-.result {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    font-size: 0.85rem;
-}
-
-.player,
-.banker {
-    color: #a0a0a0;
+.player-score {
+    color: #27ae60;
     font-weight: 500;
 }
 
-.winner {
-    padding: 4px 8px;
-    border-radius: 4px;
+.banker-score {
+    color: #e74c3c;
+    font-weight: 500;
+}
+
+.natural {
+    color: #f39c12;
     font-weight: bold;
-    font-size: 0.8rem;
-    min-width: 50px;
     text-align: center;
+    font-size: 11px;
 }
 
-.winner.player {
-    background: rgba(76, 175, 80, 0.2);
-    color: #4caf50;
-    border: 1px solid #4caf50;
+.pairs {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    font-size: 10px;
+    
+    span {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 4px;
+        border-radius: 3px;
+        color: #3498db;
+    }
 }
 
-.winner.banker {
-    background: rgba(33, 150, 243, 0.2);
-    color: #2196f3;
-    border: 1px solid #2196f3;
-}
-
-.winner.tie {
-    background: rgba(255, 152, 0, 0.2);
-    color: #ff9800;
-    border: 1px solid #ff9800;
-}
-
-// Scrollbar styling
-.historyList::-webkit-scrollbar {
-    width: 6px;
-}
-
-.historyList::-webkit-scrollbar-track {
-    background: rgba(15, 52, 96, 0.3);
-    border-radius: 3px;
-}
-
-.historyList::-webkit-scrollbar-thumb {
-    background: rgba(233, 69, 96, 0.5);
-    border-radius: 3px;
-}
-
-.historyList::-webkit-scrollbar-thumb:hover {
-    background: rgba(233, 69, 96, 0.7);
+.loading {
+    text-align: center;
+    color: #ffffff;
+    font-size: 14px;
+    padding: 20px;
+    opacity: 0.7;
 }
 
 // Responsive design
 @media (max-width: 768px) {
-    .historyItem {
+    .round {
+        gap: 6px;
+    }
+    
+    .text {
+        font-size: 12px;
+        min-width: 100px;
+    }
+    
+    .tooltip {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+    
+    .scores {
         flex-direction: column;
-        gap: 8px;
-        align-items: flex-start;
+        gap: 2px;
     }
-    
-    .result {
-        width: 100%;
-        justify-content: space-between;
+}
+
+// Animation for new items
+.history-item {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
     }
-    
-    .roundNumber {
-        min-width: auto;
-    }
-    
-    .historyArea h3 {
-        font-size: 1.2rem;
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
