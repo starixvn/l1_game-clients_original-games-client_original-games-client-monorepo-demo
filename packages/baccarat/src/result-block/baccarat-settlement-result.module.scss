@@ -1,10 +1,63 @@
-// Baccarat Settlement Result Styles
-.settlement-container {
-    width: 100%;
-    padding: 1rem;
+// Baccarat Settlement Result Styles - Following Sedie Plate Pattern
+.baccarat-result-object {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    transform-origin: center bottom;
+}
+
+.baccarat-result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    transform-origin: center bottom;
+}
+
+.baccarat-result-container-idle {
+    transform: translateX(0) translateY(0) rotate(0deg) scaleX(1) scaleY(1);
+}
+
+.baccarat-result-container-shake {
+    animation: baccarat-shake calc(var(--shake-duration) / 2) ease-in-out 2;
+}
+
+.baccarat-result-display {
+    width: 400px;
+    height: 300px;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(233, 69, 96, 0.3);
+}
+
+.baccarat-result-idle {
+    transform: translateX(0) translateY(0) rotate(0deg) scaleX(1) scaleY(1);
+}
+
+.baccarat-result-shake {
+    animation: baccarat-shake calc(var(--shake-duration) / 2) ease-in-out 2;
+}
+
+.baccarat-result-open {
+    animation: baccarat-open var(--open-duration) ease-in-out forwards;
+}
+
+.baccarat-result-close {
+    animation: baccarat-close var(--close-duration) ease-in-out forwards;
+}
+
+.settlement-container {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .cards-display {
@@ -281,4 +334,75 @@
 .winner .card {
     animation: cardFlip 0.6s ease-in-out;
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+// Sedie-style shake animation
+@keyframes baccarat-shake {
+    0%, 100% {
+        transform: translateX(0) translateY(0) rotate(0deg) scaleX(1) scaleY(1);
+    }
+    10% {
+        transform: translateX(-8px) translateY(-4px) rotate(-3deg);
+    }
+    15% {
+        transform: scaleX(0.8) scaleY(0.8);
+    }
+    20% {
+        transform: translateX(8px) translateY(-4px) rotate(3deg);
+    }
+    30% {
+        transform: translateX(-8px) translateY(4px) rotate(-3deg) scaleX(1.1) scaleY(1.1);
+    }
+    40% {
+        transform: translateX(8px) translateY(4px) rotate(3deg);
+    }
+    45% {
+        transform: scaleX(0.8) scaleY(0.8);
+    }
+    50% {
+        transform: translateX(-4px) translateY(-8px) rotate(-2deg);
+    }
+    60% {
+        transform: translateX(4px) translateY(-8px) rotate(2deg) scaleX(1.1) scaleY(1.1);
+    }
+    70% {
+        transform: translateX(-4px) translateY(8px) rotate(-2deg);
+    }
+    75% {
+        transform: scaleX(1.1) scaleY(1.1);
+    }
+    80% {
+        transform: translateX(4px) translateY(8px) rotate(2deg);
+    }
+    90% {
+        transform: translateX(-2px) translateY(-2px) rotate(-1deg) scaleX(0.8) scaleY(0.8);
+    }
+}
+
+// Open animation keyframes
+@keyframes baccarat-open {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    80% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+}
+
+// Close animation keyframes
+@keyframes baccarat-close {
+    0% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

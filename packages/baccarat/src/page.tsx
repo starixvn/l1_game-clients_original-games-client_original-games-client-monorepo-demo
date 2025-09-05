@@ -55,12 +55,7 @@ class Baccarat extends GameBase<GameBaseProps, GameBaseState> {
         return <BaccaratRoundHistory />;
     }
     renderResultBlock(): JSX.Element {
-        return <BaccaratSettlementResult
-            isAnimationResult={true}
-            isShowResult={true}
-            isFinishShowResult={true}
-            isHideAllCards={false}
-        />;
+        return <BaccaratSettlementResult />;
     }
     renderBettingBlock(): JSX.Element {
         return <BaccaratBettingBlock />;
