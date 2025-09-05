@@ -1,6 +1,3 @@
-// Register the game when the module is loaded
-import './game-registry';
-
 // Export the main page component
 export { default } from './page';
 

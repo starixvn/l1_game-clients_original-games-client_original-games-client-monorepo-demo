@@ -1,89 +1,100 @@
 import { useTheme } from "next-themes";
-import dynamic from "next/dynamic";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { getAppSettings } from "@shared/app-settings";
-import { SettingEventActionType, SystemContextProvider, usePlayerContext, useSettingDispatch } from "@shared/react-contexts";
+import { GameIds } from "@shared/constants";
+import { SettingEventActionType, usePlayerContext, useSettingDispatch } from "@shared/react-contexts";
 import { useBlockBetSound, usePlaceBetSound, useStartDrawSound, useStartRoundSound } from "@shared/react-hooks";
 import { GameSound } from "@shared/components/game-base/type";
 import GameLoading from "@shared/components/game-components/game-loading";
 import { getChipSettings } from "@shared/services/user-setting-service";
-import { Props } from "./type";
+import { Props, GameComponentProps, GameComponentRegistry } from "./type";
 import { LoadingSpinner } from "@shared/components/game-components/game-loading/loading-spinner";
-import { ensureGamesLoaded, getGameLoader } from "./game-discovery";
+import SeDieMultiPlayer from "../page";
 
-const LoadingGameComponent = () => (
+const LoadingGameComponent = React.memo(() => (
     <>
         <GameLoading />
         <LoadingSpinner />
     </>
-);
+));
 
-const createDynamicGameComponent = (loader: () => Promise<any>) => {
-    return dynamic(loader, { loading: () => <LoadingGameComponent /> });
+LoadingGameComponent.displayName = "LoadingGameComponent";
+
+// Game registry for better scalability
+const gameComponentRegistry: GameComponentRegistry = {
+    [GameIds.SeDieMultiplayer]: SeDieMultiPlayer,
 };
 
 export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, updateUserStakeLevel, openGameId }) => {
     const { theme } = useTheme();
     const { session } = usePlayerContext();
     const settingDispatch = useSettingDispatch();
-    const [gamesLoaded, setGamesLoaded] = useState(false);
 
-    useEffect(() => {
-        (async () => {
-            // Load all game packages to ensure they register themselves
-            await ensureGamesLoaded();
-            setGamesLoaded(true);
+    const playPlaceBetSound = usePlaceBetSound();
+    const startPlaceBetSound = useStartDrawSound();
+    const startRoundSound = useStartRoundSound();
+    const blockBetSound = useBlockBetSound();
 
-            const chipSettings = await getChipSettings(session);
-            settingDispatch({
-                type: SettingEventActionType.UPDATE_CHIPS,
-                payload: {
-                    chipSettings: chipSettings?.chips,
-                },
-            });
-        })();
-        // Dependencies stable for session init
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const gameSound: GameSound = useMemo(
+        () => ({
+            playPlaceBetSound,
+            startPlaceBetSound,
+            startRoundSound,
+            blockBetSound,
+        }),
+        [playPlaceBetSound, startPlaceBetSound, startRoundSound, blockBetSound]
+    );
 
-    const gameSound: GameSound = {
-        playPlaceBetSound: usePlaceBetSound(),
-        startPlaceBetSound: useStartDrawSound(),
-        startRoundSound: useStartRoundSound(),
-        blockBetSound: useBlockBetSound(),
-    };
-
-    const getGameComponentById = (gameId: number) => {
-        if (!gamesLoaded) {
-            return <LoadingGameComponent />;
+    const loadChipSettings = useCallback(async () => {
+        if (!session) {
+            return;
         }
 
+        try {
+            const chipSettings = await getChipSettings(session);
+            if (chipSettings) {
+                settingDispatch({
+                    type: SettingEventActionType.UPDATE_CHIPS,
+                    payload: {
+                        chipSettings: chipSettings.chips,
+                    },
+                });
+            }
+        } catch (error) {
+            console.error("Failed to load chip settings:", error);
+        }
+    }, [session, settingDispatch, setApiErrorMessage]);
+
+    useEffect(() => {
+        loadChipSettings();
+    }, [loadChipSettings]);
+
+    const gameProps: GameComponentProps = useMemo(() => {
         const appSettings = getAppSettings();
         const { gameSettings } = appSettings;
 
-        const gameProps = {
-            ...gameSettings[gameId],
+        return {
+            ...gameSettings[openGameId],
             gameSound,
-            setApiErrorMessage: setApiErrorMessage,
+            setApiErrorMessage,
             theme,
             userStakeLevel,
             updateUserStakeLevel,
         };
+    }, [openGameId, gameSound, setApiErrorMessage, theme, userStakeLevel, updateUserStakeLevel]);
 
-        const loader = getGameLoader(gameId);
-        if (!loader) return null;
+    const renderGameComponent = useCallback(() => {
+        const GameComponent = gameComponentRegistry[openGameId];
 
-        // Create dynamic component with loader
-        const DynGame = createDynamicGameComponent(loader);
-        return <DynGame key={`game-${gameId}`} {...gameProps} />;
-    };
+        if (!GameComponent) {
+            console.warn(`No game component found for game ID: ${openGameId}`);
+            return null;
+        }
 
-    const defaultGameId = Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || 0);
-    const effectiveGameId = openGameId || defaultGameId;
+        return <GameComponent key={`game-${openGameId}`} {...gameProps} />;
+    }, [openGameId, gameProps]);
 
-    const gameComponent = getGameComponentById(effectiveGameId);
-
-    return <SystemContextProvider>{gameComponent}</SystemContextProvider>;
+    return renderGameComponent();
 };
 
 export default Games;
