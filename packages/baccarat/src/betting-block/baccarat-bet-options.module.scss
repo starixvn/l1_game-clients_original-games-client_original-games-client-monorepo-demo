@@ -1,41 +1,66 @@
 .bettingWrapper {
     display: flex;
     flex-direction: column;
+    gap: 12px;
 }
 
 .subOptionsRow {
     display: flex;
-    gap: 8px;
-    margin-top: 8px;
+    gap: 12px;
+    align-items: stretch;
 }
 
 .mainOptionsRow {
     display: flex;
     justify-content: space-between;
-    margin: 8px 0 20px;
+    gap: 12px;
 }
 
 .pairOptionsRow {
     display: flex;
-    gap: 8px;
+    gap: 12px;
 }
 
 .btnRipple {
     border-radius: 10px;
 }
 
-.mainOption {
-    border-radius: 20px;
+.mainOptionBase {
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(22, 39, 94, 0.95) 0%, rgba(22, 39, 94, 0.7) 100%);
 }
 
 .betOptionBox {
     position: relative;
+    border-radius: 12px;
 }
 
 .highlight {
     position: absolute;
     inset: 0;
     pointer-events: none;
+}
+
+/* Visual sizes tuned to provided mock image */
+.betOptionBox > div {
+    height: 110px;
+    background: linear-gradient(180deg, rgba(20, 27, 52, 0.85) 0%, rgba(20, 27, 52, 0.65) 100%);
+    border-radius: 12px;
+    padding: 8px 10px;
+}
+
+
+
+.playerTheme {
+    background: radial-gradient(82% 82% at 50% 50%, #3C6BF0 0%, #0F2A66 100%);
+}
+
+.bankerTheme {
+    background: radial-gradient(82% 82% at 50% 50%, #C43A3A 0%, #4A0C0C 100%);
+}
+
+.tieTheme {
+    background: radial-gradient(82% 82% at 50% 50%, #1F5B2C 0%, #0E2E18 100%);
 }
 
 

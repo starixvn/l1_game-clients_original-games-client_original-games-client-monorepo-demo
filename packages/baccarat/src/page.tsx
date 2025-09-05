@@ -5,6 +5,7 @@ import GameBase from "@shared/components/game-base";
 import { GameMessageHandler } from "@shared/components/game-base/handlers";
 import { GameBaseHandlers, GameBaseProps, GameBaseState } from "@shared/components/game-base/type";
 import { RoundGameSoundHandler } from "@shared/components/round-base/round-game-sound-handler";
+import { BaccaratGameRoundDataHandler } from "./baccarat-game-round-data-handler";
 import { RoundStateHandler } from "@shared/components/round-base/round-state-handler";
 import { RoundIdHandler } from "@shared/components/round-base/round-id-handler";
 import { useTranslator } from "@shared/react-hooks";
@@ -31,7 +32,7 @@ class Baccarat extends GameBase<GameBaseProps, GameBaseState> {
         const handlers: GameBaseHandlers = {
             roundStateHandler: new RoundStateHandler(),
             gameMessageHandler,
-            gameRoundDataHandler: undefined as unknown as any,
+            gameRoundDataHandler: new BaccaratGameRoundDataHandler(),
             gameSoundHandler: new RoundGameSoundHandler({ gameSound: () => props.gameSound }),
         };
         super(props, handlers);
