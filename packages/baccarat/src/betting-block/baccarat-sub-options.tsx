@@ -24,7 +24,7 @@ const SubBet = ({ tolgeeNamespace, choice }: { tolgeeNamespace: string; choice: 
 
 export const BaccaratSubOptions = ({ tolgeeNamespace, choices }: { tolgeeNamespace: string; choices: string[] }) => {
     return (
-        <div className={`flex rounded-2xl mt-2 ${styles["subOptionsRow"]}`}>
+        <div className={`flex rounded-2xl ${styles["subOptionsRow"]}`}>
             {choices.map((c) => (
                 <SubBet key={c} tolgeeNamespace={tolgeeNamespace} choice={c} />
             ))}

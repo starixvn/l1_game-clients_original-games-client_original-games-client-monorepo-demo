@@ -5,6 +5,7 @@ import GameBase from "@shared/components/game-base";
 import { GameMessageHandler } from "@shared/components/game-base/handlers";
 import { GameBaseHandlers, GameBaseProps, GameBaseState } from "@shared/components/game-base/type";
 import { RoundGameSoundHandler } from "@shared/components/round-base/round-game-sound-handler";
+import { BaccaratGameRoundDataHandler } from "./baccarat-game-round-data-handler";
 import { RoundStateHandler } from "@shared/components/round-base/round-state-handler";
 import { RoundIdHandler } from "@shared/components/round-base/round-id-handler";
 import { useTranslator } from "@shared/react-hooks";
@@ -16,7 +17,7 @@ import {
 } from "@shared/react-contexts/game-state-context/game-state-context";
 
 import BaccaratBettingBlock from "./betting-block/baccarat-betting-block";
-import BaccaratResultBlock from "./result-block/baccarat-result-block";
+import BaccaratSettlementResult from "./result-block/baccarat-settlement-result";
 import BaccaratRoundHistory from "./round-history/baccarat-round-history";
 import { PlayerResultBoard } from "@shared/components/game-components/player-result-board/player-result-board";
 import { BaccaratBetOptions } from "./baccarat-constants";
@@ -31,7 +32,7 @@ class Baccarat extends GameBase<GameBaseProps, GameBaseState> {
         const handlers: GameBaseHandlers = {
             roundStateHandler: new RoundStateHandler(),
             gameMessageHandler,
-            gameRoundDataHandler: undefined as unknown as any,
+            gameRoundDataHandler: new BaccaratGameRoundDataHandler(),
             gameSoundHandler: new RoundGameSoundHandler({ gameSound: () => props.gameSound }),
         };
         super(props, handlers);
@@ -54,7 +55,7 @@ class Baccarat extends GameBase<GameBaseProps, GameBaseState> {
         return <BaccaratRoundHistory />;
     }
     renderResultBlock(): JSX.Element {
-        return <BaccaratResultBlock />;
+        return <BaccaratSettlementResult />;
     }
     renderBettingBlock(): JSX.Element {
         return <BaccaratBettingBlock />;

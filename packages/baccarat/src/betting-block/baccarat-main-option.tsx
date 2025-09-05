@@ -11,9 +11,12 @@ import BaccaratHighlightBetOption from "./baccarat-highlight-bet-option";
 export const BaccaratMainOption = ({ tolgeeNamespace, choice }: { tolgeeNamespace: string; choice: string }) => {
     const buttonId = `${tolgeeNamespace}-choice-${choice}`;
 
+    const themeClass =
+        choice === "PLAYER" ? styles.playerTheme : choice === "BANKER" ? styles.bankerTheme : styles.tieTheme;
+
     return (
         <div className="relative">
-            <div className={`text-white relative w-[180px] h-[138px] flex flex-col justify-around ${styles["mainOption"]} md:w-[229px]`}>
+            <div className={`text-white relative w-[180px] h-[138px] flex flex-col justify-around ${styles["mainOptionBase"]} ${themeClass} md:w-[229px]`}>
                 <TotalBet choice={choice} className={"h-6 pt-1 flex items-center justify-center"} tolgeeNamespace={tolgeeNamespace} />
                 <div>
                     <BetChoice tolgeeNamespace={tolgeeNamespace} choice={choice} className=" text-xl font-bold" />
