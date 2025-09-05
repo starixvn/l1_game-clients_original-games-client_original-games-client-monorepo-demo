@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { randomNumberSeries } from "@shared/helpers";
+import { GameIds } from "@shared/constants";
 import { GameMessageHandler, messageEventType } from "../game-message-handler";
 import { Socket } from "socket.io-client";
 import { usePFStore } from "@shared/stores/pf-store/pf-store";
@@ -35,7 +36,11 @@ export const PFWrapper = (props: PFWrapperProps) => {
                 return;
             }
 
-            // If game requires minimal payload, use __pfMode above; otherwise, include clientSeedDetail below
+            // Force attach clientSeed for Sedie Multiplayer bet event
+            if (props.gameId === GameIds.SeDieMultiplayer && event === "bet") {
+                props.socket.emit(event, { ...data, clientSeed });
+                return;
+            }
 
             const clientSeedDetail = {
                 randomClientSeed: pfClientSeedSetting?.randomClientSeed,
