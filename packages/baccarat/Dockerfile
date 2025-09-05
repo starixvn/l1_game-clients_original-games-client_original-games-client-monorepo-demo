@@ -24,6 +24,8 @@ COPY . .
 
 # Build Baccarat app
 WORKDIR /app/packages/baccarat
+# Obfuscate deployment configs (generates configs/*/obfuscations -> c/*)
+RUN yarn obfuscator-config-file
 ARG NEXT_PUBLIC_BASE_PATH
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 RUN yarn build:standalone
