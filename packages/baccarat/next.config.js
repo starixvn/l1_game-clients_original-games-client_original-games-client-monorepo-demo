@@ -70,10 +70,26 @@ const nextConfig = withSentryConfig({
         REACT_APP_TOLGEE_API_KEY: "tgpak_gvpw45brha2xg3btoztxeytunvudc5dbn5twqodtonztc",
     },
     async rewrites() {
+        // Build remote origin for proxying API requests in dev/standalone
+        const serverDomain = (baseAppSettings?.serverDomainMapper && baseAppSettings.serverDomainMapper["localhost"]) || "lumigame.com";
+        const proxyConf = baseAppSettings?.proxy || { ssl: true, subDomain: "l2-proxy1", path: "" };
+        const protocol = proxyConf.ssl ? "https" : "http";
+        const remoteOrigin = `${protocol}://${proxyConf.subDomain}.${serverDomain}`;
+        const proxyPath = proxyConf.path || "";
+
         const base = [
             {
                 source: "/health",
                 destination: "/api/health",
+            },
+            // Proxy user/lobby service calls to remote to avoid CORS in standalone dev
+            {
+                source: "/user/:path*",
+                destination: `${remoteOrigin}${proxyPath}/user/:path*`,
+            },
+            {
+                source: "/lobby/:path*",
+                destination: `${remoteOrigin}${proxyPath}/lobby/:path*`,
             },
         ];
 
@@ -142,7 +158,19 @@ const nextConfig = withSentryConfig({
     },
     sassOptions: {
         prependData: `$version-image: '${buildVersion}';`,
-        includePaths: [require("path").resolve(__dirname, "../shared/src/styles")],
+        includePaths: [
+            require("path").resolve(__dirname, "../shared/src/styles"),
+            require("path").resolve(__dirname, "../shared/src/components"),
+        ],
+        importer: function (url) {
+            // Resolve SCSS imports that use the @shared alias
+            if (typeof url === "string" && url.startsWith("@shared/")) {
+                const path = require("path");
+                const resolved = path.resolve(__dirname, "../shared/src", url.replace(/^@shared\//, ""));
+                return { file: resolved };
+            }
+            return null;
+        },
     },
     output: "standalone",
 });

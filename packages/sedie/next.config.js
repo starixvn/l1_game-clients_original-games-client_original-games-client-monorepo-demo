@@ -158,7 +158,19 @@ const nextConfig = withSentryConfig({
     },
     sassOptions: {
         prependData: `$version-image: '${buildVersion}';`,
-        includePaths: [require("path").resolve(__dirname, "../shared/src/styles")],
+        includePaths: [
+            require("path").resolve(__dirname, "../shared/src/styles"),
+            require("path").resolve(__dirname, "../shared/src/components"),
+        ],
+        importer: function (url) {
+            // Resolve SCSS imports that use the @shared alias
+            if (typeof url === "string" && url.startsWith("@shared/")) {
+                const path = require("path");
+                const resolved = path.resolve(__dirname, "../shared/src", url.replace(/^@shared\//, ""));
+                return { file: resolved };
+            }
+            return null;
+        },
     },
     output: "standalone",
 });
