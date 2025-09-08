@@ -42,8 +42,8 @@ ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 RUN addgroup --system --gid 1001 nodejs  \
      && adduser --system --uid 1001 nextjs
 
-# Copy standalone server and required assets
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/.next/standalone ./
+# Copy the contents so server.js ends up at /app/server.js
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/.next/standalone/ ./
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/public ./public
 
@@ -51,6 +51,7 @@ USER nextjs
 
 EXPOSE 5000
 ENV PORT 5000
-CMD HOSTNAME="0.0.0.0" node server.js
+ENV HOSTNAME 0.0.0.0
+CMD ["node", "server.js"]
 
 
