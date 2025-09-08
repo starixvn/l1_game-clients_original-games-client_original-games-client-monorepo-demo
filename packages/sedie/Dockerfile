@@ -86,4 +86,4 @@ USER nextjs
 EXPOSE 5000
 ENV PORT=5000
 ENV HOSTNAME=0.0.0.0
-CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 next start -p 5000"]
+CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 ./node_modules/.bin/next start -p 5000"]
