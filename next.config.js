@@ -1,3 +1,5 @@
+const gameSettings = require("./game-settings.json");
+const configs = require("./configs.json");
 const { v4: uuidv4 } = require("uuid");
 const { withSentryConfig } = require("@sentry/nextjs");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
@@ -7,39 +9,14 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const enableDevGameIdRewrites = !basePath;
 
-// Function to load game-specific configurations
-const loadGameConfigs = (gameId) => {
-    let configs, gameSettings;
-
-    if (gameId === "148" || gameId === 148) {
-        // SeDie game
-        configs = require("./packages/sedie/configs.json");
-        gameSettings = require("./packages/sedie/game-settings.json");
-    } else if (gameId === "2001" || gameId === 2001) {
-        // Baccarat game
-        configs = require("./packages/baccarat/configs.json");
-        gameSettings = require("./packages/baccarat/game-settings.json");
-    } else {
-        // Default to SeDie if no gameId specified
-        configs = require("./packages/sedie/configs.json");
-        gameSettings = require("./packages/sedie/game-settings.json");
-    }
-
-    return { configs, gameSettings };
-};
-
 // Create a configuration that can be dynamically updated
-const createAppSettings = (config, gameSettings) => ({
+const createAppSettings = (config) => ({
     ...config,
     gameSettings,
 });
 
-// Determine which game to load based on environment or default to SeDie
-const currentGameId = process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || "148";
-const { configs: defaultConfigs, gameSettings: defaultGameSettings } = loadGameConfigs(currentGameId);
-const baseAppSettings = createAppSettings(defaultConfigs, defaultGameSettings);
-// Use a static build version to prevent infinite reload loops
-const buildVersion = process.env.BUILD_VERSION || "dev-build";
+const baseAppSettings = createAppSettings(configs);
+const buildVersion = new Date().getTime();
 
 /**
  * @type {import('next').NextConfig}
@@ -57,16 +34,6 @@ const nextConfig = withSentryConfig({
         // Disable source maps
         config.devtool = false;
 
-        // Aliases to support TS path mapping at runtime
-        config.resolve = config.resolve || {};
-        config.resolve.alias = {
-            ...(config.resolve.alias || {}),
-            "@": require("path").resolve(__dirname, "src"),
-            "@shared": require("path").resolve(__dirname, "packages/shared/src"),
-            "@sedie": require("path").resolve(__dirname, "packages/sedie/src"),
-            "@baccarat": require("path").resolve(__dirname, "packages/baccarat/src"),
-        };
-
         config.module.rules.push({
             test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2|mp3|webp)$/,
             use: {
@@ -82,7 +49,7 @@ const nextConfig = withSentryConfig({
     basePath,
     assetPrefix: basePath || undefined,
     env: {
-        buildVersion: String(buildVersion),
+        buildVersion,
         REACT_APP_TOLGEE_API_URL: "https://tolgee.sabagame.com/",
         REACT_APP_TOLGEE_API_KEY: "tgpak_gvpw45brha2xg3btoztxeytunvudc5dbn5twqodtonztc",
     },
@@ -159,7 +126,6 @@ const nextConfig = withSentryConfig({
     },
     sassOptions: {
         prependData: `$version-image: '${buildVersion}';`,
-        includePaths: [require("path").resolve(__dirname, "packages/shared/src/styles")],
     },
     output: "standalone",
 });

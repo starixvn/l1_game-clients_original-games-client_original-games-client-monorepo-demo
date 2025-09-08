@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import { useMemoriedImage } from "../use-memoried-image";
-import { downloadAndCacheImage, imageCache } from "../../helpers/image-cache-controller";
+import { downloadAndCacheImage, imageCache } from '@shared/helpers/image-cache-controller";
 import { act, waitFor, renderHook } from "@testing-library/react";
 // Mock the image cache controller
 jest.mock("../../helpers/image-cache-controller");

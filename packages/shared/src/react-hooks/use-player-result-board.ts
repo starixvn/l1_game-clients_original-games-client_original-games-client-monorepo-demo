@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { PlayerInPlayerResultBoard, PlayerResultBoard, RoundState } from "@shared/components/game-base/type";
-import useGameStore from "../stores/game-store/game-store";
-import { useGameStateContext } from "../react-contexts/game-state-context/game-state-context";
+import useGameStore from '@shared/stores/game-store/game-store";
+import { useGameStateContext } from '@shared/react-contexts/game-state-context/game-state-context";
 import { useGameContext } from "../react-contexts";
 
 const calculateAmountByRate = (amount: number, rate: number) => {

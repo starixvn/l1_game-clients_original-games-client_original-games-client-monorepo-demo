@@ -11,7 +11,7 @@ var __assign = (this && this.__assign) || function () {
 };
 import { useTranslate } from "@tolgee/react";
 import { createContext, useContext, useReducer } from "react";
-import { RoundState } from "../../../components/game-base/type";
+import { RoundState } from '@shared/components/game-base/type";
 import { LanguageLocaleMapper } from "../../constants";
 import { tolgee } from "../../tolgee";
 import { GameEventActionType } from "./game-event-action";

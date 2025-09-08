@@ -1,8 +1,8 @@
 import { GameConfigs, RoundState } from "@shared/components/game-base/type";
 import { confirmBet } from "../constants";
-import { NoticeErrorCode } from "../constants/error-code-dictionary";
-import { GameStateContextModel } from "../react-contexts/game-state-context/game-state-context-model";
-import { PlaceBetContextModel } from "../react-contexts/game-state-context/place-bet-context/place-bet-context-model";
+import { NoticeErrorCode } from '@shared/constants/error-code-dictionary";
+import { GameStateContextModel } from '@shared/react-contexts/game-state-context/game-state-context-model";
+import { PlaceBetContextModel } from '@shared/react-contexts/game-state-context/place-bet-context/place-bet-context-model";
 
 export interface IAvailableSuggestBetAmount {
     suggestAmount?: number;

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo } from "react";
-import { sendBalanceUpdateToParent, sendNicknameUpdateToParent } from "../utils/iframe-messages";
-import { usePlayerContext } from "../react-contexts/auth";
-import { useGlobalEventsStore } from "../stores/global-events-store/global-events-store";
+import { sendBalanceUpdateToParent, sendNicknameUpdateToParent } from '@shared/utils/iframe-messages";
+import { usePlayerContext } from '@shared/react-contexts/auth";
+import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store";
 import { getBalance } from "@shared/services/auth-service";
 
 export const useBalanceSync = () => {

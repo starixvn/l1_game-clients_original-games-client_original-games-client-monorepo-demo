@@ -1,4 +1,4 @@
-import { Round, RoundState } from "../../components/game-base/type";
+import { Round, RoundState } from '@shared/components/game-base/type";
 interface UseResultProps<R> {
     result: R;
     roundState: RoundState;

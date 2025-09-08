@@ -1,10 +1,10 @@
 import isEmpty from "lodash/isEmpty";
 import { createContext, useContext } from "react";
-import { StorageHelper, localStorageKeys } from "../helpers/storage-helper";
+import { StorageHelper, localStorageKeys } from '@shared/helpers/storage-helper";
 // Removed hardcoded default GameIds to allow per-app defaults via env
-import { AnalyticsHelper } from "../helpers/analytic-helper";
-import { GameUtils } from "../helpers/base-64-helper";
-import { broadcastBackToLobby } from "../helpers/global-events-helper";
+import { AnalyticsHelper } from '@shared/helpers/analytic-helper";
+import { GameUtils } from '@shared/helpers/base-64-helper";
+import { broadcastBackToLobby } from '@shared/helpers/global-events-helper";
 
 export type URLContextModel = {
     token?: string;

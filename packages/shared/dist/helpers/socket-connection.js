@@ -2,9 +2,9 @@ import { io } from "socket.io-client";
 import MsgpackParser from "socket.io-msgpack-parser";
 import { getAppSettings } from "../app-settings";
 import { buildServerUrl } from "../helpers";
-import { messageEventType } from "../../components/game-base/handlers";
-import useGameStore from "../stores/game-store/game-store";
-import useBettingStore from "../stores/betting-store/betting-store";
+import { messageEventType } from '@shared/components/game-base/handlers";
+import useGameStore from '@shared/stores/game-store/game-store";
+import useBettingStore from '@shared/stores/betting-store/betting-store";
 export function InitSocketIO(socketInfo, session, gameName, gameMessageHandler) {
     var _a = getAppSettings(), proxy = _a.proxy, enableMsgpackParser = _a.enableMsgpackParser;
     var socketUri = buildServerUrl(socketInfo.namespace);

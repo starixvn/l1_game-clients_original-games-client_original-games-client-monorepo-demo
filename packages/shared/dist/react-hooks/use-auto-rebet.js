@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
-import { useGameStore } from "../stores/game-store/game-store";
-import { RoundState } from "../../components/game-base/type";
-import useBettingStore from "../stores/betting-store/betting-store";
+import { useGameStore } from '@shared/stores/game-store/game-store";
+import { RoundState } from '@shared/components/game-base/type";
+import useBettingStore from '@shared/stores/betting-store/betting-store";
 import { useRebet } from "./use-rebet";
 export var useAutoRebet = function () {
     var _a = useBettingStore(useShallow(function (state) { return ({

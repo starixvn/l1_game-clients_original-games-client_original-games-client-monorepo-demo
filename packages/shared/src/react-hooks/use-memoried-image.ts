@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { downloadAndCacheImage, imageCache } from "../helpers/image-cache-controller";
+import { downloadAndCacheImage, imageCache } from '@shared/helpers/image-cache-controller";
 
 export const useMemoriedImage = (path: string) => {
     const [data, setData] = useState<string | null>(imageCache[path]?.data || null);

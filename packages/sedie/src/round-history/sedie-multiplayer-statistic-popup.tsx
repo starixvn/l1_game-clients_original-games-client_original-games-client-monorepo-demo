@@ -1,5 +1,5 @@
 import React from "react";
-import ScoreboardSeDie from "../scoreboard/scoreboard";
+import ScoreboardSeDie from '@sedie/scoreboard/scoreboard";
 import { mainChoices, SeDieChoices, SeDieStatisticColors } from "../sedie-multiplayer-constants";
 import PercentageStatistic from "@shared/components/game-components/statistic";
 import useGameStore from "@shared/stores/game-store/game-store";

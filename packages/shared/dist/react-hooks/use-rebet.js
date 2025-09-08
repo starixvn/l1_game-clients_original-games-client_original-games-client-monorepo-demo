@@ -10,14 +10,14 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 import { useShallow } from "zustand/shallow";
-import useBettingStore from "../stores/betting-store/betting-store";
-import { useGameStore } from "../stores/game-store/game-store";
+import useBettingStore from '@shared/stores/betting-store/betting-store";
+import { useGameStore } from '@shared/stores/game-store/game-store";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { RoundState } from "../../components/game-base/type";
+import { RoundState } from '@shared/components/game-base/type";
 import { useClientSeedPF } from "./use-client-seed-pf";
 import { usePlayerContext } from "../react-contexts";
-import { useGlobalEventsStore } from "../stores/global-events-store/global-events-store";
-import { NoticeErrorCode } from "../constants/error-code-dictionary";
+import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store";
+import { NoticeErrorCode } from '@shared/constants/error-code-dictionary";
 import { broadcastNotice, getNotice } from "../helpers";
 var RETRY_INTERVAL_MS = 3000;
 export var useRebet = function (isDoubleBet) {

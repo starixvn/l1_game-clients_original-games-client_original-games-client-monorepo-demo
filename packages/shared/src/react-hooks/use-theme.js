@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useThemeStore } from '../stores/theme-store/theme-store';
+import { useThemeStore } from '@shared/stores/theme-store/theme-store';
 import { Themes } from '../constants';
 export var useAppTheme = function () {
     var _a = useThemeStore(), currentTheme = _a.currentTheme, isDark = _a.isDark, setTheme = _a.setTheme, toggleTheme = _a.toggleTheme;

@@ -11,7 +11,7 @@ var __assign = (this && this.__assign) || function () {
 };
 import { RoundState } from "@shared/components/game-base/type";
 import { confirmBet } from "../constants";
-import { NoticeErrorCode } from "../constants/error-code-dictionary";
+import { NoticeErrorCode } from '@shared/constants/error-code-dictionary";
 var SuggestBetMode;
 (function (SuggestBetMode) {
     SuggestBetMode["ReachMaxBet"] = "ReachMaxBet";

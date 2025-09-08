@@ -9,8 +9,8 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import ErrorCodeDictionary from "../constants/error-code-dictionary";
-import { useNoticeStore } from "../stores/notice-store/notice-store";
+import ErrorCodeDictionary from '@shared/constants/error-code-dictionary";
+import { useNoticeStore } from '@shared/stores/notice-store/notice-store";
 export var GetLocalizedErrorMessage = function (errorCode, isPlaceBet) {
     if (isPlaceBet === void 0) { isPlaceBet = false; }
     var errorMessage = ErrorCodeDictionary[errorCode];

@@ -1,6 +1,6 @@
-import ErrorCodeDictionary from "../constants/error-code-dictionary";
+import ErrorCodeDictionary from '@shared/constants/error-code-dictionary";
 import { NoticeModel } from "@shared/components/game-base/type";
-import { useNoticeStore } from "../stores/notice-store/notice-store";
+import { useNoticeStore } from '@shared/stores/notice-store/notice-store";
 
 export interface INotice {
     errorCode: string;

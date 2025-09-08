@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { PFClientSeedSetting } from "../../../components/game-base/type";
+import { PFClientSeedSetting } from '@shared/components/game-base/type";
 export interface PFSettingsSlice {
     isShowPFSetting: boolean;
     pfClientSeedSetting: PFClientSeedSetting;

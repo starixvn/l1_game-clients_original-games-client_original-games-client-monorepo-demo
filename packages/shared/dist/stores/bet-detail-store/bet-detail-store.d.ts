@@ -1,4 +1,4 @@
-import { DrawInfo } from "../../../components/game-base/type";
+import { DrawInfo } from '@shared/components/game-base/type";
 export interface BetDetailData {
     drawInfo: DrawInfo;
     betLogDetails: any[];

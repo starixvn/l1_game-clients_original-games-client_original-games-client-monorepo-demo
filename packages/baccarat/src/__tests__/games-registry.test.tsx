@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { Games } from "../games/games";
+import { Games } from '@sedie/games/games";
 
 // Mocks for shared contexts used by Games
 jest.mock("@shared/react-contexts", () => ({

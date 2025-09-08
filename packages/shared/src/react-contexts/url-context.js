@@ -14,10 +14,10 @@ var __assign =
     };
 import isEmpty from "lodash/isEmpty";
 import { createContext, useContext } from "react";
-import { StorageHelper, localStorageKeys } from "../helpers/storage-helper";
-import { AnalyticsHelper } from "../helpers/analytic-helper";
-import { GameUtils } from "../helpers/base-64-helper";
-import { broadcastBackToLobby } from "../helpers/global-events-helper";
+import { StorageHelper, localStorageKeys } from '@shared/helpers/storage-helper";
+import { AnalyticsHelper } from '@shared/helpers/analytic-helper";
+import { GameUtils } from '@shared/helpers/base-64-helper";
+import { broadcastBackToLobby } from '@shared/helpers/global-events-helper";
 export function parseContextFromURL() {
     var _a;
     // Fix: Handle HTML-encoded ampersands by decoding them first

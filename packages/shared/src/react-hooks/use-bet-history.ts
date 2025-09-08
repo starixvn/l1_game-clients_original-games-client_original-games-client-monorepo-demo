@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useGameContext } from '../react-contexts';
-import useBetHistoryStore from '../stores/bet-history-store/bet-history-store';
+import useBetHistoryStore from '@shared/stores/bet-history-store/bet-history-store';
 import { BetHistoryHandler } from '@shared/components/game-base/handlers/bet-history-handler';
 import { useShallow } from 'zustand/react/shallow';
 

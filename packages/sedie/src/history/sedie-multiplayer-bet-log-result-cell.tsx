@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import Styles from "../history/history.module.scss";
+import Styles from '@sedie/history/history.module.scss";
 
 const SedieMultiplayerBetLogResultCell: FC<{ result?: { balls?: number[] } | Record<string, boolean> | null }> = ({ result }) => {
     const balls = Array.isArray(result?.balls) ? result.balls : [];

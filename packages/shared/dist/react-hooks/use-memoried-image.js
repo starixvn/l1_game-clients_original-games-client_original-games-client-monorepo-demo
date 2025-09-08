@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import { useCallback, useEffect, useState } from "react";
-import { downloadAndCacheImage, imageCache } from "../helpers/image-cache-controller";
+import { downloadAndCacheImage, imageCache } from '@shared/helpers/image-cache-controller";
 export var useMemoriedImage = function (path) {
     var _a;
     var _b = useState(((_a = imageCache[path]) === null || _a === void 0 ? void 0 : _a.data) || null), data = _b[0], setData = _b[1];

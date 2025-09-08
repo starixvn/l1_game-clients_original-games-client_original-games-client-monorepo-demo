@@ -10,7 +10,7 @@ import { ResourceTypes } from "@shared/resources";
 import { useGameContext } from "@shared/react-contexts";
 import { useShallow } from "zustand/react/shallow";
 import Image from "next/image";
-import { getWinningSubOption } from "../history/sedie-multiplayer-bet-detail-result-block";
+import { getWinningSubOption } from '@sedie/history/sedie-multiplayer-bet-detail-result-block";
 import { useBetDetailStore } from "@shared/stores/bet-detail-store/bet-detail-store";
 
 const PFVerification: FC = () => {
