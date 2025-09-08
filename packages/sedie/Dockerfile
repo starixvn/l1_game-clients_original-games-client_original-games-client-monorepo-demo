@@ -23,6 +23,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/package.json ./package.json
 COPY --from=deps /app/yarn.lock ./yarn.lock
 
+# Copy root tsconfig.json that sedie extends
+COPY tsconfig.json ./tsconfig.json
+
 # Copy only sedie-specific files
 COPY packages/sedie/package.json packages/sedie/package.json
 COPY packages/sedie/next.config.js packages/sedie/next.config.js
@@ -66,10 +69,14 @@ ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 RUN addgroup --system --gid 1001 nodejs  \
      && adduser --system --uid 1001 nextjs
 
-# Copy the standalone server and required assets
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/.next/standalone/ ./
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/.next/static ./.next/static
+# Copy the built app and required assets
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/next.config.js ./next.config.js
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/game-settings.json ./game-settings.json
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/configs.json ./configs.json
 
 # Ensure proper permissions for the .next directory
 RUN chown -R nextjs:nodejs .next
@@ -79,4 +86,4 @@ USER nextjs
 EXPOSE 5000
 ENV PORT=5000
 ENV HOSTNAME=0.0.0.0
-CMD ["node", "server.js"]
+CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 next start -p 5000"]
