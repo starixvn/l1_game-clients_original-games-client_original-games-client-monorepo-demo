@@ -8,6 +8,7 @@
         "obfuscator-config-file": "node ./configs/config-obfuscator.js",
         "build": "node -e \"console.log('Skipping sedie package build (using app sources)')\"",
         "clean": "rimraf dist",
+        "dev": "next dev",
         "dev:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 FAST_REFRESH=false next dev -p 3001",
         "build:standalone": "next build",
         "start:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 next start -p 3001"
@@ -22,6 +23,7 @@
         "classnames": "^2.3.2",
         "cross-env": "^7.0.3",
         "next": "14.2.31",
+        "next-themes": "^0.3.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "uuid": "^9.0.0"

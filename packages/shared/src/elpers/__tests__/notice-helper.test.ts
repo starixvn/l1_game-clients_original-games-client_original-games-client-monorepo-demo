@@ -1,5 +1,5 @@
 import { GetLocalizedErrorMessage, broadcastNotice, createNoticeFromErrorCode } from "../notice-helper";
-import { useNoticeStore } from '@shared/stores/notice-store/notice-store";
+import { useNoticeStore } from '@shared/stores/notice-store/notice-store';
 import { NoticeModel } from '@shared/components/game-base/type";
 
 // Mock the notice store
@@ -304,7 +304,7 @@ describe("NoticeHelper", () => {
 
         it("should handle error message localization with notice creation", () => {
             // Arrange
-            const errorCode = "LOCALIZATION_TEST";
+            const errorCode = "LOCALIZATION_TEST';
 
             // Act
             const localizedMessage = GetLocalizedErrorMessage(errorCode);

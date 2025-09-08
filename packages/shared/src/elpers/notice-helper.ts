@@ -1,5 +1,5 @@
-import ErrorCodeDictionary from '@shared/constants/error-code-dictionary";
-import { NoticeModel } from '@shared/components/game-base/type";
+import ErrorCodeDictionary from '@shared/constants/error-code-dictionary';
+import { NoticeModel } from '@shared/components/game-base/type';
 import { useNoticeStore } from '@shared/stores/notice-store/notice-store";
 
 export interface INotice {
@@ -89,7 +89,7 @@ export const getGlossaryTranslate = (ns: string, key: string) => `${ns}.glossary
 export const isKickOutError = (errorCode: string) => ["1001", "1002", "7000", "7001"].includes(String(errorCode));
 
 export const getExtendMessageByErrorCode = (errorCode: string): string => {
-    let extendMessage = "";
+    let extendMessage = "';
     if (isKickOutError(errorCode)) {
         extendMessage = ` (${errorCode})`;
     }

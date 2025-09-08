@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo } from "react";
-import { sendBalanceUpdateToParent, sendNicknameUpdateToParent } from '@shared/utils/iframe-messages";
-import { usePlayerContext } from '@shared/react-contexts/auth";
-import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store";
+import { sendBalanceUpdateToParent, sendNicknameUpdateToParent } from "@shared/utils/iframe-messages";
+import { usePlayerContext } from "@shared/react-contexts/auth";
+import { useGlobalEventsStore } from "@shared/stores/global-events-store/global-events-store";
 import { getBalance } from "@shared/services/auth-service";
 
 export const useBalanceSync = () => {
@@ -35,7 +35,7 @@ export const useBalanceSync = () => {
     // Send balance and nickname updates to parent when they change
     useEffect(() => {
         if (!userInfo) {
-            return () => {};
+            return () => { };
         }
 
         try {
@@ -52,7 +52,7 @@ export const useBalanceSync = () => {
             console.error("Error sending balance/nickname update to parent:", error);
         }
 
-        return () => {};
+        return () => { };
     }, [userInfo]);
 
     const pollBalance = async () => {
@@ -71,7 +71,7 @@ export const useBalanceSync = () => {
     // Set up polling for balance updates as fallback
     useEffect(() => {
         if (!session || !userInfo) {
-            return () => {};
+            return () => { };
         }
 
         // Initial poll

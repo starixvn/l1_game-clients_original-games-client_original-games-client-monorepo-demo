@@ -1,13 +1,13 @@
 import React from "react";
-import ScoreboardSeDie from '@sedie/scoreboard/scoreboard";
-import { mainChoices, SeDieChoices, SeDieStatisticColors } from "../sedie-multiplayer-constants";
-import PercentageStatistic from '@shared/components/game-components/statistic";
-import useGameStore from '@shared/stores/game-store/game-store";
+import ScoreboardSeDie from '@sedie/scoreboard/scoreboard';
+import { mainChoices, SeDieChoices, SeDieStatisticColors } from '@sedie/sedie-multiplayer-constants';
+import PercentageStatistic from '@shared/components/game-components/statistic';
+import useGameStore from '@shared/stores/game-store/game-store';
 import { useShallow } from "zustand/react/shallow";
 import Styles from "./statistic-popup.module.scss";
-import AnimatedContent from '@shared/components/game-components/animations/animated-content";
-import { CachedImage } from '@shared/components/game-components/cached-image";
-import { useClickSound } from '@shared/react-hooks";
+import AnimatedContent from '@shared/components/game-components/animations/animated-content';
+import { CachedImage } from '@shared/components/game-components/cached-image';
+import { useClickSound } from '@shared/react-hooks';
 
 interface SedieMultiplayerStatisticPopupProps {
     onClose?: () => void;

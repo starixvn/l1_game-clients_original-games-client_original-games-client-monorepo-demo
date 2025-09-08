@@ -7,7 +7,7 @@ export const useClientSeedPF = () => {
     useEffect(() => {
         let seed = pfClientSeedSetting?.useManualClientSeed ? pfClientSeedSetting?.manualClientSeed : pfClientSeedSetting?.randomClientSeed;
         if (!seed || String(seed).length === 0) {
-            seed = pfClientSeedSetting?.randomClientSeed || "0000";
+            seed = pfClientSeedSetting?.randomClientSeed || "0000';
         }
         setClientSeed(seed);
     }, [pfClientSeedSetting]);

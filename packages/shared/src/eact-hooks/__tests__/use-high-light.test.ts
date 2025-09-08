@@ -1,5 +1,5 @@
 import { RoundState } from '@shared/components/game-base/type";
-import { isHighLightWinningResult, isShowHighlightPrevResult } from "../use-high-light";
+import { isHighLightWinningResult, isShowHighlightPrevResult } from "../use-high-light';
 
 describe("use-high-light", () => {
     describe("isHighLightWinningResult", () => {

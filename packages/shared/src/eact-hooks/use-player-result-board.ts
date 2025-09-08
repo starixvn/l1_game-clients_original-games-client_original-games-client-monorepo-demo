@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
-import { PlayerInPlayerResultBoard, RoundState } from '@shared/components/game-base/type";
-import useGameStore from '@shared/stores/game-store/game-store";
+import { PlayerInPlayerResultBoard, RoundState } from '@shared/components/game-base/type';
+import useGameStore from '@shared/stores/game-store/game-store';
 import { useGameStateContext } from '@shared/react-contexts/game-state-context/game-state-context";
 import { useGameContext } from "../react-contexts";
 
@@ -64,7 +64,7 @@ export const usePlayerResultBoard = () => {
                 if (player.winAmount === null) {
                     return "-";
                 }
-                return calculateAmountByRate(player.winAmount, rate ?? 1) || "0";
+                return calculateAmountByRate(player.winAmount, rate ?? 1) || "0';
             };
 
             return {

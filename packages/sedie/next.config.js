@@ -48,7 +48,13 @@ const nextConfig = withSentryConfig({
             "@shared": require("path").resolve(__dirname, "../shared/src"),
             "@sedie": require("path").resolve(__dirname, "src"),
             "@baccarat": require("path").resolve(__dirname, "../baccarat/src"),
+            // Ensure single React instance
+            react: require("path").resolve(__dirname, "node_modules/react"),
+            "react-dom": require("path").resolve(__dirname, "node_modules/react-dom"),
         };
+
+        // Configure module resolution to prioritize TypeScript files over JavaScript files
+        config.resolve.extensions = [".tsx", ".ts", ".jsx", ".js", ".json"];
 
         config.module.rules.push({
             test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2|mp3|webp)$/,

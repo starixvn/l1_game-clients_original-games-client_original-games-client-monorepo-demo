@@ -1,11 +1,11 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import SplashScreen, { customStartup, onStartupError } from '@shared/components/page-components/splash-screen";
-import { URLContext } from '@shared/react-contexts/url-context";
-import { PlayerContext } from '@shared/react-contexts/auth";
-import { authorize, getLobbyConfigs, sso } from '@shared/services/auth-service";
-import { getUserLatestGameId } from '@shared/helpers";
+import SplashScreen, { customStartup, onStartupError } from '@shared/components/page-components/splash-screen';
+import { URLContext } from '@shared/react-contexts/url-context';
+import { PlayerContext } from '@shared/react-contexts/auth';
+import { authorize, getLobbyConfigs, sso } from '@shared/services/auth-service';
+import { getUserLatestGameId } from '@shared/helpers';
 
 // Mock dependencies
 jest.mock("../../services/auth-service");

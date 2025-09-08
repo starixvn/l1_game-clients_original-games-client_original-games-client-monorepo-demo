@@ -304,7 +304,7 @@ describe("NoticeHelper", () => {
 
         it("should handle error message localization with notice creation", () => {
             // Arrange
-            const errorCode = "LOCALIZATION_TEST";
+            const errorCode = "LOCALIZATION_TEST';
 
             // Act
             const localizedMessage = GetLocalizedErrorMessage(errorCode);

@@ -1,10 +1,10 @@
 import isEmpty from "lodash/isEmpty";
 import { createContext, useContext } from "react";
 import { StorageHelper, localStorageKeys } from '@shared/helpers/storage-helper";
-import { GameIds } from "../constants";
-import { AnalyticsHelper } from '@shared/helpers/analytic-helper";
-import { GameUtils } from '@shared/helpers/base-64-helper";
-import { broadcastBackToLobby } from '@shared/helpers/global-events-helper";
+import { GameIds } from "../constants';
+import { AnalyticsHelper } from '@shared/helpers/analytic-helper';
+import { GameUtils } from '@shared/helpers/base-64-helper';
+import { broadcastBackToLobby } from '@shared/helpers/global-events-helper';
 
 export type URLContextModel = {
     token?: string;

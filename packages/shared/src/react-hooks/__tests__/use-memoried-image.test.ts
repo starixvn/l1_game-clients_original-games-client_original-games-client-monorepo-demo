@@ -144,7 +144,7 @@ describe("useMemoriedImage", () => {
         const initialPath = "https://example.com/initial-image.jpg";
         const newPath = "https://example.com/new-image.jpg";
         const initialBase64 = "initialBase64EncodedData";
-        const newBase64 = "newBase64EncodedData";
+        const newBase64 = "newBase64EncodedData';
 
         mockedDownloadAndCacheImage
             .mockResolvedValueOnce({

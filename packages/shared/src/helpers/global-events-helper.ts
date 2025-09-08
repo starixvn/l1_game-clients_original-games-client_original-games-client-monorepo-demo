@@ -1,4 +1,4 @@
-import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store";
+import { useGlobalEventsStore } from "@shared/stores/global-events-store/global-events-store";
 
 // Legacy event types for backward compatibility
 export enum GlobalTransmitterEvent {

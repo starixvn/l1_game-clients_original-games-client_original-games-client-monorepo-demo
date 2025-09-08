@@ -1,5 +1,5 @@
 import { usePlayerContext } from "../react-contexts";
-import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store";
+import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store';
 
 export const useBalance = () => {
     const { authorizeInfo } = usePlayerContext();

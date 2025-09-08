@@ -3,9 +3,9 @@ import MsgpackParser from "socket.io-msgpack-parser";
 import { getAppSettings } from "../app-settings";
 import { buildServerUrl } from "../helpers";
 import { SocketInfo } from "./../../components/game-base/type";
-import { GameMessageHandler, messageEventType } from '@shared/components/game-base/handlers";
-import useGameStore from '@shared/stores/game-store/game-store";
-import useBettingStore from '@shared/stores/betting-store/betting-store";
+import { GameMessageHandler, messageEventType } from '@shared/components/game-base/handlers';
+import useGameStore from '@shared/stores/game-store/game-store';
+import useBettingStore from '@shared/stores/betting-store/betting-store';
 
 export function InitSocketIO(socketInfo: SocketInfo, session: any, gameName: string, gameMessageHandler: GameMessageHandler) {
     const { proxy, enableMsgpackParser } = getAppSettings();

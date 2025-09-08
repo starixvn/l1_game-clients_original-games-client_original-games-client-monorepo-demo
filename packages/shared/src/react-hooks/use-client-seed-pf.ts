@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import usePFStore from '@shared/stores/pf-store/pf-store";
+import usePFStore from "@shared/stores/pf-store/pf-store";
 
 export const useClientSeedPF = () => {
     const pfClientSeedSetting = usePFStore((state) => state.pfClientSeedSetting);

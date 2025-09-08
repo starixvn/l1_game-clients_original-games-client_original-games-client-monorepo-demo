@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo } from "react";
-import { sendBalanceUpdateToParent, sendNicknameUpdateToParent } from '@shared/utils/iframe-messages";
-import { usePlayerContext } from '@shared/react-contexts/auth";
-import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store";
+import { sendBalanceUpdateToParent, sendNicknameUpdateToParent } from '@shared/utils/iframe-messages';
+import { usePlayerContext } from '@shared/react-contexts/auth';
+import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store';
 import { getBalance } from '@shared/services/auth-service";
 
 export const useBalanceSync = () => {
@@ -46,7 +46,7 @@ export const useBalanceSync = () => {
             }
 
             // Handle nickname updates
-            const nickname = userInfo?.name || "Player";
+            const nickname = userInfo?.name || "Player';
             updateNickname(nickname);
         } catch (error) {
             console.error("Error sending balance/nickname update to parent:", error);

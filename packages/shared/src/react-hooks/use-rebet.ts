@@ -1,10 +1,10 @@
 import { useShallow } from "zustand/shallow";
-import useBettingStore from '@shared/stores/betting-store/betting-store";
-import { useGameStore } from '@shared/stores/game-store/game-store";
+import useBettingStore from "@shared/stores/betting-store/betting-store";
+import { useGameStore } from "@shared/stores/game-store/game-store";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { RoundState } from "@shared/components/game-base/type";
 import { useClientSeedPF } from "./use-client-seed-pf";
-import { NoticeErrorCode } from '@shared/constants/error-code-dictionary";
+import { NoticeErrorCode } from "@shared/constants/error-code-dictionary";
 import { broadcastNotice, getNotice } from "../helpers";
 import { useBalance } from "./use-balance";
 
