@@ -47,11 +47,12 @@ COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/.next/standalone/ 
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie/public ./public
 
+# Ensure proper permissions for the .next directory
+RUN chown -R nextjs:nodejs .next
+
 USER nextjs
 
 EXPOSE 5000
 ENV PORT 5000
-ENV HOSTNAME 0.0.0.0
-CMD ["node", "server.js"]
-
+CMD HOSTNAME="0.0.0.0" node server.js
 
