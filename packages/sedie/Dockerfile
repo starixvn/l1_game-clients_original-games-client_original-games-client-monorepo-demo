@@ -18,7 +18,10 @@ RUN --mount=type=cache,target=$YARN_CACHE_FOLDER \
 FROM base AS builder
 WORKDIR /app
 
+# Copy the installed dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/package.json ./package.json
+COPY --from=deps /app/yarn.lock ./yarn.lock
 
 # Copy only sedie-specific files
 COPY packages/sedie/package.json packages/sedie/package.json
