@@ -2,7 +2,7 @@ import { buildUrl, isKickOutError, localStorageKeys, StorageHelper, broadcastNot
 import { getAppSettings } from '@shared/app-settings';
 import { io, Socket } from "socket.io-client";
 import MsgpackParser from "socket.io-msgpack-parser";
-import { reCheckIn } from "../../../../services/auth-service";
+import { reCheckIn } from "@shared/services/auth-service";
 import { ReCheckInResponse, SSOResponse } from "sc-user-service-client/dist/auth";
 
 export class NotificationHandler {

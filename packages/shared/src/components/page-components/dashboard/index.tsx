@@ -119,7 +119,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
             if (this.dashboardHandler.checkIsNotOfferGame()) {
                 broadcastNotice({
                     ...getNotice(ErrorNoGameOffer, false),
-                    onClose: () => {},
+                    onClose: () => { },
                 });
             }
         };

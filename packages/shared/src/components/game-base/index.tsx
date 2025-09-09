@@ -13,7 +13,7 @@ import { GameEventActionType } from '@shared/react-contexts/game-state-context/g
 import { PlaceBetEventActionType } from '@shared/react-contexts/game-state-context/place-bet-context/place-bet-action';
 import { PlaceBetProvider } from '@shared/react-contexts/game-state-context/place-bet-context/place-bet-context';
 import { GameResourceKeys } from '@shared/resources';
-import { getBalance } from "../../services/auth-service";
+import { getBalance } from "@shared/services/auth-service";
 import CountdownTimer from "../game-components/countdown-timer/countdown-timer";
 import DisabledModal from "../game-components/disabled-modal";
 import { ConnectFailedMessage } from "../game-components/error-message";
