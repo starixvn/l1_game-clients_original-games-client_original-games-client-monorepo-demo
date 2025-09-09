@@ -2,10 +2,10 @@ import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import SplashScreen, { customStartup, onStartupError } from "../../components/page-components/splash-screen";
-import { URLContext } from "../../_shared/react-contexts/url-context";
-import { PlayerContext } from "../../_shared/react-contexts/auth";
+import { URLContext } from '@shared/react-contexts/url-context';
+import { PlayerContext } from '@shared/react-contexts/auth';
 import { authorize, getLobbyConfigs, sso } from "../../services/auth-service";
-import { getUserLatestGameId } from "../../_shared/helpers";
+import { getUserLatestGameId } from '@shared/helpers';
 
 // Mock dependencies
 jest.mock("../../services/auth-service");

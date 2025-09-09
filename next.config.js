@@ -1,18 +1,18 @@
 // Function to load game-specific configurations
 const loadGameConfigs = (gameId) => {
-  let configs, gameSettings;
+    let configs, gameSettings;
 
-  if (gameId === "148" || gameId === 148) {
-    // SeDie Multiplayer game
-    configs = require("./packages/sedie-multiplayer/configs.json");
-    gameSettings = require("./packages/sedie-multiplayer/game-settings.json");
-  } else {
-    // Default to SeDie Multiplayer if no gameId specified
-    configs = require("./packages/sedie-multiplayer/configs.json");
-    gameSettings = require("./packages/sedie-multiplayer/game-settings.json");
-  }
+    if (gameId === "148" || gameId === 148) {
+        // SeDie Multiplayer game
+        configs = require("./packages/sedie-multiplayer/configs.json");
+        gameSettings = require("./packages/sedie-multiplayer/game-settings.json");
+    } else {
+        // Default to SeDie Multiplayer if no gameId specified
+        configs = require("./packages/sedie-multiplayer/configs.json");
+        gameSettings = require("./packages/sedie-multiplayer/game-settings.json");
+    }
 
-  return { configs, gameSettings };
+    return { configs, gameSettings };
 };
 
 const currentGameId = process.env.NEXT_PUBLIC_DEFAULT_GAME_ID || "148";
@@ -50,7 +50,7 @@ const nextConfig = withSentryConfig({
     webpack: (config, options) => {
         // Disable source maps
         config.devtool = false;
-        
+
         config.resolve = config.resolve || {};
         config.resolve.alias = {
             ...(config.resolve.alias || {}),
@@ -79,9 +79,7 @@ const nextConfig = withSentryConfig({
     },
     sassOptions: {
         prependData: `$version-image: '${buildVersion}';`,
-        includePaths: [
-            require("path").resolve(__dirname, "packages/shared/src/styles"),
-        ],
+        includePaths: [require("path").resolve(__dirname, "packages/shared/src/styles")],
     },
     async rewrites() {
         const base = [

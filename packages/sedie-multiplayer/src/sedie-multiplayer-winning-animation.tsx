@@ -1,6 +1,6 @@
 import React from "react";
-import { useMemoriedImage } from "../../_shared/react-hooks";
-import { isHighLightWinningResult } from "../../_shared/react-hooks/use-high-light";
+import { useMemoriedImage } from '@shared/react-hooks';
+import { isHighLightWinningResult } from '@shared/react-hooks/use-high-light';
 import { RoundState } from "../../components/game-base/type";
 import { Spritesheet } from "../../components/game-components/sprites-sheet";
 import { SeDieBetOptions } from "./sedie-multiplayer-constants";

@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { RoundHistory } from "../../../components/game-components/round-history/chain";
-import { IconStatistic } from "../../../components/game-components/statistic/icon-statistic";
+import { RoundHistory } from "@shared/components/game-components/round-history/chain";
+import { IconStatistic } from "@shared/components/game-components/statistic/icon-statistic";
 
 // Mock the BaseDialog component
 jest.mock("../../../components/game-components/base-dialog", () => {
