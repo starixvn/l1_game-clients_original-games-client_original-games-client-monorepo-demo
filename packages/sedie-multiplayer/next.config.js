@@ -32,7 +32,7 @@ const nextConfig = withSentryConfig({
     config.devtool = false;
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@shared/merged": path.resolve(__dirname, "../shared/src"),
+      "@shared": path.resolve(__dirname, "../shared/src"),
       "@": path.resolve(__dirname, "src"),
     };
     return config;
