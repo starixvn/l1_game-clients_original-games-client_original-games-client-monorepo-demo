@@ -34,6 +34,28 @@ function fixImportsInFile(filePath) {
         content = content.replace(/from "\.\.\/\.\.\/game-base\//g, 'from "@shared/components/game-base/');
         content = content.replace(/from "\.\.\/\.\.\/game-components\//g, 'from "@shared/components/game-components/');
         
+        // Fix services imports
+        content = content.replace(/from "\.\.\/services\/auth-service"/g, 'from "@shared/services/auth-service"');
+        content = content.replace(/from "\.\.\/services\/user-setting-service"/g, 'from "@shared/services/user-setting-service"');
+        
+        // Fix local component imports
+        content = content.replace(/from "\.\/fade-content"/g, 'from "@shared/components/page-components/splash-screen/fade-content"');
+        
+        // Fix more dynamic imports
+        content = content.replace(/import\("\.\.\/um-page"\)/g, 'import("@shared/components/page-components/um-page")');
+        content = content.replace(/import\("\.\.\/dashboard"\)/g, 'import("@shared/components/page-components/dashboard")');
+        
+        // Fix more relative imports
+        content = content.replace(/from "\.\.\/\.\.\/components\/game-base\/"/g, 'from "@shared/components/game-base/"');
+        content = content.replace(/from "\.\.\/\.\.\/components\/game-base\//g, 'from "@shared/components/game-base/');
+        content = content.replace(/from "\.\.\/\.\.\/components\/round-base\//g, 'from "@shared/components/round-base/');
+        
+        // Fix more game-components imports
+        content = content.replace(/from "\.\.\/\.\.\/components\/game-components\//g, 'from "@shared/components/game-components/');
+        
+        // Fix more dynamic imports
+        content = content.replace(/import\("\.\.\/\.\.\/components\/game-components\//g, 'import("@shared/components/game-components/');
+        
         fs.writeFileSync(filePath, content, 'utf8');
         console.log(`Fixed imports in: ${filePath}`);
     } catch (error) {

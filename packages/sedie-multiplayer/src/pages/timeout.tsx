@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useCommonTranslate } from '@shared/react-hooks/use-translator';
 import BackgroundComet from "../components/page-components/background-error";
 import ButtonReturnToURL from "../components/page-components/button-return-to-url";
-import { clearSession } from "../services/auth-service";
+import { clearSession } from "@shared/services/auth-service";
 
 const TimeOut = () => {
     const { t } = useCommonTranslate();

@@ -13,12 +13,12 @@ import { PlayerContextModel, URLContext, usePlayerContext } from "@shared/react-
 import { useTranslator } from "@shared/react-hooks";
 import { setSentryUser } from "@shared/sentry";
 import { tolgee } from "@shared/tolgee";
-import { authorize, createNickname, sso, verifySession } from "../services/auth-service";
-import { updateSignInSMStatus } from "../services/user-setting-service";
+import { authorize, createNickname, sso, verifySession } from "@shared/services/auth-service";
+import { updateSignInSMStatus } from "@shared/services/user-setting-service";
 import { MAX_AVATAR_ID } from "@shared/helpers/avatar-helper";
 import NameGenerator from "@shared/helpers/name-generator";
 import Styles from "./splash-screen.module.scss";
-import FadeContent from "./fade-content";
+import FadeContent from "@shared/components/page-components/splash-screen/fade-content";
 
 export type SplashScreenProps = WithRouterProps;
 export type SplashScreenState = {
@@ -26,8 +26,8 @@ export type SplashScreenState = {
     underMaintenance: boolean;
 };
 
-const UMPage = dynamic(() => import("../um-page"), { ssr: false });
-const Dashboard = dynamic(() => import("../dashboard"), { ssr: false });
+const UMPage = dynamic(() => import("@shared/components/page-components/um-page"), { ssr: false });
+const Dashboard = dynamic(() => import("@shared/components/page-components/dashboard"), { ssr: false });
 
 export const customStartup = async (
     session: SSOResponse,
