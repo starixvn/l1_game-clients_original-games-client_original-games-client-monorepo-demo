@@ -29,6 +29,11 @@ function fixImportsInFile(filePath) {
         content = content.replace(/import\("\.\.\/\.\.\/\.\.\/components\/game-components\//g, 'import("@shared/components/game-components/');
         content = content.replace(/import\("\.\.\/\.\.\/\.\.\/components\/game-base\//g, 'import("@shared/components/game-base/');
         
+        // Fix more relative imports
+        content = content.replace(/from "\.\.\/\.\.\/game-base\/type"/g, 'from "@shared/components/game-base/type"');
+        content = content.replace(/from "\.\.\/\.\.\/game-base\//g, 'from "@shared/components/game-base/');
+        content = content.replace(/from "\.\.\/\.\.\/game-components\//g, 'from "@shared/components/game-components/');
+        
         fs.writeFileSync(filePath, content, 'utf8');
         console.log(`Fixed imports in: ${filePath}`);
     } catch (error) {
