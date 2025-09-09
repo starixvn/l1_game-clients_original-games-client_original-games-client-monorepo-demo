@@ -8,9 +8,9 @@
         "obfuscator-config-file": "node ./configs/config-obfuscator.js",
         "build": "node -e \"console.log('Skipping sedie package build (using app sources)')\"",
         "clean": "rimraf dist",
-        "dev:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 FAST_REFRESH=false next dev -p 3001",
+        "dev:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 FAST_REFRESH=false next dev -p 3008",
         "build:standalone": "next build",
-        "start:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 next start -p 3001"
+        "start:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 next start -p 3008"
     },
     "dependencies": {
         "@sentry/nextjs": "^9.41.0",
