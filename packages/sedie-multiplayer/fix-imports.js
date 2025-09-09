@@ -56,6 +56,10 @@ function fixImportsInFile(filePath) {
         // Fix more dynamic imports
         content = content.replace(/import\("\.\.\/\.\.\/components\/game-components\//g, 'import("@shared/components/game-components/');
         
+        // Fix more relative imports
+        content = content.replace(/from "\.\.\/components\/game-components\//g, 'from "@shared/components/game-components/');
+        content = content.replace(/from "\.\.\/components\/page-components\//g, 'from "@shared/components/page-components/');
+        
         fs.writeFileSync(filePath, content, 'utf8');
         console.log(`Fixed imports in: ${filePath}`);
     } catch (error) {

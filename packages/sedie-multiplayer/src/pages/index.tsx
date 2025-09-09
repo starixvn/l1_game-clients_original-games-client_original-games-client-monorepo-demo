@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import { useRouter } from "next/router";
 import { usePWAWoker } from '@shared/react-hooks/use-pwa-worker';
-import SplashScreen from "../components/page-components/splash-screen";
+import SplashScreen from "@shared/components/page-components/splash-screen";
 
 const Home = () => {
     usePWAWoker();
