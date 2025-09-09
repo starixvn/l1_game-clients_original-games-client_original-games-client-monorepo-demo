@@ -7,9 +7,11 @@
     "scripts": {
         "build": "node -e \"console.log('Skipping sedie-multiplayer package build (using app sources)')\"",
         "clean": "rimraf dist",
-        "dev:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 FAST_REFRESH=false next dev -p 3001",
-        "build:standalone": "next build",
-        "start:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 next start -p 3001"
+        "generate-tolgee-data": "npx ts-node --project tsconfig.node.json ../shared/src/tolgee-generator.ts",
+        "dev:standalone": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 FAST_REFRESH=false next dev -p 3001",
+        "build:standalone": "npm run generate-tolgee-data && next build",
+        "start:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 next start -p 3001",
+        "obfuscator-config-file": "node ./configs/config-obfuscator.js"
     },
     "dependencies": {
         "@sentry/nextjs": "^9.41.0",
@@ -49,6 +51,8 @@
     },
     "devDependencies": {
         "typescript": "^5.0.0",
-        "@next/bundle-analyzer": "^14.2.31"
+        "@next/bundle-analyzer": "^14.2.31",
+        "ts-node": "^10.9.2",
+        "rimraf": "^5.0.0"
     }
 }
