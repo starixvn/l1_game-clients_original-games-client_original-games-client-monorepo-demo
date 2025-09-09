@@ -17,7 +17,7 @@ import { LoadingSpinner } from "../../game-components/game-loading/loading-spinn
 import BalanceSyncProvider from '@shared/react-hooks/providers/balance-sync-provider';
 
 const SoundSettings = dynamic(() => import("../header/setting/settings-popup"), { ssr: false });
-const Games = dynamic(() => import("../../../games/games"), { loading: () => <LoadingSpinner />, ssr: false });
+// const Games = dynamic(() => import("../../../games/games"), { loading: () => <LoadingSpinner />, ssr: false });
 const MusicPlayer = dynamic(() => import("../music-player"), { ssr: false });
 
 class Dashboard extends React.Component<DashboardProps, DashboardState> {
@@ -183,17 +183,18 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     }
 
     renderGames() {
-        const { userStakeLevel, openGameName } = this.state;
-        const urlContext = loadURLContext();
+        // const { userStakeLevel, openGameName } = this.state;
+        // const urlContext = loadURLContext();
 
         return (
-            <Games
-                setApiErrorMessage={this.notificationHandler.handleShowApiErrorMessage}
-                userStakeLevel={userStakeLevel}
-                updateUserStakeLevel={this.handleUpdateUserStakeLevel}
-                openGameId={urlContext?.gameId}
-                openGameName={openGameName}
-            />
+            <div>Games component not available</div>
+            // <Games
+            //     setApiErrorMessage={this.notificationHandler.handleShowApiErrorMessage}
+            //     userStakeLevel={userStakeLevel}
+            //     updateUserStakeLevel={this.handleUpdateUserStakeLevel}
+            //     openGameId={urlContext?.gameId}
+            //     openGameName={openGameName}
+            // />
         );
     }
 

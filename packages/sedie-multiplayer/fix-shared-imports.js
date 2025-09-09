@@ -31,6 +31,41 @@ function fixImports(content) {
     // Fix any other malformed imports
     content = content.replace(/from "@([^"]*)"\s*;/g, 'from "@$1";');
     
+    // Fix missing comma in import statements
+    content = content.replace(/(\w+),(\w+)from\s+'@shared/g, '$1, $2 from \'@shared');
+    
+    // Fix missing space before from
+    content = content.replace(/(\w+)from\s+'@shared/g, '$1 from \'@shared');
+    
+    // Fix missing semicolon at end of import
+    content = content.replace(/from '@shared\/([^"]*)"\s*$/gm, "from '@shared/$1';");
+    
+    // Fix relative imports to @shared
+    content = content.replace(/from "\.\.\/\.\.\/components\/game-base\/type"/g, 'from "@shared/components/game-base/type"');
+    content = content.replace(/from "\.\.\/\.\.\/components\/game-base\/handlers"/g, 'from "@shared/components/game-base/handlers"');
+    content = content.replace(/from "\.\.\/\.\.\/components\/game-components\//g, 'from "@shared/components/game-components/');
+    content = content.replace(/from "\.\.\/\.\.\/components\/page-components\//g, 'from "@shared/components/page-components/');
+    content = content.replace(/from "\.\.\/\.\.\/helpers\//g, 'from "@shared/helpers/');
+    content = content.replace(/from "\.\.\/\.\.\/react-contexts\//g, 'from "@shared/react-contexts/');
+    content = content.replace(/from "\.\.\/\.\.\/react-hooks\//g, 'from "@shared/react-hooks/');
+    content = content.replace(/from "\.\.\/\.\.\/stores\//g, 'from "@shared/stores/');
+    content = content.replace(/from "\.\.\/\.\.\/utils\//g, 'from "@shared/utils/');
+    content = content.replace(/from "\.\.\/\.\.\/constants\//g, 'from "@shared/constants/');
+    content = content.replace(/from "\.\.\/\.\.\/resources\//g, 'from "@shared/resources/');
+    
+    // Fix other relative import patterns
+    content = content.replace(/from "\.\/\.\.\/\.\.\/components\/game-base\/type"/g, 'from "@shared/components/game-base/type"');
+    content = content.replace(/from "\.\/\.\.\/\.\.\/components\/game-base\/handlers"/g, 'from "@shared/components/game-base/handlers"');
+    content = content.replace(/from "\.\/\.\.\/\.\.\/components\/game-components\//g, 'from "@shared/components/game-components/');
+    content = content.replace(/from "\.\/\.\.\/\.\.\/components\/page-components\//g, 'from "@shared/components/page-components/');
+    content = content.replace(/from "\.\/\.\.\/\.\.\/helpers\//g, 'from "@shared/helpers/');
+    content = content.replace(/from "\.\/\.\.\/\.\.\/react-contexts\//g, 'from "@shared/react-contexts/');
+    content = content.replace(/from "\.\/\.\.\/\.\.\/react-hooks\//g, 'from "@shared/react-hooks/');
+    content = content.replace(/from "\.\/\.\.\/\.\.\/stores\//g, 'from "@shared/stores/');
+    content = content.replace(/from "\.\/\.\.\/\.\.\/utils\//g, 'from "@shared/utils/');
+    content = content.replace(/from "\.\/\.\.\/\.\.\/constants\//g, 'from "@shared/constants/');
+    content = content.replace(/from "\.\/\.\.\/\.\.\/resources\//g, 'from "@shared/resources/');
+    
     return content;
 }
 

@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import { AuthorizeResponse } from "sc-user-service-client/dist/auth";
-import { GameSettings } from "../../components/game-base/type";
+import { GameSettings } from "@shared/components/game-base/type";
 import { getAppSettings } from "../app-settings";
 import { buildUrlWithPath } from "./url-helper";
 
