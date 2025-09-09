@@ -34,6 +34,7 @@ const nextConfig = withSentryConfig({
             ...config.resolve.alias,
             "@shared": path.resolve(__dirname, "../shared/src"),
             "@": path.resolve(__dirname, "src"),
+            "@sedie-multiplayer": path.resolve(__dirname, "src"),
         };
         return config;
     },
