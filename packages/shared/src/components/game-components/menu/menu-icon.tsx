@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { useGameStateContext, useGameStatesDispatch } from "../../../_shared/react-contexts/game-state-context/game-state-context";
-import { useSettingContext, SettingEventActionType, useSettingDispatch } from "../../../_shared/react-contexts";
-import { useClickSound, useCommonTranslate } from "../../../_shared/react-hooks";
-import { StorageHelper, localStorageKeys } from "../../../_shared/helpers";
+import { useGameStateContext, useGameStatesDispatch } from '@shared/react-contexts/game-state-context/game-state-context";
+import { useSettingContext, SettingEventActionType, useSettingDispatch } from '@shared/react-contexts";
+import { useClickSound, useCommonTranslate } from '@shared/react-hooks";
+import { StorageHelper, localStorageKeys } from '@shared/helpers";
 import { RoundState } from "../../game-base/type";
 import Styles from "./menu-icon.module.scss";
 const Tooltip = dynamic(() => import("../tooltip"), { ssr: false });

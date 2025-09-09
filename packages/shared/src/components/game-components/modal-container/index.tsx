@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { cn } from "../../../_shared/utils/merge-tailwind-util";
+import { cn } from '@shared/utils/merge-tailwind-util";
 
-import { useClickSound } from "../../../_shared/react-hooks";
+import { useClickSound } from '@shared/react-hooks";
 import BaseDialog from "../base-dialog";
 import { ModalType } from "../base-dialog/type";
 

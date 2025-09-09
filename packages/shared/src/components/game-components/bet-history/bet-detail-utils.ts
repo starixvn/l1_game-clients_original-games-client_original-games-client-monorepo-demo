@@ -1,4 +1,4 @@
-import { numberWithCommas } from "../../../_shared/helpers";
+import { numberWithCommas } from '@shared/helpers";
 
 export const calculateWinAmount = (amount: number, odds: number, win: number): number => {
   return win > 0 ? amount * odds : win;
