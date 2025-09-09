@@ -5,18 +5,18 @@ import { memo, useContext, useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
 import { AuthorizeResponse, SSOResponse } from "sc-user-service-client/dist/auth";
-import { getAppSettings } from '@shared/app-settings";
-import { Themes, languageMapper, locales, GameIds } from '@shared/constants";
-import { AnalyticsHelper, StorageHelper, getRenderGameSettings, localStorageKeys, randomInteger } from '@shared/helpers";
-import PreloadResources from '@shared/helpers/preload-resources";
-import { PlayerContextModel, URLContext, usePlayerContext } from '@shared/react-contexts";
-import { useTranslator } from '@shared/react-hooks";
-import { setSentryUser } from '@shared/sentry";
-import { tolgee } from '@shared/tolgee";
+import { getAppSettings } from '@shared/app-settings';
+import { Themes, languageMapper, locales, GameIds } from '@shared/constants';
+import { AnalyticsHelper, StorageHelper, getRenderGameSettings, localStorageKeys, randomInteger } from '@shared/helpers';
+import PreloadResources from '@shared/helpers/preload-resources';
+import { PlayerContextModel, URLContext, usePlayerContext } from '@shared/react-contexts';
+import { useTranslator } from '@shared/react-hooks';
+import { setSentryUser } from '@shared/sentry';
+import { tolgee } from '@shared/tolgee';
 import { authorize, createNickname, sso, verifySession } from "../../../services/auth-service";
 import { updateSignInSMStatus } from "../../../services/user-setting-service";
-import { MAX_AVATAR_ID } from '@shared/helpers/avatar-helper";
-import NameGenerator from '@shared/helpers/name-generator";
+import { MAX_AVATAR_ID } from '@shared/helpers/avatar-helper';
+import NameGenerator from '@shared/helpers/name-generator';
 import Styles from "./splash-screen.module.scss";
 import FadeContent from "./fade-content";
 

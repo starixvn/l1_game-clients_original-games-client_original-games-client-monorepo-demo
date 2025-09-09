@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
-import { createOptionForHedgeBetGroup, getExtendMessageByErrorCode } from '@shared/helpers";
-import { numberWithCommas } from '@shared/helpers/number-helper";
-import { useGameContext } from '@shared/react-contexts";
-import { useClickSound, useTranslator } from '@shared/react-hooks";
+import { createOptionForHedgeBetGroup, getExtendMessageByErrorCode } from '@shared/helpers';
+import { numberWithCommas } from '@shared/helpers/number-helper';
+import { useGameContext } from '@shared/react-contexts';
+import { useClickSound, useTranslator } from '@shared/react-hooks';
 import BaseDialog from "../base-dialog";
 import { ModalType } from "../base-dialog/type";
-import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store";
-import { useNoticeStore } from '@shared/stores/notice-store/notice-store";
+import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store';
+import { useNoticeStore } from '@shared/stores/notice-store/notice-store';
 import { useShallow } from "zustand/react/shallow";
-import { cn } from '@shared/utils/merge-tailwind-util";
+import { cn } from '@shared/utils/merge-tailwind-util';
 
 const BaseNotice: React.FC<{
     onClose: () => void;

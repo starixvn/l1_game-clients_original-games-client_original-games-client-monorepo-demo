@@ -1,5 +1,5 @@
-import { buildVersion } from '@shared/constants";
-import { useCommonTranslate } from '@shared/react-hooks";
+import { buildVersion } from '@shared/constants';
+import { useCommonTranslate } from '@shared/react-hooks';
 import Styles from "./landscape-mode.module.scss";
 
 export const LandscapeMode = () => {

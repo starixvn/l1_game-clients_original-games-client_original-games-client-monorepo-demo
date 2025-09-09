@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { AnalyticsHelper, localStorageKeys, StorageHelper, TrackingAction, TrackingFunction } from '@shared/helpers";
-import { SettingEventActionType, useSettingDispatch } from '@shared/react-contexts";
-import { useClickSound, useTranslator } from '@shared/react-hooks";
-import useDebounce from '@shared/react-hooks/use-debounce";
+import { AnalyticsHelper, localStorageKeys, StorageHelper, TrackingAction, TrackingFunction } from '@shared/helpers';
+import { SettingEventActionType, useSettingDispatch } from '@shared/react-contexts';
+import { useClickSound, useTranslator } from '@shared/react-hooks';
+import useDebounce from '@shared/react-hooks/use-debounce';
 import Styles from "../settings-popup.module.scss";
 import VolumeSetting from "../volume-setting";
 
