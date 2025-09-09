@@ -20,7 +20,7 @@ export const SedieMultiplayerRoundHistoryItem = ({
     );
 };
 const OddItem = () => {
-    const {t} = useCommonTranslate();
+    const { t } = useCommonTranslate();
 
     return (
         <div className={`${styles["round-history-item"]} ${styles["odd-item"]}`}>
@@ -30,7 +30,7 @@ const OddItem = () => {
     );
 };
 const EvenItem = () => {
-    const {t} = useCommonTranslate();
+    const { t } = useCommonTranslate();
 
     return (
         <div className={`${styles["round-history-item"]} ${styles["even-item"]}`}>

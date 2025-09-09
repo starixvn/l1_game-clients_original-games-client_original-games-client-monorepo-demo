@@ -8,10 +8,10 @@ import { CachedImage } from "@shared/components/game-components/cached-image";
 export interface RoundInfoSeDie extends DrawInfo {
     roundId: number;
     result:
-        | {
-              balls?: Array<number>;
-          }
-        | Record<string, boolean>;
+    | {
+        balls?: Array<number>;
+    }
+    | Record<string, boolean>;
     odds: Record<string, number>;
     settlementResult: Record<string, boolean>;
 }

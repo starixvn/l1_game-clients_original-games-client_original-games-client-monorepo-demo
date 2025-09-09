@@ -21,7 +21,7 @@ const PFVerification: FC = () => {
             updateBetDetail: state.updateBetDetail,
         }))
     );
-    
+
     const [mergeClientSeed, setMergeClientSeed] = useState(betDetailData.drawInfo.pfResult?.editedMergeClientSeed || betDetailData.drawInfo.pfResult?.mergeClientSeed || "");
     const { t } = useTranslator();
     const { t: translateInGame } = useTranslator([tolgeeNamespace]);
@@ -56,9 +56,8 @@ const PFVerification: FC = () => {
             const diceResult = diceIndexes[index] % 2 === 0 ? t(`${ResourceTypes.SEDIE_MULTIPLAYER}.glossary_white`) : t(`${ResourceTypes.SEDIE_MULTIPLAYER}.glossary_red`);
 
             const line = `<span style="color: #ffbc11; font-weight: 600">${diceIndexText}</span>
-            - <span style="font-weight: 600">${t(`${ResourceTypes.COMMON}.pf_verification_para_1`)} </span> = ((${randomNumbers[index]}+${
-                convertNumber[index]
-            }) mod 2) = <span font-weight: 600">${diceIndexes[index]}</span> <span style="font-weight: 600">-> ${diceResult}</span>`;
+            - <span style="font-weight: 600">${t(`${ResourceTypes.COMMON}.pf_verification_para_1`)} </span> = ((${randomNumbers[index]}+${convertNumber[index]
+                }) mod 2) = <span font-weight: 600">${diceIndexes[index]}</span> <span style="font-weight: 600">-> ${diceResult}</span>`;
 
             return (
                 <p key={index}>
@@ -72,7 +71,7 @@ const PFVerification: FC = () => {
         const mergeSeed = `${betDetailData.drawInfo.pfResult.serverSeed}${mergeClientSeed}`;
         const hash = createHash("sha512").update(mergeSeed).digest("hex");
         setCombinedHash(hash);
-        
+
 
         return () => {
             updateBetDetail({
@@ -105,12 +104,12 @@ const PFVerification: FC = () => {
                         customTitleStyles={`m-0 ${Styles["title-fix-width"]}`}
                     >
                         <div className="flex gap-2 items-center">
-                        <Image 
-                            src={`/static/images/sedie-multiplayer/bet-detail-${winningSubOption}.svg`} 
-                            alt={`${winningSubOption} result`} 
-                            width={IMAGE_SIZE} 
-                            height={IMAGE_SIZE} 
-                        />
+                            <Image
+                                src={`/static/images/sedie-multiplayer/bet-detail-${winningSubOption}.svg`}
+                                alt={`${winningSubOption} result`}
+                                width={IMAGE_SIZE}
+                                height={IMAGE_SIZE}
+                            />
                         </div>
                     </Section>
                 </div>
