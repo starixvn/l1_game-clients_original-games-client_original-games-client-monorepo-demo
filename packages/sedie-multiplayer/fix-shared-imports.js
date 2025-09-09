@@ -65,7 +65,7 @@ function fixImports(content) {
     content = content.replace(/from "\.\/\.\.\/\.\.\/utils\//g, 'from "@shared/utils/');
     content = content.replace(/from "\.\/\.\.\/\.\.\/constants\//g, 'from "@shared/constants/');
     content = content.replace(/from "\.\/\.\.\/\.\.\/resources\//g, 'from "@shared/resources/');
-    
+
     // Fix three-level relative imports
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/components\/game-base\/type"/g, 'from "@shared/components/game-base/type"');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/components\/game-base\/handlers"/g, 'from "@shared/components/game-base/handlers"');
@@ -78,10 +78,13 @@ function fixImports(content) {
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/utils\//g, 'from "@shared/utils/');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/constants\//g, 'from "@shared/constants/');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/resources\//g, 'from "@shared/resources/');
-    
+
     // Fix four-level relative imports
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/components\/game-base\/type"/g, 'from "@shared/components/game-base/type"');
-    content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/components\/game-base\/handlers"/g, 'from "@shared/components/game-base/handlers"');
+    content = content.replace(
+        /from "\.\.\/\.\.\/\.\.\/\.\.\/components\/game-base\/handlers"/g,
+        'from "@shared/components/game-base/handlers"'
+    );
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/components\/game-components\//g, 'from "@shared/components/game-components/');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/components\/page-components\//g, 'from "@shared/components/page-components/');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/helpers\//g, 'from "@shared/helpers/');
@@ -91,18 +94,24 @@ function fixImports(content) {
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/utils\//g, 'from "@shared/utils/');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/constants\//g, 'from "@shared/constants/');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/resources\//g, 'from "@shared/resources/');
-    
+
     // Fix services imports
     content = content.replace(/from "\.\.\/\.\.\/services\//g, 'from "@shared/services/');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/services\//g, 'from "@shared/services/');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/services\//g, 'from "@shared/services/');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/\.\.\/services\//g, 'from "@shared/services/');
-    
+
     // Fix handlers imports
     content = content.replace(/from "\.\.\/\.\.\/components\/game-base\/handlers\//g, 'from "@shared/components/game-base/handlers/');
     content = content.replace(/from "\.\.\/\.\.\/\.\.\/components\/game-base\/handlers\//g, 'from "@shared/components/game-base/handlers/');
-    content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/components\/game-base\/handlers\//g, 'from "@shared/components/game-base/handlers/');
-    content = content.replace(/from "\.\.\/\.\.\/\.\.\/\.\.\/\.\.\/components\/game-base\/handlers\//g, 'from "@shared/components/game-base/handlers/');
+    content = content.replace(
+        /from "\.\.\/\.\.\/\.\.\/\.\.\/components\/game-base\/handlers\//g,
+        'from "@shared/components/game-base/handlers/'
+    );
+    content = content.replace(
+        /from "\.\.\/\.\.\/\.\.\/\.\.\/\.\.\/components\/game-base\/handlers\//g,
+        'from "@shared/components/game-base/handlers/'
+    );
 
     return content;
 }

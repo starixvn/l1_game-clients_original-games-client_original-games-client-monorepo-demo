@@ -16,6 +16,6 @@ if (sentryConfig) {
         beforeSendTransaction(event) {
             event.transaction = "Load Game/" + event.transaction.replace(/^.*\//, "") || window.location.pathname;
             return event;
-          },
+        },
     });
 }

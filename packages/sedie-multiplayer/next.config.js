@@ -46,10 +46,7 @@ const nextConfig = withSentryConfig({
     },
     sassOptions: {
         prependData: `$version-image: '${buildVersion}';`,
-        includePaths: [
-            path.resolve(__dirname, "../shared/src/styles"),
-            path.resolve(__dirname, "../shared/src/components"),
-        ],
+        includePaths: [path.resolve(__dirname, "../shared/src/styles"), path.resolve(__dirname, "../shared/src/components")],
         importer: function (url) {
             // Resolve SCSS imports that use the @shared alias
             if (typeof url === "string" && url.startsWith("@shared/")) {
