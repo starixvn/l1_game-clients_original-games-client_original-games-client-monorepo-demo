@@ -1,7 +1,7 @@
 const { DevTools, Tolgee } = require("@tolgee/react");
 const fs = require("fs");
 const path = require("path");
-const gameSettings = require("../../sedie-multiplayer/game-settings.json");
+const gameSettings = require(path.resolve(__dirname, "../../sedie-multiplayer/game-settings.json"));
 
 console.log("[TolgeeGenerator] Tolgee generator starting");
 
@@ -61,22 +61,31 @@ tg.on("initialLoad", async () => {
             };
         };
     } = {};
-    Object.values(locales).forEach(async (languageId) => {
+    for (const languageId of Object.values(locales)) {
         console.log("[TolgeeGenerator] processing language:", languageId);
         await tg.changeLanguage(languageId);
         languages[languageId] = {};
+
+        // First, collect all data for this language
         tg.getAllRecords().forEach((record) => {
             namespaces.forEach((namespace) => {
                 if (record.namespace === namespace) {
-                    languages[languageId][namespace] = {};
+                    if (!languages[languageId][namespace]) {
+                        languages[languageId][namespace] = {};
+                    }
                     record.data.forEach((value, key) => {
                         languages[languageId][namespace][key] = value as string;
                     });
-
-                    writeFile(`./public/i18n/${namespace}/` + languageId, JSON.stringify(languages[languageId][namespace], null, 4));
                 }
             });
         });
-    });
+
+        // Then write files for each namespace
+        namespaces.forEach((namespace) => {
+            if (languages[languageId][namespace]) {
+                writeFile(`./public/i18n/${namespace}/` + languageId, JSON.stringify(languages[languageId][namespace], null, 4));
+            }
+        });
+    }
     console.log("[TolgeeGenerator] initialLoad completed");
 });

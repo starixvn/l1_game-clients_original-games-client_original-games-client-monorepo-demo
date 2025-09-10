@@ -53,7 +53,8 @@ WORKDIR /app/packages/sedie-multiplayer
 ARG NEXT_PUBLIC_BASE_PATH
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 
-# Generate Tolgee data and build
+# Generate Tolgee data from root directory and build
+WORKDIR /app/packages/sedie-multiplayer
 RUN yarn generate-tolgee-data
 RUN yarn build:standalone
 
