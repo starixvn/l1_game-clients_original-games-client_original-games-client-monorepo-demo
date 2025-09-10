@@ -1,9 +1,9 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, useRef } from "react";
 import BaseDialog from "../base-dialog";
 import { ModalType } from "../base-dialog/type";
 import { cn } from '@shared/utils/merge-tailwind-util';
 import styles from "./auto-rebet-popup.module.scss";
-import { useClickSound, useCommonTranslate } from '@shared/react-hooks';
+import { useClickOutside, useClickSound, useCommonTranslate } from '@shared/react-hooks';
 
 interface AutoRebetPopupProps {
     onClose: () => void;
@@ -16,6 +16,8 @@ const AutoRebetPopup: React.FC<AutoRebetPopupProps> = ({ onClose, onConfirm }) =
     const [rounds, setRounds] = useState<number>(1);
     const { t } = useCommonTranslate();
     const clickSound = useClickSound();
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    useClickOutside([wrapperRef], onClose);
 
     const handleCustomInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(e.target.value);
@@ -39,12 +41,13 @@ const AutoRebetPopup: React.FC<AutoRebetPopupProps> = ({ onClose, onConfirm }) =
     }, [onClose]);
 
     return (
-        <div className="md:absolute md:w-full h-full md:top-1/2 md:-right-[10px] md:-translate-y-1/2 md:z-[var(--popup-index)]">
+        <div ref={wrapperRef} className="md:absolute md:w-full md:z-[var(--popup-index)]">
             <BaseDialog
                 type={ModalType.Rebet}
                 onCloseModal={handleClose}
                 enableBackdrop={true}
-                extendedClassName="w-full left-0 p-0 -bottom-0 md:w-[425px] md:left-1/2 md:-translate-x-1/2 "
+                isBlockScroll={false}
+                extendedClassName="w-full left-0 p-0 -bottom-0 md:w-[425px] md:left-0 md:right-0 md:mx-auto"
             >
                 <div className="p-3 py-6 md:px-5">
                     <div className="relative w-full">
