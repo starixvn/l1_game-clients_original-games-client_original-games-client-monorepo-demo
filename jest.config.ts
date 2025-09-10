@@ -8,6 +8,8 @@ const config: Config = {
         "swiper/css/pagination": "identity-obj-proxy",
         "swiper/react": "<rootDir>/node_modules/swiper/swiper.js",
         "^@/(.*)$": "<rootDir>/src/$1",
+        "^@shared/(.*)$": "<rootDir>/packages/shared/src/$1",
+        "^@sedie-multiplayer/(.*)$": "<rootDir>/packages/sedie-multiplayer/src/$1",
     },
     testPathIgnorePatterns: [
         "<rootDir>/node_modules/",
@@ -23,7 +25,7 @@ const config: Config = {
             },
         ],
     },
-    testMatch: ["**/__tests__/**/*.test.[jt]s?(x)"],
+    testMatch: ["**/__tests__/**/*.test.[jt]s?(x)", "**/*.spec.[jt]s?(x)"],
     testEnvironment: "jsdom",
     coveragePathIgnorePatterns: ["node_modules", ".d.ts", ".next", "coverage", "public", ".config.ts", ".config.js"],
     setupFilesAfterEnv: ["jest-extended", "./__mocks__/global.tsx", "@testing-library/jest-dom"],

@@ -3,7 +3,7 @@ import { useNoticeStore } from "@shared/stores/notice-store/notice-store";
 import { NoticeModel } from "@shared/components/game-base/type";
 
 // Mock the notice store
-jest.mock("../../stores/notice-store/notice-store", () => ({
+jest.mock("@shared/stores/notice-store/notice-store", () => ({
     useNoticeStore: {
         getState: jest.fn(),
     },

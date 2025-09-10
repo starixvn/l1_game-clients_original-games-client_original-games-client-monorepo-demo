@@ -4,7 +4,7 @@ import { RoundHistory } from "@shared/components/game-components/round-history/c
 import { IconStatistic } from "@shared/components/game-components/statistic/icon-statistic";
 
 // Mock the BaseDialog component
-jest.mock("../../../components/game-components/base-dialog", () => {
+jest.mock("@shared/components/game-components/base-dialog", () => {
     return function MockBaseDialog({ children, isOpen, onCloseModal, enableBackdrop }: any) {
         if (!isOpen) return null;
         return (
@@ -20,7 +20,7 @@ jest.mock("../../../components/game-components/base-dialog", () => {
 });
 
 // Mock the MiniItemNext component
-jest.mock("../../../components/game-components/round-history/dot-next", () => ({
+jest.mock("@shared/components/game-components/round-history/dot-next", () => ({
     MiniItemNext: ({ className }: { className: string }) => (
         <div data-testid="mini-item-next" className={className}>Next</div>
     ),
@@ -33,7 +33,7 @@ jest.mock("react-device-detect", () => ({
 }));
 
 // Mock the click sound hook
-jest.mock("../../../_shared/react-hooks", () => ({
+jest.mock("@shared/react-hooks", () => ({
     useClickSound: jest.fn(() => jest.fn()),
 }));
 
