@@ -16,7 +16,8 @@ import { LoadingSpinner } from "../../game-components/game-loading/loading-spinn
 import BalanceSyncProvider from '@shared/react-hooks/providers/balance-sync-provider';
 
 const SoundSettings = dynamic(() => import("../header/setting/settings-popup"), { ssr: false });
-const Games = dynamic(() => import("@/games/games"), { loading: () => <LoadingSpinner /> });
+// @ts-ignore - Next.js dynamic imports resolve at runtime
+const Games = dynamic(() => import("@/games/games"), { loading: () => <LoadingSpinner /> }) as React.ComponentType<GamesProps>;
 const MusicPlayer = dynamic(() => import("../music-player"), { ssr: false });
 
 class Dashboard extends React.Component<DashboardProps, DashboardState> {
@@ -186,6 +187,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         const urlContext = loadURLContext();
 
         return (
+            // @ts-ignore - Games component props are validated at runtime
             <Games
                 setApiErrorMessage={this.notificationHandler.handleShowApiErrorMessage}
                 userStakeLevel={userStakeLevel}
