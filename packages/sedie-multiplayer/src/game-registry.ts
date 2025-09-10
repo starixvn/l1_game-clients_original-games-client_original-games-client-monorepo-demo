@@ -4,7 +4,7 @@ import { registerGame } from "@shared/game-registry";
 // Register the SeDie Multiplayer game
 registerGame({
     gameId: GameIds.SeDieMultiplayer,
-    loader: () => import("./sedie-multiplayer/page"),
+    loader: () => import("./page"),
     metadata: {
         name: "SeDie Multiplayer",
         version: "1.0.0",

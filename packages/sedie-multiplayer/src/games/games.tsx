@@ -21,7 +21,7 @@ const LoadingGameComponent = React.memo(() => (
 LoadingGameComponent.displayName = "LoadingGameComponent";
 
 // SeBall removed
-const SeDieMultiPlayer = dynamic(() => import("../sedie-multiplayer/page"), {
+const SeDieMultiPlayer = dynamic(() => import("../page"), {
     loading: () => <LoadingGameComponent />,
     ssr: false,
 });

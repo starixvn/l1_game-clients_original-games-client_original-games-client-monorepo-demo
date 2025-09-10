@@ -14,12 +14,12 @@ import { GameBaseHandlers, GameBaseProps, GameBaseState } from "@shared/componen
 import { RoundGameSoundHandler } from "@shared/components/round-base/round-game-sound-handler";
 import { RoundIdHandler } from "@shared/components/round-base/round-id-handler";
 import { RoundStateHandler } from "@shared/components/round-base/round-state-handler";
-import { SeDieBetOptions } from "../sedie-multiplayer-constants";
-import { SeDieGameRoundDataHandler } from "../sedie-multiplayer-game-round-data-handler";
-import SedieCup from "../result-block/sedie-cup";
-import SeDieMultiplayerBettingBlock from "../sedie-multiplayer-betting-block";
-import { SedieMultiplayerRoundHistory } from "../round-history/sedie-multiplayer-round-history";
-import SeDieMultiplayerBetDetailModal from "../history";
+import { SeDieBetOptions } from "./sedie-multiplayer-constants";
+import { SeDieGameRoundDataHandler } from "./sedie-multiplayer-game-round-data-handler";
+import SedieCup from "./result-block/sedie-cup";
+import SeDieMultiplayerBettingBlock from "./sedie-multiplayer-betting-block";
+import { SedieMultiplayerRoundHistory } from "./round-history/sedie-multiplayer-round-history";
+import SeDieMultiplayerBetDetailModal from "./history";
 import { PlayerResultBoard } from "@shared/components/game-components/player-result-board/player-result-board";
 const Background = dynamic(() => import("@shared/components/game-components/background"), { ssr: false });
 const OwnTotalBet = dynamic(() => import("@shared/components/game-components/own-total-bet/own-total-bet"), { ssr: false });
