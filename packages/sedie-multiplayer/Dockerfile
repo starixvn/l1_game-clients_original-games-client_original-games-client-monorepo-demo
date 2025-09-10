@@ -23,8 +23,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/package.json ./package.json
 COPY --from=deps /app/yarn.lock ./yarn.lock
 
-# Copy root tsconfig.json that sedie-multiplayer extends
+# Copy root tsconfig files that sedie-multiplayer extends
 COPY tsconfig.json ./tsconfig.json
+COPY tsconfig.node.json ./tsconfig.node.json
 
 # Copy only sedie-multiplayer-specific files
 COPY packages/sedie-multiplayer/package.json packages/sedie-multiplayer/package.json
