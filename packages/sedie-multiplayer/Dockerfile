@@ -59,6 +59,9 @@ WORKDIR /app/packages/sedie-multiplayer
 RUN yarn generate-tolgee-data
 RUN yarn build:standalone
 
+# Debug: List contents of .next directory to verify standalone structure
+RUN ls -la .next/standalone/ || echo "Standalone directory not found"
+
 FROM base AS runner
 
 WORKDIR /app
@@ -83,10 +86,13 @@ COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/config
 # Ensure proper permissions for the .next directory
 RUN chown -R nextjs:nodejs .next
 
+# Debug: Check if standalone server.js exists in the runner stage
+RUN ls -la .next/standalone/server.js || echo "server.js not found in runner stage"
+
 USER nextjs
 
 EXPOSE 3001
 ENV PORT=3001
 ENV HOSTNAME=0.0.0.0
 ENV NEXT_PUBLIC_DEFAULT_GAME_ID=148
-CMD ["node", ".next/standalone/server.js"]
+CMD ["sh", "-c", "if [ -f .next/standalone/server.js ]; then node .next/standalone/server.js; elif [ -f .next/server.js ]; then node .next/server.js; else echo 'Server.js not found in expected locations' && ls -la .next/; fi"]
