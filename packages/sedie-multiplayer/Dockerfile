@@ -54,9 +54,8 @@ WORKDIR /app/packages/sedie-multiplayer
 ARG NEXT_PUBLIC_BASE_PATH
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 
-# Generate Tolgee data and build standalone version
-WORKDIR /app/packages/sedie-multiplayer
-RUN yarn generate-tolgee-data
+# Obfuscate deployment configs and build
+RUN yarn obfuscator-config-file
 RUN yarn build:standalone
 
 FROM base AS runner
@@ -71,12 +70,21 @@ ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 RUN addgroup --system --gid 1001 nodejs  \
      && adduser --system --uid 1001 nextjs
 
-# Copy the entire standalone directory which now includes all assets
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next/standalone ./
+# Copy the built app and required assets
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/next.config.js ./next.config.js
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/game-settings.json ./game-settings.json
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/configs.json ./configs.json
+
+# Ensure proper permissions for the .next directory
+RUN chown -R nextjs:nodejs .next
 
 USER nextjs
 
-EXPOSE 3001
-ENV PORT 3001
-ENV NEXT_PUBLIC_DEFAULT_GAME_ID=148
-CMD HOSTNAME="0.0.0.0" node server.js
+EXPOSE 5000
+ENV PORT=5000
+ENV HOSTNAME=0.0.0.0
+CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 ./node_modules/.bin/next start -p 5000"]

@@ -1,6 +1,5 @@
-import type { Config } from "jest";
-
-const config: Config = {
+/** @type {import('jest').Config} */
+const config = {
     collectCoverageFrom: ["**/*.{js,jsx,ts,tsx}", "!**/*.d.ts", "!**/node_modules/**"],
     moduleNameMapper: {
         "^.+\\.(css|sass|scss)$": "identity-obj-proxy",
@@ -37,4 +36,4 @@ const config: Config = {
     testTimeout: 10000,
 };
 
-export default config;
+module.exports = config;
