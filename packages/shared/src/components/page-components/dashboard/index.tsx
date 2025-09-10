@@ -17,7 +17,7 @@ import { LoadingSpinner } from "../../game-components/game-loading/loading-spinn
 import BalanceSyncProvider from '@shared/react-hooks/providers/balance-sync-provider';
 
 const SoundSettings = dynamic(() => import("../header/setting/settings-popup"), { ssr: false });
-const Games = dynamic(() => import("@sedie-multiplayer/games/games"), { loading: () => <LoadingSpinner />, ssr: false });
+const Games = dynamic(() => import("@/games/games"), { loading: () => <LoadingSpinner /> });
 const MusicPlayer = dynamic(() => import("../music-player"), { ssr: false });
 
 class Dashboard extends React.Component<DashboardProps, DashboardState> {

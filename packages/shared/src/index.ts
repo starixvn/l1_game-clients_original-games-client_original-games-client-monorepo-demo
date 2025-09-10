@@ -1,6 +1,7 @@
 // Shared package exports
 export * from './app-settings';
 export * from './constants';
+export * from './game-registry';
 export * from './helpers';
 export * from './react-contexts';
 export * from './react-hooks';
