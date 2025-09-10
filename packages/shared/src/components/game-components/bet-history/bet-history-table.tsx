@@ -143,7 +143,7 @@ export const BetHistoryTable = () => {
         const rowsHeight = allRows.slice(0, 10).reduce((sum, row) => sum + row.getBoundingClientRect().height, 0);
 
         // Measure the header height dynamically instead of hard-coding
-        const headerRow = tableBody.parentElement?.querySelector('thead tr') as HTMLTableRowElement | null;
+        const headerRow = tableBody.parentElement?.querySelector('thead tr') as HTMLTableRowElement;
         const headerHeight = headerRow ? headerRow.getBoundingClientRect().height : 36;
 
         const buffer = 1;
@@ -166,7 +166,7 @@ export const BetHistoryTable = () => {
                 handler.cleanup();
             };
         }
-        return () => {};
+        return () => { };
     }, [gameMessageHandler]);
 
     // Handle cell click for round column
@@ -210,7 +210,7 @@ export const BetHistoryTable = () => {
     // Update dynamic max height when data changes or window resizes
     useLayoutEffect(() => {
         if (displayedBetLogs.length === 0) {
-            return () => {};
+            return () => { };
         }
 
         const newHeight = calculateDynamicMaxHeight();
@@ -303,15 +303,15 @@ function renderToggleButton(
             {isLoading ? (
                 <BouncingDotsLoader />
             ) : (
-            <button
-                className={`${styles['toggle-button']} rounded-lg`}
-                onClick={handleToggleExpand}
-                disabled={isLoading}
-            >
-                {isExpanded ? t("show_less") : t("show_more")}
-            </button>
-            
-        )}
+                <button
+                    className={`${styles['toggle-button']} rounded-lg`}
+                    onClick={handleToggleExpand}
+                    disabled={isLoading}
+                >
+                    {isExpanded ? t("show_less") : t("show_more")}
+                </button>
+
+            )}
         </div>
     );
 }

@@ -1,4 +1,3 @@
-// import "../../../games/scoreboards"; // Removed - doesn't exist
 import dynamic from "next/dynamic";
 import { withRouter } from "next/router";
 import React from "react";

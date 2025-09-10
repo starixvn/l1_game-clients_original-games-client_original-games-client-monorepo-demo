@@ -98,10 +98,7 @@ export type ClientSeed = {
     clientSeed: string;
 };
 
-// Game message handler interface
-export interface GameMessageHandler {
-    // Define the interface as needed
-}
+// Game message handler interface - to be implemented as needed
 
 // Message event types
 export const messageEventType = {
