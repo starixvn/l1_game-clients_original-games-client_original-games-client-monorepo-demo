@@ -54,19 +54,10 @@ WORKDIR /app/packages/sedie-multiplayer
 ARG NEXT_PUBLIC_BASE_PATH
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 
-# Generate Tolgee data from root directory and build
+# Generate Tolgee data and build standalone version
 WORKDIR /app/packages/sedie-multiplayer
 RUN yarn generate-tolgee-data
 RUN yarn build:standalone
-
-# Debug: Check what was actually built
-RUN echo "=== Build output verification ===" && \
-    echo "Contents of .next directory:" && \
-    ls -la .next/ && \
-    echo "Contents of .next/standalone directory:" && \
-    ls -la .next/standalone/ 2>/dev/null || echo "No standalone directory found" && \
-    echo "Looking for any .js files in .next:" && \
-    find .next -name "*.js" -type f 2>/dev/null || echo "No .js files found"
 
 FROM base AS runner
 
@@ -80,25 +71,12 @@ ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 RUN addgroup --system --gid 1001 nodejs  \
      && adduser --system --uid 1001 nextjs
 
-# Copy the built app and required assets
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next ./.next
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/package.json ./package.json
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/next.config.js ./next.config.js
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/game-settings.json ./game-settings.json
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/configs.json ./configs.json
-
-# Ensure proper permissions for the .next directory
-RUN chown -R nextjs:nodejs .next
-
-# Debug: List contents of standalone directory in the runner stage
-RUN echo "Contents of .next/standalone/:" && ls -la .next/standalone/ || echo "Standalone directory not found"
+# Copy the entire standalone directory which now includes all assets
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next/standalone ./
 
 USER nextjs
 
 EXPOSE 3001
-ENV PORT=3001
-ENV HOSTNAME=0.0.0.0
+ENV PORT 3001
 ENV NEXT_PUBLIC_DEFAULT_GAME_ID=148
-CMD ["sh", "-c", "if [ -f .next/standalone/server.js ]; then node .next/standalone/server.js; elif [ -f .next/server.js ]; then node .next/server.js; else echo 'Server.js not found in expected locations. Contents of .next/:' && ls -la .next/ && echo 'Contents of .next/standalone/:' && ls -la .next/standalone/ 2>/dev/null || echo 'standalone directory not found'; fi"]
+CMD HOSTNAME="0.0.0.0" node server.js
