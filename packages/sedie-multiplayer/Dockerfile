@@ -88,4 +88,5 @@ USER nextjs
 EXPOSE 3001
 ENV PORT=3001
 ENV HOSTNAME=0.0.0.0
-CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 ./node_modules/.bin/next start -p 3001"]
+ENV NEXT_PUBLIC_DEFAULT_GAME_ID=148
+CMD ["node", ".next/standalone/server.js"]
