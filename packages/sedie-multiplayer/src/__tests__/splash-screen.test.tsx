@@ -1,16 +1,16 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import SplashScreen, { customStartup, onStartupError } from "../../components/page-components/splash-screen";
+import SplashScreen, { customStartup, onStartupError } from "../components/page-components/splash-screen/index";
 import { URLContext } from '@shared/react-contexts/url-context';
 import { PlayerContext } from '@shared/react-contexts/auth';
-import { authorize, getLobbyConfigs, sso } from "../../services/auth-service";
+import { authorize, getLobbyConfigs, sso } from "@shared/services/auth-service";
 import { getUserLatestGameId } from '@shared/helpers';
 
 // Mock dependencies
-jest.mock("../../services/auth-service");
-jest.mock("../../_shared/helpers", () => ({
-    ...jest.requireActual("../../_shared/helpers"),
+jest.mock("@shared/services/auth-service");
+jest.mock("@shared/helpers", () => ({
+    ...jest.requireActual("@shared/helpers"),
     getEnabledRenderGameSettings: jest.fn(),
     getUserLatestGameId: jest.fn(),
 }));
@@ -31,14 +31,14 @@ jest.mock("@sentry/nextjs", () => ({
 }));
 
 // Mock Tolgee
-jest.mock("../../_shared/tolgee", () => ({
+jest.mock("@shared/tolgee", () => ({
     tolgee: {
         changeLanguage: jest.fn().mockResolvedValue(undefined),
     },
 }));
 
 // Mock useTranslator hook
-jest.mock("../../_shared/react-hooks/use-translator", () => ({
+jest.mock("@shared/react-hooks/use-translator", () => ({
     useTranslator: () => ({
         t: (key: string) => key,
     }),
@@ -76,7 +76,7 @@ jest.mock("next/router", () => ({
 }));
 
 // Mock the optimized PreloadResources component
-jest.mock("../../_shared/helpers/preload-resources", () => ({
+jest.mock("@shared/helpers/preload-resources", () => ({
     __esModule: true,
     default: ({ setIsDonePreload }: { setIsDonePreload: () => void }) => {
         const PreloadResourcesComponent = () => {
@@ -97,10 +97,10 @@ jest.mock("../../_shared/helpers/preload-resources", () => ({
 }));
 
 // Mock getEnabledRenderGameSettings and getRenderGameSettings
-const mockGetEnabledRenderGameSettings = require("../../_shared/helpers").getEnabledRenderGameSettings;
-const mockGetRenderGameSettings = require("../../_shared/helpers/lobby-helper").getRenderGameSettings;
-jest.mock("../../_shared/helpers/lobby-helper", () => ({
-    ...jest.requireActual("../../_shared/helpers/lobby-helper"),
+const mockGetEnabledRenderGameSettings = require("@shared/helpers").getEnabledRenderGameSettings;
+const mockGetRenderGameSettings = require("@shared/helpers/lobby-helper").getRenderGameSettings;
+jest.mock("@shared/helpers/lobby-helper", () => ({
+    ...jest.requireActual("@shared/helpers/lobby-helper"),
     getRenderGameSettings: jest.fn(),
 }));
 
@@ -240,7 +240,7 @@ describe("SplashScreen Component", () => {
             } as any);
 
             // Suppress console.error for this test to avoid open handle detection
-            const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+            const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => { });
 
             // Act
             const error = new Error("Test error");
