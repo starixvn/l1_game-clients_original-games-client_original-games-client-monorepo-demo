@@ -1,5 +1,5 @@
 import { FC } from "react";
-import SeDieMultiplayerBetOptions from "@sedie/bet-options/sedie-multiplayer-bet-options";
+import SeDieMultiplayerBetOptions from "../../bet-options/sedie-multiplayer-bet-options";
 
 const SeDieMultiplayerBettingBlock: FC = () => {
     return (

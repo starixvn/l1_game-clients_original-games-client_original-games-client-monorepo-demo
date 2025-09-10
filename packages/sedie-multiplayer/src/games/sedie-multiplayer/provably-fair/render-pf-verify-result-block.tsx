@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useTranslator } from "@shared/react-hooks";
 import { DrawInfo } from "@shared/components/game-base/type";
 import { ResourceTypes } from "@shared/resources";
-import { getWinningSubOption } from "@sedie/history/sedie-multiplayer-bet-detail-result-block";
+import { getWinningSubOption } from "../../../history/sedie-multiplayer-bet-detail-result-block";
 import Image from "next/image";
 
 const PFVerifyResultBlock: FC<{ pfResult: DrawInfo }> = ({ pfResult }) => {
