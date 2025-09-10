@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef } from "react";
 import { isMobileOnly } from "react-device-detect";
 
 import { useClickSound } from '@shared/react-hooks';
+import { useModalStack, modalStackManager } from '@shared/utils/modal-stack-manager';
 import { ModalType } from "./type";
 import { cn } from '@shared/utils/merge-tailwind-util';
 
@@ -48,6 +49,13 @@ const BaseDialog: React.FC<Props> = ({
     const wrapperRef = useRef<HTMLDivElement>(null);
     const clickSound = useClickSound();
     const isIpad = useMemo(() => /iPad/i.test(navigator.userAgent), []);
+    const { addModal } = useModalStack();
+
+    useEffect(() => {
+        if (isOpen) {
+            addModal(onCloseModal);
+        }
+    }, [isOpen, addModal, onCloseModal]);
 
     useEffect(() => {
         const className = "overflow-hidden";
@@ -66,18 +74,22 @@ const BaseDialog: React.FC<Props> = ({
         };
     }, [enableBackdrop, isOverlap]);
 
+    const handleClickOutside = (event: any) => {
+        clickSound();
+        modalStackManager.closeTopModal();
+    };
+
     useEffect(() => {
-        const handleClickOutside = (event: any) => {
+        const handleClickOutsideEvent = (event: any) => {
             if (isOpen && !wrapperRef?.current?.contains(event.target) && !toggleBtnRef?.current?.contains(event.target)) {
-                clickSound();
-                onCloseModal?.();
+                handleClickOutside(event);
             }
         };
-        !isBlockUI && document.addEventListener("mousedown", handleClickOutside);
+        !isBlockUI && document.addEventListener("mousedown", handleClickOutsideEvent);
         return () => {
-            !isBlockUI && document.removeEventListener("mousedown", handleClickOutside);
+            !isBlockUI && document.removeEventListener("mousedown", handleClickOutsideEvent);
         };
-    }, [wrapperRef, isOpen, onCloseModal, clickSound, isBlockUI, toggleBtnRef]);
+    }, [wrapperRef, isOpen, clickSound, isBlockUI, toggleBtnRef]);
 
     return (
         <>
