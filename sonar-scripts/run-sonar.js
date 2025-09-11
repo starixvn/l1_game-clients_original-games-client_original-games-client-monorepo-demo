@@ -11,7 +11,7 @@ scanner(
             "sonar.sources": "src",
             "sonar.tests": "src/__tests__",
             "sonar.exclusions":
-                "**/*.d.ts,**/*.config.js,**/*.config.ts,**/*.config.json,**/node_modules/**,**/.next/**,**/coverage/**,**/reports/**,**/stryker-examples/**,**/__mocks__/**,**/*.test.tsx,**/*.test.ts,**/*.spec.tsx,**/*.spec.ts,**/*.md",
+                "**/*.d.ts,**/*.config.js,**/*.config.ts,**/*.config.json,**/node_modules/**,**/.next/**,**/coverage/**,**/reports/**,**/__mocks__/**,**/*.test.tsx,**/*.test.ts,**/*.spec.tsx,**/*.spec.ts,**/*.md",
             "sonar.javascript.lcov.reportPaths": "coverage/lcov.info",
             // "sonar.testExecutionReportPaths": "reports/test-reporter.xml",
             "sonar.typescript.tsconfigPath": "tsconfig.json",
