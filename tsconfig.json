@@ -24,6 +24,12 @@
         ],
         "baseUrl": ".",
         "paths": {
+            "@baccarat": [
+                "packages/baccarat/src"
+            ],
+            "@baccarat/*": [
+                "packages/baccarat/src/*"
+            ],
             "@sedie-multiplayer": [
                 "packages/sedie-multiplayer/src"
             ],
@@ -41,11 +47,13 @@
         "**/*.tsx",
         "**/*.js",
         "jest.config.ts",
+        "packages/baccarat/src/**/*",
         "packages/sedie-multiplayer/src/**/*",
         "packages/shared/src/**/*"
     ],
     "exclude": [
         "node_modules",
+        "packages/baccarat/dist",
         "packages/sedie-multiplayer/dist",
         "packages/shared/dist"
     ]

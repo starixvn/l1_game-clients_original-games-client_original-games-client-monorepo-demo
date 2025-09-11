@@ -2,31 +2,33 @@
 
 ## Overview
 
-This document details the complete process of restructuring the `original-games-client-html` project from a monolithic structure to a monorepo architecture. The restructuring enables better code organization, reusability, and maintainability by separating shared components from game-specific implementations.
+This document provides a comprehensive analysis and detailed documentation of the `original-games-client-monorepo-demo` project, which has been successfully restructured from a monolithic architecture to a modern monorepo setup. The restructuring enables better code organization, reusability, maintainability, and scalability by separating shared components from game-specific implementations.
 
 ## Current Status Summary
 
-✅ **RESTRUCTURING COMPLETE** - The monorepo has been successfully implemented with:
+✅ **MONOREPO FULLY OPERATIONAL** - The project has been successfully restructured and is production-ready with:
 
--   All shared components moved to `packages/shared/src`
--   Game-specific code isolated in `packages/sedie-multiplayer/src`
--   Proper workspace configuration with TypeScript path mapping
--   Webpack aliases for seamless imports
--   Docker integration for containerized deployment
--   Translation system integration with Tolgee
+-   **Modular Architecture**: Complete separation of shared and game-specific code
+-   **Advanced Build System**: Multi-stage Docker builds with optimized caching
+-   **Type-Safe Development**: Comprehensive TypeScript configuration with path mapping
+-   **Modern Testing Suite**: Jest configuration with comprehensive test coverage
+-   **Internationalization**: Tolgee integration for multi-language support
+-   **Containerization**: Production-ready Docker setup with standalone Next.js builds
+-   **Development Tools**: Enhanced tooling for development, testing, and deployment
 
 ## Table of Contents
 
 1. [Project Structure Comparison](#project-structure-comparison)
 2. [Current State Analysis](#current-state-analysis)
-3. [Restructuring Process](#restructuring-process)
-4. [Key Changes Made](#key-changes-made)
-5. [Configuration Updates](#configuration-updates)
-6. [Import Path Migration](#import-path-migration)
-7. [Docker Integration](#docker-integration)
-8. [Translation System Integration](#translation-system-integration)
+3. [Package Architecture](#package-architecture)
+4. [Configuration System](#configuration-system)
+5. [Build and Deployment](#build-and-deployment)
+6. [Development Workflow](#development-workflow)
+7. [Testing Infrastructure](#testing-infrastructure)
+8. [Internationalization](#internationalization)
 9. [Troubleshooting Guide](#troubleshooting-guide)
-10. [Development Workflow](#development-workflow)
+10. [Performance Optimization](#performance-optimization)
+11. [CI/CD Integration](#ci-cd-integration)
 
 ## Project Structure Comparison
 
@@ -64,52 +66,255 @@ original-games-client-html-master/
 ### After (Monorepo Structure - CURRENT)
 
 ```
-original-games-client-html/
+original-games-client-monorepo-demo/
 ├── packages/
-│   ├── shared/           # Shared package (@shared/merged)
+│   ├── shared/                           # Shared package (@shared/merged)
 │   │   ├── src/
-│   │   │   ├── app-settings/     # Application settings
-│   │   │   ├── components/       # Reusable components
-│   │   │   │   ├── game-base/    # Base game components (14 files)
-│   │   │   │   ├── game-components/# Reusable UI (75+ files)
-│   │   │   │   └── page-components/# Page components (41 files)
-│   │   │   ├── constants/        # Error codes, resource mappings
-│   │   │   ├── game-registry/    # Game registration system
-│   │   │   ├── helpers/          # Utility functions (31 files)
-│   │   │   ├── react-contexts/   # React contexts (18 files)
-│   │   │   ├── react-hooks/      # Custom hooks (27 files)
-│   │   │   ├── resources/        # Translation resources
-│   │   │   ├── sentry.ts         # Error tracking
-│   │   │   ├── services/         # API services (4 files)
-│   │   │   ├── stores/           # Zustand stores (9 stores)
-│   │   │   ├── styles/           # Shared SCSS (20 files)
-│   │   │   ├── tolgee.ts         # Translation setup
-│   │   │   ├── types/            # TypeScript type definitions
-│   │   │   └── utils/            # Utilities (4 files)
-│   │   └── package.json
-│   └── sedie-multiplayer/ # Game package (@games/sedie-multiplayer)
+│   │   │   ├── app-settings/             # Application settings (2 files)
+│   │   │   │   ├── index.ts
+│   │   │   │   └── type.d.ts
+│   │   │   ├── components/               # Reusable components (221+ files)
+│   │   │   │   ├── game-base/           # Base game components (14 files)
+│   │   │   │   │   └── handlers/        # Game event handlers (12 *.ts, 2 *.tsx)
+│   │   │   │   ├── game-components/     # Reusable UI components (75+ files)
+│   │   │   │   │   ├── animations/      # Animation components (1 *.tsx)
+│   │   │   │   │   ├── background/      # Background components (2 files)
+│   │   │   │   │   ├── balance-effect/  # Balance effects (2 files)
+│   │   │   │   │   ├── base-dialog/     # Base dialog system (2 files)
+│   │   │   │   │   ├── bet-history/     # Bet history components (9 files)
+│   │   │   │   │   ├── bet-option/      # Bet option components (18 files)
+│   │   │   │   │   ├── chip-slider/     # Chip slider components (6 files)
+│   │   │   │   │   ├── countdown-timer/ # Timer components (2 files)
+│   │   │   │   │   ├── disabled-modal/  # Modal components (2 files)
+│   │   │   │   │   ├── error-message/   # Error handling (5 files)
+│   │   │   │   │   ├── game-guide/      # Game guide components (2 files)
+│   │   │   │   │   ├── game-loading/    # Loading states (3 files)
+│   │   │   │   │   ├── modal-container/ # Modal management (1 *.tsx)
+│   │   │   │   │   ├── notice/          # Notification system (3 files)
+│   │   │   │   │   ├── overlay-mask/    # Overlay components (1 *.tsx)
+│   │   │   │   │   ├── pf-modal/        # Provably fair modal (1 *.tsx)
+│   │   │   │   │   ├── player-result-board/ # Result display (2 files)
+│   │   │   │   │   ├── popup-button/    # Popup components (1 *.tsx)
+│   │   │   │   │   ├── provably-fair/   # PF verification (16 files)
+│   │   │   │   │   ├── rebet/           # Rebet functionality (4 files)
+│   │   │   │   │   ├── result-detail/   # Result details (2 files)
+│   │   │   │   │   ├── round-history/   # Round history (29 files)
+│   │   │   │   │   ├── settings/        # Settings components (4 files)
+│   │   │   │   │   ├── statistic/       # Statistics components (9 files)
+│   │   │   │   │   └── tooltip/         # Tooltip components (1 *.tsx)
+│   │   │   │   ├── page-components/    # Page-level components (41 files)
+│   │   │   │   │   ├── background-error/    # Error pages (1 *.tsx)
+│   │   │   │   │   ├── button-return-to-url/ # Navigation (2 files)
+│   │   │   │   │   ├── dashboard/      # Dashboard components (17 files)
+│   │   │   │   │   ├── google-analytics/ # Analytics (1 *.tsx)
+│   │   │   │   │   ├── header/         # Header components (9 files)
+│   │   │   │   │   ├── music-player/   # Audio controls (2 files)
+│   │   │   │   │   ├── splash-screen/  # Splash screens (4 files)
+│   │   │   │   │   ├── theme-toggle/   # Theme switching (2 files)
+│   │   │   │   │   └── um-page/        # User management (1 *.tsx)
+│   │   │   │   └── round-base/        # Round management (4 files)
+│   │   │   │       └── __tests__/     # Round base tests (2 files)
+│   │   │   ├── constants/             # Constants and mappings (3 files)
+│   │   │   │   ├── error-code-dictionary.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   └── resource-image-mapping.ts
+│   │   │   ├── game-registry/         # Game registration system (3 files)
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── registry.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── helpers/               # Utility functions (31 files)
+│   │   │   │   ├── __tests__/        # Helper tests (2 files)
+│   │   │   │   ├── analytic-helper.ts
+│   │   │   │   ├── avatar-helper.ts
+│   │   │   │   ├── ball-color-helper.ts
+│   │   │   │   ├── base-64-helper.ts
+│   │   │   │   ├── debug-helper.ts
+│   │   │   │   ├── error-boundary.tsx
+│   │   │   │   ├── event-listener-helper.ts
+│   │   │   │   ├── global-events-helper.ts
+│   │   │   │   ├── image-cache-controller.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── lobby-helper.ts
+│   │   │   │   ├── message-transmitter/ # Message handling (3 files)
+│   │   │   │   ├── name-generator.ts
+│   │   │   │   ├── notice-helper.ts
+│   │   │   │   ├── number-helper.ts
+│   │   │   │   ├── object-helper.ts
+│   │   │   │   ├── pf/               # Provably fair helpers (2 files)
+│   │   │   │   ├── preload-resources.tsx
+│   │   │   │   ├── scoreboard-registry.ts
+│   │   │   │   ├── service-worker-helper.ts
+│   │   │   │   ├── socket-connection.ts
+│   │   │   │   ├── storage-helper.ts
+│   │   │   │   ├── string-helper.ts
+│   │   │   │   ├── time-helper.ts
+│   │   │   │   ├── url-helper.ts
+│   │   │   │   └── validate-bet-helper.ts
+│   │   │   ├── react-contexts/        # React contexts (18 files)
+│   │   │   │   ├── auth/             # Authentication context (1 *.tsx)
+│   │   │   │   ├── game-actions-context/ # Game actions (1 *.tsx)
+│   │   │   │   │   └── index.tsx
+│   │   │   │   ├── game-context/     # Game state context (9 files)
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── setting-context/  # Settings context (4 files)
+│   │   │   │   └── url-context.ts    # URL context
+│   │   │   ├── react-hooks/          # Custom hooks (27 files)
+│   │   │   │   ├── __tests__/       # Hook tests (6 files)
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── providers/       # Hook providers (1 *.tsx)
+│   │   │   │   ├── use-auto-rebet.ts
+│   │   │   │   ├── use-background-music.ts
+│   │   │   │   ├── use-balance-sync.ts
+│   │   │   │   ├── use-balance.ts
+│   │   │   │   ├── use-bet-history.ts
+│   │   │   │   ├── use-click-outside.ts
+│   │   │   │   ├── use-client-seed-pf.ts
+│   │   │   │   ├── use-debounce.ts
+│   │   │   │   ├── use-high-light.ts
+│   │   │   │   ├── use-low-performance-device.ts
+│   │   │   │   ├── use-memoried-image.ts
+│   │   │   │   ├── use-player-result-board.ts
+│   │   │   │   ├── use-pwa-worker.ts
+│   │   │   │   ├── use-rebet.ts
+│   │   │   │   ├── use-result.tsx
+│   │   │   │   ├── use-sound.ts
+│   │   │   │   ├── use-theme.ts
+│   │   │   │   └── use-translator.ts
+│   │   │   ├── resources/            # Translation resources (5 files)
+│   │   │   │   ├── common-resource-keys.ts
+│   │   │   │   ├── game-resource-keys.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── message-resource-keys.ts
+│   │   │   │   └── type.ts
+│   │   │   ├── sentry.ts             # Error tracking
+│   │   │   ├── services/             # API services (4 files)
+│   │   │   │   ├── auth-service.ts
+│   │   │   │   ├── lobby-service.ts
+│   │   │   │   ├── user-client-communication.ts
+│   │   │   │   └── user-setting-service.ts
+│   │   │   ├── stores/               # Zustand stores (31 files)
+│   │   │   │   ├── bet-detail-store/ # Bet details (2 files)
+│   │   │   │   ├── bet-history-store/ # Bet history (3 files)
+│   │   │   │   ├── betting-store/    # Betting state (2 files)
+│   │   │   │   ├── game-store/       # Game state (5 files)
+│   │   │   │   ├── global-events-store/ # Global events (3 files)
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── notice-store/     # Notifications (4 files)
+│   │   │   │   ├── pf-store/         # Provably fair (5 files)
+│   │   │   │   ├── popup-store/      # Popups (3 files)
+│   │   │   │   ├── theme-store/      # Theme state (3 files)
+│   │   │   │   └── [additional store files]
+│   │   │   ├── styles/               # Shared SCSS (23 files)
+│   │   │   │   ├── components/      # Component styles (20 files)
+│   │   │   │   ├── errors.scss
+│   │   │   │   ├── global.css
+│   │   │   │   └── main.scss
+│   │   │   ├── tolgee-generator.ts   # Translation generator
+│   │   │   ├── tolgee.ts            # Translation setup
+│   │   │   ├── utils/               # Utilities (4 files)
+│   │   │   │   ├── iframe-messages.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── merge-tailwind-util.ts
+│   │   │   │   └── modal-stack-manager.ts
+│   │   │   └── index.ts             # Main export file
+│   │   ├── package.json             # Shared package configuration
+│   │   └── tsconfig.json            # Shared TypeScript config
+│   └── sedie-multiplayer/           # Game package (@games/sedie-multiplayer)
 │       ├── src/
-│       │   ├── bet-options/      # Betting options (7 files)
-│       │   ├── components/       # Game-specific components
-│       │   │   ├── game-components/ # Reusable overrides
-│       │   │   └── page-components/ # Page-specific components
-│       │   ├── games/           # Game routing (4 files)
-│       │   ├── history/         # Game history (4 files)
-│       │   ├── index.ts         # Main entry point
-│       │   ├── page.tsx         # Main page component
-│       │   ├── pages/           # Next.js pages (8 files)
-│       │   ├── provably-fair/   # PF verification (4 files)
-│       │   ├── result-block/    # Result display (2 files)
-│       │   ├── round-history/   # Round history (6 files)
-│       │   ├── scoreboard/      # Scoreboard (6 files)
-│       │   ├── sedie-multiplayer/# Main game logic
-│       │   └── styles/          # Game-specific styles
-│       ├── public/              # Static assets
-│       ├── configs/             # Game configurations
-│       ├── Dockerfile           # Container configuration
-│       └── package.json
-├── package.json          # Root workspace configuration
-└── tsconfig.json         # Root TypeScript configuration
+│       │   ├── bet-options/         # Betting options (8 files)
+│       │   │   ├── highlight-bet-option.module.scss
+│       │   │   ├── highlight-bet-option.tsx
+│       │   │   ├── highlight-prev-round-bet-option.module.scss
+│       │   │   ├── highlight-prev-round-bet-option.tsx
+│       │   │   ├── sedie-main-option.tsx
+│       │   │   ├── sedie-multiplayer-bet-options.tsx
+│       │   │   ├── sedie-sub-option.tsx
+│       │   │   └── style.module.scss
+│       │   ├── game-registry.ts     # Game registration for SeDie
+│       │   ├── games/               # Game routing (3 files)
+│       │   │   ├── games.tsx
+│       │   │   ├── scoreboards.ts
+│       │   │   └── type.ts
+│       │   ├── history/             # Game history (4 files)
+│       │   │   ├── history.module.scss
+│       │   │   ├── index.tsx
+│       │   │   ├── sedie-multiplayer-bet-detail-result-block.tsx
+│       │   │   └── sedie-multiplayer-bet-log-result-cell.tsx
+│       │   ├── index.ts             # Main entry point
+│       │   ├── page.tsx             # Main page component
+│       │   ├── pages/               # Next.js pages (8 files)
+│       │   │   ├── _app.tsx
+│       │   │   ├── _document.tsx
+│       │   │   ├── api/
+│       │   │   │   └── handler.ts
+│       │   │   ├── Custom404.tsx
+│       │   │   ├── index.tsx
+│       │   │   ├── MyError.tsx
+│       │   │   └── timeout.tsx
+│       │   ├── provably-fair/       # PF verification (4 files)
+│       │   │   ├── index.tsx
+│       │   │   ├── pf-sedie-multiplayer.module.scss
+│       │   │   ├── pf-verification.tsx
+│       │   │   └── render-pf-verify-result-block.tsx
+│       │   ├── result-block/        # Result display (2 files)
+│       │   │   ├── sedie-cup.module.scss
+│       │   │   │   └── sedie-cup.tsx
+│       │   ├── round-history/       # Round history (5 files)
+│       │   │   ├── sedie-multiplayer-round-history-item.tsx
+│       │   │   ├── sedie-multiplayer-round-history.tsx
+│       │   │   ├── sedie-multiplayer-statistic-popup.tsx
+│       │   │   ├── statistic-popup.module.scss
+│       │   │   └── style.module.scss
+│       │   ├── scoreboard/          # Scoreboard (6 files)
+│       │   │   ├── index.tsx
+│       │   │   ├── README.md
+│       │   │   ├── scoreboard-elements.module.scss
+│       │   │   ├── scoreboard-elements.tsx
+│       │   │   ├── scoreboard.module.scss
+│       │   │   └── scoreboard.tsx
+│       │   ├── sedie-multiplayer-betting-block.tsx
+│       │   │   ├── sedie-multiplayer-constants.ts
+│       │   │   ├── sedie-multiplayer-game-round-data-handler.ts
+│       │   │   ├── sedie-multiplayer-winning-animation.tsx
+│       │   ├── sedie-multiplayer.module.scss
+│       │   └── switch-anim.module.scss
+│       ├── public/                  # Static assets (108+ files)
+│       │   ├── c.js
+│       │   ├── favicons/           # Favicon files (2 files)
+│       │   ├── i18n/              # Translation files (21 files)
+│       │   │   ├── Common/        # Common translations (7 languages)
+│       │   │   ├── SabaNumber/    # Number game translations (7 languages)
+│       │   │   │   └── SeDie/     # SeDie game translations (7 languages)
+│       │   ├── locales/           # Additional locales (35 files)
+│       │   └── static/            # Static assets (30+ images, SVGs, etc.)
+│       ├── configs/               # Game configurations (19 files)
+│       │   ├── config-obfuscator.js
+│       │   ├── missing-configuration.js
+│       │   ├── sg/               # SG configurations (18 files)
+│       │   └── vg/               # VG configurations (16 files)
+│       ├── Dockerfile            # Multi-stage build configuration
+│       ├── package.json          # Game package configuration
+│       ├── next.config.js        # Next.js configuration
+│       ├── tailwind.config.js    # Tailwind CSS configuration
+│       ├── tsconfig.json         # TypeScript configuration
+│       ├── tsconfig.jest.json    # Jest TypeScript configuration
+│       ├── jest.config.js        # Jest testing configuration
+│       ├── postcss.config.js     # PostCSS configuration
+│       ├── sentry.*.config.js    # Sentry error tracking (3 files)
+│       └── game-settings.json    # Game-specific settings
+├── package.json                   # Root workspace configuration
+├── tsconfig.json                  # Root TypeScript configuration
+├── tsconfig.node.json            # Node.js TypeScript configuration
+├── next.config.js                # Root Next.js configuration
+├── tailwind.config.js           # Root Tailwind configuration
+├── postcss.config.js            # Root PostCSS configuration
+├── Dockerfile                   # Root Docker configuration
+├── yarn.lock                    # Dependency lock file
+├── docs/                        # Documentation (7 files)
+├── scripts/                     # Build and utility scripts
+├── sonar-scripts/               # SonarQube analysis scripts (14 files)
+├── __mocks__/                   # Jest mock files
+└── [Configuration files]        # Various config files (.gitignore, etc.)
 ```
 
 ### Architecture Diagram
@@ -180,129 +385,651 @@ graph LR
     C -->|@shared/styles/components/| G
 ```
 
-## Current State Analysis
+## Package Architecture
 
-### Files Successfully Synced ✅
+### Shared Package (`@shared/merged`)
 
-Based on the comparison between `original-games-client-html-master` and the monorepo, the following files have been successfully migrated and synced:
+The shared package is the foundation of the monorepo architecture, containing all reusable components, utilities, and services that can be used across multiple games.
 
-#### Core Components (All Synced):
+#### Package Configuration
 
--   ✅ `pf-store/pf-store.ts` - Provably Fair store with Zustand
--   ✅ `modal-stack-manager.ts` - Modal stack management utility (added to monorepo)
--   ✅ `base-dialog/index.tsx` - Base dialog component with modal stack integration
--   ✅ `bet-history/bet-history-table.tsx` - Bet history table component
--   ✅ `chip-slider/chip-slider.tsx` - Chip slider component
--   ✅ `disabled-modal/index.tsx` - Disabled modal component
--   ✅ `error-message/index.tsx` - Error message component
--   ✅ `game-guide/index.tsx` - Game guide component
--   ✅ `modal-container/index.tsx` - Modal container component
--   ✅ `notice/index.tsx` - Notice component
--   ✅ `player-result-board/player-result-board-table.tsx` - Player result board
--   ✅ `popup-button/index.tsx` - Popup button component
--   ✅ `provably-fair/pf-guide/index.tsx` - PF guide component
--   ✅ `rebet/auto-rebet-popup.tsx` - Auto rebet popup component
+**Key Dependencies:**
+- **React & Next.js**: `react@^18.2.0`, `next@^14.2.25` - Core framework dependencies
+- **State Management**: `zustand@^5.0.7` - Lightweight state management solution
+- **Real-time Communication**: `socket.io-client@^4.1.3` - WebSocket client for real-time updates
+- **Internationalization**: `@tolgee/react@^5.28.6`, `@tolgee/format-icu@^5.28.6` - Translation system
+- **Error Tracking**: `@sentry/nextjs@^9.41.0` - Production error monitoring
+- **UI Components**: `swiper@^11.1.1`, `react-slick@^0.29.0` - Carousel/slider components
+- **Styling**: `styled-components@^6.1.19`, `tailwind-merge@^3.3.1` - CSS-in-JS and utility-first CSS
+- **Animation**: `gsap@^3.13.0`, `motion@^12.23.12` - Animation libraries
+- **Audio**: `use-sound@^4.0.1` - Sound management hook
+- **Utilities**: `lodash` (implied), `axios@^1.8.2` - HTTP client and utility functions
 
-#### Additional Components Synced:
+#### Component Architecture
 
--   ✅ All game-components (75+ files) from original
--   ✅ All page-components (41 files) from original
--   ✅ All helper functions (31 files) from original
--   ✅ All React hooks (27 files) from original
--   ✅ All Zustand stores (9 stores) from original
--   ✅ All SCSS styles (20 files) from original
+**Core Component Categories:**
 
-### Key Differences Found
+1. **Game Components (75+ files)**:
+   - **Base Components**: Core game functionality (14 files in `game-base/`)
+   - **UI Components**: Reusable UI elements (bet-history, chip-slider, countdown-timer, etc.)
+   - **Modal System**: Comprehensive modal management with stack support
+   - **Provably Fair**: Cryptographic verification components (16 files)
+   - **Statistics**: Game statistics and analytics components
 
-#### 1. Modal Stack Manager Integration
+2. **Page Components (41 files)**:
+   - **Dashboard**: Main game dashboard components (17 files)
+   - **Header**: Navigation and header components (9 files)
+   - **Splash Screen**: Loading and entry screens (4 files)
+   - **Error Handling**: Error pages and boundary components
 
--   **Original**: Used modal stack manager for proper modal layering
--   **Monorepo**: Initially simplified, but restored with modal stack functionality
--   **Status**: ✅ Fixed - Modal stack manager added and integrated
+3. **Round Base System**:
+   - **Round Management**: Game round lifecycle management
+   - **Sound Handler**: Audio feedback for round events
+   - **Round State Handler**: State management for game rounds
 
-#### 2. PF Store Configuration
+#### State Management (31 store files)
 
--   **Original**: `expandGuideFirst` persisted in partialize
--   **Monorepo**: `isShowPFSetting` persisted (better implementation)
--   **Status**: ✅ Correct - Monorepo version is more appropriate
+**Zustand Stores**:
+- **Game Store**: Core game state management (5 files)
+- **Betting Store**: Bet placement and management (2 files)
+- **Bet History Store**: Historical bet data (3 files)
+- **Bet Detail Store**: Detailed bet information (2 files)
+- **Global Events Store**: Cross-component event handling (3 files)
+- **Notice Store**: Notification system (4 files)
+- **PF Store**: Provably fair state management (5 files)
+- **Popup Store**: Modal and popup state (3 files)
+- **Theme Store**: UI theme management (3 files)
 
-#### 3. Import Structure
+#### Utility Systems
 
--   **Original**: Relative imports `../../../_shared/`
--   **Monorepo**: Absolute imports `@shared/`
--   **Status**: ✅ Complete - All imports updated to use aliases
+**Helpers (31 files)**:
+- **API Communication**: `socket-connection.ts`, `user-client-communication.ts`
+- **Data Validation**: `validate-bet-helper.ts`, `number-helper.ts`
+- **UI Utilities**: `storage-helper.ts`, `string-helper.ts`
+- **Game Logic**: `ball-color-helper.ts`, `pf/` directory for provably fair utilities
+- **Resource Management**: `image-cache-controller.ts`, `preload-resources.tsx`
 
-#### 4. Package Dependencies
+**Custom Hooks (27 files)**:
+- **Game State**: `use-balance.ts`, `use-bet-history.ts`, `use-result.tsx`
+- **UI Interactions**: `use-click-outside.ts`, `use-high-light.ts`
+- **Real-time**: `use-background-music.ts`, `use-sound.ts`
+- **Performance**: `use-low-performance-device.ts`, `use-memoried-image.ts`
+- **Betting**: `use-auto-rebet.ts`, `use-rebet.ts`, `use-client-seed-pf.ts`
 
--   **Shared Package**: Contains all common dependencies
--   **Game Package**: Minimal dependencies, inherits from shared
--   **Status**: ✅ Optimized - Proper dependency separation
+**React Contexts (18 files)**:
+- **Authentication**: User authentication state
+- **Game Context**: Core game state and actions (9 files)
+- **Settings Context**: User preferences and configuration (4 files)
+- **URL Context**: Routing and navigation state
 
-### Configuration Status
+### Game Package (`@games/sedie-multiplayer`)
 
-#### TypeScript Configuration ✅
+The game package contains SeDie-specific implementations and configurations, leveraging the shared package for common functionality.
+
+#### Package Configuration
+
+**Dependencies Overview:**
+- **Next.js Ecosystem**: `next@14.2.31`, `react@^18.2.0`, `react-dom@^18.2.0`
+- **Styling**: `tailwindcss@3.4.17`, `sass@^1.77.8`, `styled-components@^6.1.19`
+- **Testing**: `jest@^29.0.0`, `@testing-library/react@^13.0.0`
+- **Build Tools**: `typescript@^5.5.4`, `webpack` (via Next.js)
+- **Development**: `eslint@^8.56.0`, `babel` suite for transpilation
+
+#### Game-Specific Components
+
+**Bet Options System (8 files)**:
+- **Main Options**: `sedie-main-option.tsx` - Primary betting choices
+- **Sub Options**: `sedie-sub-option.tsx` - Secondary betting options
+- **Highlight System**: Visual feedback for bet selections
+- **Bet Options Container**: `sedie-multiplayer-bet-options.tsx`
+
+**Game Logic Components**:
+- **Betting Block**: `sedie-multiplayer-betting-block.tsx` - Main betting interface
+- **Round Data Handler**: `sedie-multiplayer-game-round-data-handler.ts` - Round state management
+- **Winning Animation**: `sedie-multiplayer-winning-animation.tsx` - Victory animations
+- **Constants**: `sedie-multiplayer-constants.ts` - Game-specific constants
+
+**History & Statistics (9 files)**:
+- **Bet History**: Detailed betting history components
+- **Round History**: Historical round results and statistics
+- **Statistic Popup**: Advanced statistical analysis
+
+**Provably Fair System (4 files)**:
+- **Verification Interface**: PF verification components
+- **Result Rendering**: PF result display components
+
+**Scoreboard System (6 files)**:
+- **Live Scoreboard**: Real-time game results
+- **Scoreboard Elements**: Individual scoreboard components
+
+#### Configuration Management
+
+**Environment Configurations (34+ files)**:
+- **SG Configs**: Production configurations (18 files across different environments)
+- **VG Configs**: Additional environment configurations (16 files)
+- **Obfuscation**: Code protection and security configurations
+
+**Build Configuration**:
+- **Next.js Config**: Webpack aliases, SCSS imports, bundle analysis
+- **Tailwind Config**: Custom color schemes, animations, responsive design
+- **TypeScript Config**: Path mapping, compilation settings
+- **Jest Config**: Test environment, mocking strategies, coverage settings
+
+## Configuration System
+
+### Root Workspace Configuration
+
+**Root `package.json`** - Manages the entire monorepo workspace:
 
 ```json
 {
-    "baseUrl": ".",
-    "paths": {
-        "@shared/*": ["packages/shared/src/*"],
-        "@sedie-multiplayer/*": ["packages/sedie-multiplayer/src/*"]
-    }
+  "name": "original-games-client-html",
+  "workspaces": ["packages/*"],
+  "engines": { "node": ">=20.9.0" },
+  "scripts": {
+    "generate-tolgee-data": "npx ts-node --project tsconfig.node.json ./packages/shared/src/tolgee-generator.ts",
+    "dev:sedie-multiplayer": "npm run -w @games/sedie-multiplayer dev:standalone",
+    "build:all": "npm run -w @shared/merged build && npm run -w @games/sedie-multiplayer build:standalone",
+    "start": "npm run -w @games/sedie-multiplayer start:standalone",
+    "clean": "npm run -w @shared/merged clean && npm run -w @games/sedie-multiplayer clean"
+  }
 }
 ```
 
-#### Webpack Aliases ✅
+**Key Features:**
+- **Workspace Management**: Uses npm workspaces for package management
+- **Cross-Package Scripts**: Scripts that operate across multiple packages
+- **Dependency Management**: Centralized dependency resolution
 
-```javascript
-config.resolve.alias = {
-    "@shared": path.resolve(__dirname, "../shared/src"),
-    "@sedie-multiplayer": path.resolve(__dirname, "src"),
-};
+### TypeScript Configuration System
+
+#### Root TypeScript Configuration (`tsconfig.json`)
+
+```json
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "types": ["node", "jest"],
+    "baseUrl": ".",
+    "paths": {
+      "@sedie-multiplayer": ["packages/sedie-multiplayer/src"],
+      "@sedie-multiplayer/*": ["packages/sedie-multiplayer/src/*"],
+      "@shared/*": ["packages/shared/src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "jest.config.ts",
+    "packages/sedie-multiplayer/src/**/*",
+    "packages/shared/src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "packages/sedie-multiplayer/dist",
+    "packages/shared/dist"
+  ]
+}
 ```
 
-#### SCSS Importer ✅
+**Configuration Features:**
+- **Path Mapping**: Absolute imports for packages (`@shared/*`, `@sedie-multiplayer/*`)
+- **Module Resolution**: Node.js module resolution strategy
+- **Type Checking**: Comprehensive type checking with Jest support
+- **Incremental Builds**: Faster compilation with incremental TypeScript checking
 
+#### Node.js TypeScript Configuration (`tsconfig.node.json`)
+
+```json
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2020",
+    "lib": ["es2020"],
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "strict": true,
+    "types": ["node"]
+  },
+  "include": ["packages/shared/src/tolgee-generator.ts"]
+}
+```
+
+**Purpose:** Specialized configuration for Node.js scripts (Tolgee generator)
+
+### Next.js Configuration
+
+#### Game Package Next.js Config (`packages/sedie-multiplayer/next.config.js`)
+
+**Webpack Configuration:**
 ```javascript
-importer: (url) => {
-    if (url.startsWith("@shared/")) {
-        return {
-            file: path.resolve(__dirname, "../shared/src", url.replace("@shared/", "")),
-        };
+webpack: (config, options) => {
+  config.devtool = false;
+  config.resolve.alias = {
+    ...config.resolve.alias,
+    "@shared": path.resolve(__dirname, "../shared/src"),
+    "@": path.resolve(__dirname, "src"),
+    "@sedie-multiplayer": path.resolve(__dirname, "src"),
+  };
+  return config;
+}
+```
+
+**SCSS Configuration:**
+```javascript
+sassOptions: {
+  prependData: `$version-image: '${buildVersion}';`,
+  includePaths: [path.resolve(__dirname, "../shared/src/styles"), path.resolve(__dirname, "../shared/src/components")],
+  importer: function (url) {
+    if (typeof url === "string" && url.startsWith("@shared/")) {
+      const resolved = path.resolve(__dirname, "../shared/src", url.replace(/^@shared\//, ""));
+      return { file: resolved };
     }
     return null;
-};
+  },
+}
 ```
 
-### Package Structure Verification
+**Advanced Features:**
+- **Bundle Analysis**: `@next/bundle-analyzer` integration
+- **Sentry Integration**: Error tracking configuration
+- **Standalone Output**: Production deployment optimization
+- **Transpilation**: Shared package transpilation support
 
-#### Shared Package (`@shared/merged`) ✅
+### Tailwind CSS Configuration
 
--   **Components**: 75+ reusable UI components
--   **Helpers**: 31 utility functions
--   **Stores**: 9 Zustand stores
--   **Hooks**: 27 custom React hooks
--   **Styles**: 20 SCSS files
--   **Services**: 4 API services
+#### Comprehensive Theme Configuration
 
-#### Game Package (`@games/sedie-multiplayer`) ✅
+**Color System:**
+```javascript
+colors: {
+  "primary-bg": "var(--primary-background-color)",
+  "primary-text": "var(--text-color)",
+  "primary-border": "var(--border-color)",
+  "secondary-bg": "var(--secondary-background-color)",
+  "third-bg": "var(--third-background-color)",
+  "secondary-text": "var(--secondary-text-color)",
+  "popup-text": "var(--popup-color)",
+  "container-bg": "var(--container-color-bg)",
+  "container-border": "var(--container-border-color)",
+  // ... 30+ custom color variables
+}
+```
 
--   **Game Logic**: Complete SeDie multiplayer implementation
--   **Pages**: 8 Next.js pages
--   **Components**: Game-specific overrides
--   **Assets**: Static files and configurations
--   **Docker**: Containerization setup
+**Animation System:**
+```javascript
+keyframes: {
+  showCenter: {
+    "0%": { opacity: "0", transform: "scale(0.9)" },
+    "100%": { opacity: "1", transform: "scale(1)" },
+  },
+  hideCenter: {
+    "0%": { opacity: "1", transform: "scale(1)" },
+    "100%": { opacity: "0", transform: "scale(0.9)" },
+  },
+  // ... additional animations
+}
+```
 
-### Migration Quality Assessment
+**Background Gradients:**
+```javascript
+backgroundImage: {
+  "popup-gradient": "var(--popup-background)",
+  "modal-yellow-bg": "radial-gradient(circle, rgba(255, 239, 0, 0.2) -50%, rgba(255, 239, 0, 0) 70%)",
+  "modal-red-bg": "radial-gradient(circle, rgba(240, 66, 72, 0.2) 0%, rgba(240, 66, 72, 0.1) 30%, rgba(240, 66, 72, 0) 100%)",
+  "modal-gradient": "linear-gradient(121deg, #242C32 31.4%, #333D45 97.8%)",
+  // ... additional gradients
+}
+```
 
-| Category          | Status       | Notes                                    |
-| ----------------- | ------------ | ---------------------------------------- |
-| **File Sync**     | ✅ Complete  | All requested files migrated             |
-| **Import Paths**  | ✅ Complete  | All imports use proper aliases           |
-| **Dependencies**  | ✅ Optimized | Proper package separation                |
-| **Configuration** | ✅ Complete  | TypeScript, Webpack, SCSS all configured |
-| **Functionality** | ✅ Verified  | Core features working                    |
-| **Testing**       | ⚠️ Partial   | Some test files need import updates      |
+### Jest Testing Configuration
+
+#### Comprehensive Test Setup
+
+**Module Mapping:**
+```javascript
+moduleNameMapper: {
+  "^.+\\.(css|sass|scss)$": "identity-obj-proxy",
+  "swiper/css": "identity-obj-proxy",
+  "swiper/css/pagination": "identity-obj-proxy",
+  "^@/(.*)$": "<rootDir>/src/$1",
+  "^@shared/(.*)$": "<rootDir>/../shared/src/$1",
+}
+```
+
+**Test Configuration:**
+```javascript
+{
+  collectCoverageFrom: ["**/*.{js,jsx,ts,tsx}", "!**/*.d.ts", "!**/node_modules/**"],
+  testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["jest-extended", "../../__mocks__/global.tsx", "@testing-library/jest-dom"],
+  testResultsProcessor: "jest-sonar-reporter",
+  coverageReporters: ["json", "lcov", "text", "text-summary"],
+  snapshotResolver: "../../__mocks__/snapshot.ts",
+  testTimeout: 10000
+}
+```
+
+**Advanced Features:**
+- **Snapshot Testing**: Custom snapshot resolver for consistent snapshots
+- **Coverage Reporting**: Multiple coverage formats including SonarQube integration
+- **Mock System**: Comprehensive mocking for external dependencies
+- **Timeout Configuration**: Extended timeout for complex async tests
+
+### Game Registry System
+
+#### Dynamic Game Loading
+
+**Registry Implementation:**
+```typescript
+// packages/shared/src/game-registry/registry.ts
+class GameRegistryImpl implements GameRegistry {
+  private readonly games: Map<number, GameRegistryEntry> = new Map();
+
+  register(entry: GameRegistryEntry): void {
+    this.games.set(entry.gameId, entry);
+  }
+
+  getLoader(gameId: number): (() => Promise<any>) | null {
+    const entry = this.games.get(gameId);
+    return entry ? entry.loader : null;
+  }
+}
+```
+
+**Game Registration:**
+```typescript
+// packages/sedie-multiplayer/src/game-registry.ts
+registerGame({
+  gameId: GameIds.SeDieMultiplayer,
+  loader: () => import("./page"),
+  metadata: {
+    name: "SeDie Multiplayer",
+    version: "1.0.0",
+    description: "SeDie Multiplayer game component"
+  }
+});
+```
+
+**Benefits:**
+- **Dynamic Loading**: Games loaded on-demand
+- **Plugin Architecture**: Easy addition of new games
+- **Type Safety**: Full TypeScript support for game registration
+- **Metadata Support**: Game metadata for UI and configuration
+
+## Build and Deployment
+
+### Multi-Stage Docker Architecture
+
+#### Dockerfile Structure (`packages/sedie-multiplayer/Dockerfile`)
+
+**Base Stage:**
+```dockerfile
+FROM hub.lumigame.com/base/node:24-alpine-25h2 AS base
+```
+
+**Dependencies Stage:**
+```dockerfile
+FROM base AS deps
+WORKDIR /app
+ENV YARN_CACHE_FOLDER=/root/.yarn
+
+# Copy package files for both packages
+COPY package.json yarn.lock ./
+COPY packages/shared/package.json packages/shared/package.json
+COPY packages/sedie-multiplayer/package.json packages/sedie-multiplayer/package.json
+
+# Install dependencies with caching
+RUN --mount=type=cache,target=$YARN_CACHE_FOLDER \
+    yarn install --frozen-lockfile --verbose
+```
+
+**Build Stage:**
+```dockerfile
+FROM base AS builder
+WORKDIR /app
+
+# Copy dependencies and source code
+COPY --from=deps /app/node_modules ./node_modules
+COPY packages/sedie-multiplayer/ ./packages/sedie-multiplayer/
+COPY packages/shared/ ./packages/shared/
+
+# Build configuration files
+WORKDIR /app/packages/sedie-multiplayer
+ARG NEXT_PUBLIC_BASE_PATH
+ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
+
+# Generate translations and build
+RUN yarn obfuscator-config-file
+RUN yarn build:standalone
+```
+
+**Runtime Stage:**
+```dockerfile
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs
+
+# Copy built application
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/public ./public
+
+USER nextjs
+EXPOSE 5000
+ENV PORT=5000
+ENV HOSTNAME=0.0.0.0
+CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 ./node_modules/.bin/next start -p 5000"]
+```
+
+#### Docker Build Features
+
+**Optimization Strategies:**
+- **Layer Caching**: Dependencies cached separately from source code
+- **Multi-Stage Builds**: Separate stages for dependencies, build, and runtime
+- **Security**: Non-root user execution in production
+- **Minimal Runtime**: Only essential files in final image
+- **Build Arguments**: Configurable base path for different deployments
+
+**Environment Variables:**
+- `NEXT_PUBLIC_BASE_PATH`: Configurable base path for deployments
+- `NEXT_PUBLIC_DEFAULT_GAME_ID`: Default game identifier
+- `NODE_ENV`: Environment mode (production)
+- `HOSTNAME`: Host binding for container networking
+
+### Build Scripts and Processes
+
+#### Root Level Build Scripts
+
+**Complete Build Process:**
+```bash
+npm run build:all
+# Executes: npm run -w @shared/merged build && npm run -w @games/sedie-multiplayer build:standalone
+```
+
+**Individual Package Builds:**
+```bash
+# Build shared package only
+npm run build:shared  # Compiles TypeScript to JavaScript
+
+# Build game package only
+npm run build:games   # Builds Next.js standalone application
+```
+
+#### Game Package Build Process
+
+**Standalone Build Configuration:**
+```json
+{
+  "scripts": {
+    "generate-tolgee-data": "cd ../.. && npm run generate-tolgee-data && cd packages/sedie-multiplayer",
+    "build:standalone": "npm run generate-tolgee-data && next build",
+    "obfuscator-config-file": "node ./configs/config-obfuscator.js"
+  }
+}
+```
+
+**Build Steps:**
+1. **Translation Generation**: Generate i18n files from Tolgee
+2. **Code Obfuscation**: Apply JavaScript obfuscation for production
+3. **Next.js Build**: Create optimized production build
+4. **Standalone Output**: Generate self-contained application
+
+### Development Workflow
+
+#### Local Development Setup
+
+**Development Server:**
+```bash
+# Start SeDie multiplayer development server
+npm run dev:sedie-multiplayer
+
+# This executes:
+# npm run -w @games/sedie-multiplayer dev:standalone
+```
+
+**Development Configuration:**
+```json
+{
+  "dev:standalone": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 FAST_REFRESH=false next dev -p 3001"
+}
+```
+
+**Development Features:**
+- **Hot Module Replacement**: Fast refresh disabled for stability
+- **Translation Auto-Generation**: Automatic i18n file updates
+- **Cross-Platform Support**: Cross-env for environment variables
+- **Port Configuration**: Dedicated development port (3001)
+
+#### Production Deployment
+
+**Standalone Production Server:**
+```bash
+npm run start
+# Executes: npm run -w @games/sedie-multiplayer start:standalone
+```
+
+**Production Configuration:**
+```json
+{
+  "start:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 next start -p 3001"
+}
+```
+
+### Testing Infrastructure
+
+#### Jest Configuration
+
+**Test Environment Setup:**
+```javascript
+// jest.config.js
+{
+  collectCoverageFrom: ["**/*.{js,jsx,ts,tsx}", "!**/*.d.ts", "!**/node_modules/**"],
+  testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["jest-extended", "../../__mocks__/global.tsx", "@testing-library/jest-dom"],
+  testResultsProcessor: "jest-sonar-reporter",
+  coverageReporters: ["json", "lcov", "text", "text-summary"],
+  snapshotResolver: "../../__mocks__/snapshot.ts",
+  testTimeout: 10000
+}
+```
+
+**Module Mocking:**
+```javascript
+moduleNameMapper: {
+  "^.+\\.(css|sass|scss)$": "identity-obj-proxy",
+  "swiper/css": "identity-obj-proxy",
+  "^@/(.*)$": "<rootDir>/src/$1",
+  "^@shared/(.*)$": "<rootDir>/../shared/src/$1",
+}
+```
+
+#### Test Scripts
+
+**Available Test Commands:**
+```json
+{
+  "test": "jest",
+  "test:watch": "jest --watch",
+  "test:coverage": "jest --coverage",
+  "test:snapshot": "jest -u"
+}
+```
+
+**Test Categories:**
+- **Unit Tests**: Individual component and utility testing
+- **Integration Tests**: Cross-component functionality testing
+- **Snapshot Tests**: UI regression testing
+- **Coverage Reports**: Code coverage analysis
+
+### Internationalization
+
+#### Tolgee Integration
+
+**Translation Generation Process:**
+```typescript
+// tolgee-generator.ts
+const tg = Tolgee().use(DevTools()).init({
+  defaultLanguage: "en",
+  fallbackLanguage: "en",
+  availableLanguages: Object.values(locales),
+  apiKey: "tgpak_gvpw45brha2xg3btoztxeytunvudc5dbn5twqodtonztc",
+  apiUrl: "https://tolgee.sabagame.com/",
+  projectId: "5",
+  defaultNs: "SabaNumber",
+  ns: namespaces,
+});
+```
+
+**Supported Languages:**
+- English (en)
+- Vietnamese (vi)
+- Thai (th)
+- Indonesian (id)
+- Chinese Simplified (zh_cn)
+- Chinese Traditional (zh_tw)
+- Japanese (ja)
+
+**Translation Namespaces:**
+- **Common**: Shared translations across games
+- **SabaNumber**: Number game specific translations
+- **SeDie**: SeDie game specific translations
+
+**Translation File Structure:**
+```
+packages/sedie-multiplayer/public/i18n/
+├── Common/
+│   ├── en.json
+│   ├── vi.json
+│   └── ...
+├── SabaNumber/
+│   ├── en.json
+│   └── ...
+└── SeDie/
+    ├── en.json
+    └── ...
+```
 
 ## Restructuring Process
 
@@ -1212,6 +1939,161 @@ The monorepo is now fully operational and ready for:
 2. **Documentation**: Add game-specific documentation as needed
 3. **CI/CD**: Set up automated builds and deployments
 4. **Monitoring**: Configure production monitoring with Sentry
+
+## Performance Optimization
+
+### Bundle Analysis and Optimization
+
+#### Bundle Analyzer Integration
+
+**Configuration:**
+```javascript
+// next.config.js
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+    enabled: process.env.ANALYZE === "true",
+});
+
+module.exports = withBundleAnalyzer({
+    // ... other config
+});
+```
+
+**Usage:**
+```bash
+# Analyze production bundle
+ANALYZE=true npm run build
+
+# View bundle analysis report
+# Opens browser with bundle size breakdown
+```
+
+#### Code Splitting Strategies
+
+**Dynamic Imports:**
+```typescript
+// Game registry with dynamic loading
+registerGame({
+    gameId: GameIds.SeDieMultiplayer,
+    loader: () => import("./page"), // Code-split game loading
+    metadata: { /* ... */ }
+});
+```
+
+### Image Optimization
+
+#### Next.js Image Optimization
+
+**Automatic Optimization:**
+- **Format Conversion**: Automatic WebP/AVIF conversion
+- **Responsive Images**: Automatic srcset generation
+- **Lazy Loading**: Automatic lazy loading implementation
+- **Cache Optimization**: Intelligent caching headers
+
+### Caching Strategies
+
+#### Service Worker Implementation
+
+**Cache Management:**
+```typescript
+// packages/shared/src/helpers/service-worker-helper.ts
+export class ServiceWorkerHelper {
+    static register() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('SW registered:', registration);
+                })
+                .catch(error => {
+                    console.log('SW registration failed:', error);
+                });
+        }
+    }
+}
+```
+
+## CI/CD Integration
+
+### GitLab CI/CD Pipeline
+
+#### Pipeline Configuration (`.gitlab-ci.yml`)
+
+```yaml
+stages:
+  - test
+  - build
+  - deploy
+
+# Test Stage
+test:
+  stage: test
+  image: node:20-alpine
+  before_script:
+    - yarn install --frozen-lockfile
+  script:
+    - yarn test --coverage
+    - yarn lint
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+
+# Build Stage
+build:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  only:
+    - main
+    - develop
+```
+
+### SonarQube Integration
+
+#### Code Quality Analysis
+
+**SonarQube Scanner Configuration:**
+```javascript
+// sonar-scripts/run-code-and-sonar-local.js
+const scanner = require('sonarqube-scanner');
+
+scanner(
+    {
+        serverUrl: 'http://localhost:9000',
+        token: process.env.SONAR_TOKEN,
+        options: {
+            'sonar.projectKey': 'original-games-client-monorepo-demo',
+            'sonar.sources': 'packages',
+            'sonar.tests': 'packages/**/__tests__',
+            'sonar.exclusions': '**/node_modules/**,**/dist/**,**/.next/**'
+        }
+    },
+    () => process.exit()
+);
+```
+
+### Troubleshooting Guide
+
+#### Common Issues and Solutions
+
+**Module Resolution Errors:**
+```bash
+# Check TypeScript configuration
+cat tsconfig.json | grep paths
+
+# Clear Next.js cache
+rm -rf packages/sedie-multiplayer/.next
+npm run build:shared
+```
+
+**Translation Loading Issues:**
+```bash
+# Regenerate translation files
+npm run generate-tolgee-data
+
+# Check translation file structure
+ls -la packages/sedie-multiplayer/public/i18n/*/en.json
+```
 
 ---
 
