@@ -179,19 +179,16 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
     openGame(gameId: number) {
         this.setState({ queryGame: gameId, openGameId: gameId });
-        updateURLContext({ gameId });
     }
 
     renderGames() {
-        const { userStakeLevel, openGameName } = this.state;
-        const urlContext = loadURLContext();
-
+        const { userStakeLevel, openGameName, openGameId } = this.state;
         return (
             <Games
                 setApiErrorMessage={this.notificationHandler.handleShowApiErrorMessage}
                 userStakeLevel={userStakeLevel}
                 updateUserStakeLevel={this.handleUpdateUserStakeLevel}
-                openGameId={urlContext?.gameId}
+                openGameId={openGameId}
                 openGameName={openGameName}
             />
         );

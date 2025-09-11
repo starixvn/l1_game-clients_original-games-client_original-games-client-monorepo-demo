@@ -28,9 +28,9 @@ class Baccarat extends GameBase<GameBaseProps, GameBaseState> {
     private readonly roundIdHandler?: RoundIdHandler;
     constructor(props: GameBaseProps) {
         console.log("[Baccarat Page] Constructor called with props:", {
-            gameId: props.gameId,
+            gameId: props.id,
             gameName: props.gameName,
-            openGameId: props.openGameId
+            openGameId: props.id
         });
 
         const gameMessageHandler = new GameMessageHandler(props.dispatch);
