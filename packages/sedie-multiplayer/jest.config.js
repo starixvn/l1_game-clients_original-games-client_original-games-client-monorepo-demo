@@ -5,6 +5,7 @@ const config = {
         "^.+\\.(css|sass|scss)$": "identity-obj-proxy",
         "swiper/css": "identity-obj-proxy",
         "swiper/css/pagination": "identity-obj-proxy",
+        "swiper/react": "<rootDir>/node_modules/swiper/swiper.js",
         "^@/(.*)$": "<rootDir>/src/$1",
         "^@shared/(.*)$": "<rootDir>/../shared/src/$1",
     },
