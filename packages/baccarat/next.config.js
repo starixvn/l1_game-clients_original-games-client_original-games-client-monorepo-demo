@@ -148,7 +148,6 @@ const nextConfig = withSentryConfig({
             return null;
         },
     },
-    output: "standalone",
 });
 
 module.exports = withBundleAnalyzer(nextConfig);

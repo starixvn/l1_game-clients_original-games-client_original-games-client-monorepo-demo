@@ -26,6 +26,9 @@ const gameComponentRegistry: GameComponentRegistry = {
 };
 
 export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, updateUserStakeLevel, openGameId }) => {
+    console.log("[Baccarat Games] Component props:", { openGameId, setApiErrorMessage, userStakeLevel, updateUserStakeLevel });
+    console.log("[Baccarat Games] Game component registry:", gameComponentRegistry);
+
     const { theme } = useTheme();
     const { session } = usePlayerContext();
     const settingDispatch = useSettingDispatch();
@@ -86,13 +89,17 @@ export const Games: React.FC<Props> = ({ setApiErrorMessage, userStakeLevel, upd
     }, [openGameId, gameSound, setApiErrorMessage, theme, userStakeLevel, updateUserStakeLevel]);
 
     const renderGameComponent = useCallback(() => {
+        console.log("[Baccarat Games] Looking for game component with openGameId:", openGameId);
         const GameComponent = gameComponentRegistry[openGameId];
+        console.log("[Baccarat Games] Found GameComponent:", GameComponent ? "YES" : "NO");
 
         if (!GameComponent) {
-            console.warn(`No game component found for game ID: ${openGameId}`);
+            console.warn(`[Baccarat Games] No game component found for game ID: ${openGameId}`);
+            console.log("[Baccarat Games] Available game IDs in registry:", Object.keys(gameComponentRegistry));
             return null;
         }
 
+        console.log("[Baccarat Games] Rendering game component for gameId:", openGameId);
         return <GameComponent key={`game-${openGameId}`} {...gameProps} />;
     }, [openGameId, gameProps]);
 

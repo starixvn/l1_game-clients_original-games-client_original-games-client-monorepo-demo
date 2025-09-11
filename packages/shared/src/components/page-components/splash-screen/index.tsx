@@ -86,6 +86,12 @@ const autoCreateNickname = async (session: SSOResponse, signOut: Function) => {
 const SplashScreen: React.FC = () => {
     const { gameId, token, language } = useContext(URLContext);
 
+    console.log("[SplashScreen] URL Context values:", { gameId, token, language });
+    console.log("[SplashScreen] Available GameIds:", {
+        SeDieMultiplayer: GameIds.SeDieMultiplayer,
+        Baccarat: GameIds.Baccarat
+    });
+
     const router = useRouter();
     const player = usePlayerContext();
     const { t } = useTranslator();
@@ -160,25 +166,35 @@ const SplashScreen: React.FC = () => {
             // Custom version: Always direct to specific game, default to SeDie if no valid gameId
             let toLoadGameId = gameId;
 
+            console.log("[SplashScreen] Initial gameId from URL:", gameId);
+            console.log("[SplashScreen] Initial toLoadGameId:", toLoadGameId);
+
             // If no gameId provided or gameId is 0, use default SeDie game
             if (!toLoadGameId || toLoadGameId === 0) {
+                console.log("[SplashScreen] No gameId or gameId is 0, defaulting to SeDieMultiplayer");
                 toLoadGameId = GameIds.SeDieMultiplayer;
             }
 
             // Validate if the gameId is available in the enabled games
             const enabledRenderGameSettings = getRenderGameSettings(authorizeInfo);
+            console.log("[SplashScreen] Enabled games from authorizeInfo:", enabledRenderGameSettings?.map(game => ({ id: game.id, name: game.gameName })));
 
             // Bypass validation for SeDie so we can deep-link even if not in lobby/offer
             let isGameAvailable = toLoadGameId === GameIds.SeDieMultiplayer;
+            console.log("[SplashScreen] Is toLoadGameId SeDieMultiplayer?", toLoadGameId === GameIds.SeDieMultiplayer);
+
             if (!isGameAvailable) {
                 isGameAvailable = enabledRenderGameSettings.some((game) => game.id === toLoadGameId);
+                console.log("[SplashScreen] Is game available in enabled games?", isGameAvailable, "for gameId:", toLoadGameId);
             }
 
             // If game is not available, use default SeDie game
             if (!isGameAvailable) {
+                console.log("[SplashScreen] Game not available, falling back to SeDieMultiplayer");
                 toLoadGameId = GameIds.SeDieMultiplayer;
             }
 
+            console.log("[SplashScreen] Final toLoadGameId:", toLoadGameId);
             setCurrentGameId(toLoadGameId);
 
             if (authorizeInfo) {

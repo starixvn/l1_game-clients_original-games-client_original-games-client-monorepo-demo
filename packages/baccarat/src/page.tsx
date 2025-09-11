@@ -27,6 +27,12 @@ const AutoRebetIcon = lazy(() => import("@shared/components/game-components/rebe
 class Baccarat extends GameBase<GameBaseProps, GameBaseState> {
     private readonly roundIdHandler?: RoundIdHandler;
     constructor(props: GameBaseProps) {
+        console.log("[Baccarat Page] Constructor called with props:", {
+            gameId: props.gameId,
+            gameName: props.gameName,
+            openGameId: props.openGameId
+        });
+
         const gameMessageHandler = new GameMessageHandler(props.dispatch);
         const handlers: GameBaseHandlers = {
             roundStateHandler: new RoundStateHandler(),
