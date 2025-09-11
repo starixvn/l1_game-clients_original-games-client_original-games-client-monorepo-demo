@@ -30,8 +30,8 @@ const BaccaratRoundHistory: React.FC<BaccaratRoundHistoryProps> = ({
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (gameState?.history) {
-            const processedHistory = gameState.history
+        if (gameState?.roundHistory) {
+            const processedHistory = gameState.roundHistory
                 .slice(-maxRounds)
                 .map((round: any) => ({
                     roundId: round.roundId || 0,

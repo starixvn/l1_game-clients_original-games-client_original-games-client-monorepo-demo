@@ -3,7 +3,18 @@ import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 
 import { buildVersion, LobbyGameId } from "@shared/constants";
-import { getPathIconGames, getPathImageGameId, pathImageMapping } from "@shared/constants/resource-image-mapping";
+import { getPathImageGameId } from "@shared/constants/resource-image-mapping";
+
+// Local path mappings for baccarat package
+const pathImageMapping = {
+    lobby: ["/images/game-icons/"],
+    game: ["/images/chips/"]
+};
+
+// Get icon paths for games
+const getPathIconGames = (gameIds: number[]): string[] => {
+    return gameIds.map(gameId => `/images/game-icons/${gameId}/`);
+};
 
 // Enhanced caching with TTL and memory management
 interface CacheEntry {

@@ -73,7 +73,7 @@ export const CardSection: React.FC<CardSectionProps> = ({
                         playResultAnimation={playResultAnimation}
                         key={card.order}
                         type={type}
-                        card={card}
+                        card={{ ...card, type } as CardOrder}
                         isShowResult={isShowResult}
                         onCardFlip={handleCardFlip}
                     />

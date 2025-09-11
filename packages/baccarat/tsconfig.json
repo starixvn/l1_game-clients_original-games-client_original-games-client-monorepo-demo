@@ -13,6 +13,9 @@
       "@sedie/*": [
         "../sedie/src/*"
       ],
+      "@sedie-multiplayer/*": [
+        "../sedie-multiplayer/src/*"
+      ],
       "@baccarat/*": [
         "src/*"
       ]

@@ -9,7 +9,6 @@ import { BaccaratGameRoundDataHandler } from "./baccarat-game-round-data-handler
 import { RoundStateHandler } from "@shared/components/round-base/round-state-handler";
 import { RoundIdHandler } from "@shared/components/round-base/round-id-handler";
 import { useTranslator } from "@shared/react-hooks";
-import { useSystemContext, useSystemDispatch } from "@shared/react-contexts";
 import {
     GameStateProvider,
     useGameStateContext,
@@ -106,8 +105,6 @@ const BaccaratFC = (props: any) => {
             {...{
                 dispatch: useGameStatesDispatch(),
                 gameStateContextModel: useGameStateContext(),
-                systemContextModel: useSystemContext(),
-                systemDispatch: useSystemDispatch(),
                 translate: t,
                 tolgeeNamespace,
                 hedgeBetGroups: [[BaccaratBetOptions.PLAYER, BaccaratBetOptions.BANKER]],

@@ -32,8 +32,8 @@ const BaccaratResultHistory: React.FC<BaccaratResultHistoryProps> = ({
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (gameState?.history) {
-            const processedResults = gameState.history
+        if (gameState?.roundHistory) {
+            const processedResults = gameState.roundHistory
                 .slice(-maxResults)
                 .map((round: any) => ({
                     roundId: round.roundId || 0,

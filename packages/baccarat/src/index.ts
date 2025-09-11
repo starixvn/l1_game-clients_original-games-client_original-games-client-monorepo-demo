@@ -1,3 +1,5 @@
+// Baccarat package exports
+import './game-registry'; // Register the game
 export { default } from './page';
 export * from './baccarat-constants';
 export { default as BaccaratBettingBlock } from './betting-block/baccarat-betting-block';
