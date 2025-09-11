@@ -50,9 +50,32 @@ module.exports = {
                 "popup-bet-form": "var(--popup-bet-form-shadow)",
                 modal: "0 0 10px 1px rgba(0, 0, 0, 0.60), 0 0 30px 3px rgba(0, 0, 0, 0.80)",
             },
+            keyframes: {
+                showCenter: {
+                    "0%": { opacity: "0", transform: "scale(0.9)" },
+                    "100%": { opacity: "1", transform: "scale(1)" },
+                },
+                hideCenter: {
+                    "0%": { opacity: "1", transform: "scale(1)" },
+                    "100%": { opacity: "0", transform: "scale(0.9)" },
+                },
+
+                showBottom: {
+                    "0%": { opacity: "0", transform: "translateY(10%)" },
+                    "100%": { opacity: "1", transform: "translateY(0)" },
+                },
+                hideBottom: {
+                    "0%": { opacity: "1", transform: "translateY(0)" },
+                    "100%": { opacity: "0", transform: "translateY(10%)" },
+                },
+            },
             animation: {
                 "spin-slow": "spin 6s linear infinite",
                 "spin-slow-reverse": "spin 6s linear infinite reverse",
+                showCenter: "showCenter 0.3s ease-out forwards",
+                hideCenter: "hideCenter 0.2s ease-in forwards",
+                showBottom: "showBottom 0.3s ease-out forwards",
+                hideBottom: "hideBottom 0.2s ease-in forwards",
             },
             zIndex: {
                 toast: "300",
