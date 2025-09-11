@@ -84,9 +84,9 @@ const autoCreateNickname = async (session: SSOResponse, signOut: Function) => {
 };
 
 const SplashScreen: React.FC = () => {
-    const { gameId, token, language } = useContext(URLContext);
+    const { token, language } = useContext(URLContext);
 
-    console.log("[SplashScreen] URL Context values:", { gameId, token, language });
+    console.log("[SplashScreen] URL Context values:", { token, language });
     console.log("[SplashScreen] Available GameIds:", {
         SeDieMultiplayer: GameIds.SeDieMultiplayer,
         Baccarat: GameIds.Baccarat
@@ -163,17 +163,15 @@ const SplashScreen: React.FC = () => {
                 }
             }
 
-            // Custom version: Always direct to specific game, default to SeDie if no valid gameId
-            let toLoadGameId = gameId;
+            // Use the gameId from environment variable (NEXT_PUBLIC_DEFAULT_GAME_ID)
+            const defaultGameId = process.env.NEXT_PUBLIC_DEFAULT_GAME_ID
+                ? Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID)
+                : GameIds.SeDieMultiplayer;
 
-            console.log("[SplashScreen] Initial gameId from URL:", gameId);
+            let toLoadGameId = defaultGameId;
+
+            console.log("[SplashScreen] Using default gameId from environment:", defaultGameId);
             console.log("[SplashScreen] Initial toLoadGameId:", toLoadGameId);
-
-            // If no gameId provided or gameId is 0, use default SeDie game
-            if (!toLoadGameId || toLoadGameId === 0) {
-                console.log("[SplashScreen] No gameId or gameId is 0, defaulting to SeDieMultiplayer");
-                toLoadGameId = GameIds.SeDieMultiplayer;
-            }
 
             // Validate if the gameId is available in the enabled games
             const enabledRenderGameSettings = getRenderGameSettings(authorizeInfo);
@@ -224,7 +222,7 @@ const SplashScreen: React.FC = () => {
             <Dashboard
                 data-testid="dashboard-component"
                 session={player?.session}
-                queryGame={currentGameId < 0 ? gameId : currentGameId}
+                queryGame={currentGameId}
                 setIsUm={setIsUm}
                 tolgee={tolgee}
                 authorizeResponse={authorizeResponse}

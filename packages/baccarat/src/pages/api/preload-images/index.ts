@@ -31,7 +31,6 @@ const DEFAULT_STATIC_PATH = "public/static/images/";
 const DEFAULT_IMG_PATH = "/static/images/";
 
 interface RequestBody {
-    gameId: number;
     locale: string;
     gameIdsIcon: number[];
     bannerId: number;
@@ -70,7 +69,6 @@ const cleanupCache = () => {
 const validateRequest = (body: any): body is RequestBody => {
     return (
         typeof body === 'object' &&
-        typeof body.gameId === 'number' &&
         typeof body.locale === 'string' &&
         Array.isArray(body.gameIdsIcon) &&
         (body.bannerId === undefined || typeof body.bannerId === 'number')
@@ -179,7 +177,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<any[]>
         return res.status(400).json([]);
     }
 
-    const { gameId, locale, gameIdsIcon, bannerId } = req.body;
+    const { locale, gameIdsIcon, bannerId } = req.body;
+    const gameId = process.env.NEXT_PUBLIC_DEFAULT_GAME_ID
+        ? Number(process.env.NEXT_PUBLIC_DEFAULT_GAME_ID)
+        : 10; // Default to Baccarat gameId
     const cacheKey = `${gameId}-${buildVersion}-${locale}`;
 
     console.log(`[API:preload-images:${requestId}] Processing request:`, {
