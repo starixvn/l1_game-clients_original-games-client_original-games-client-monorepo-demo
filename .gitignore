@@ -37,3 +37,6 @@ stryker-tmp
 sonar-reports
 .scannerwork
 packages/sedie-multiplayer/.next
+packages/sedie-multiplayer/node_modules
+packages/sedie-multiplayer/dist
+packages/sedie-multiplayer/coverage
