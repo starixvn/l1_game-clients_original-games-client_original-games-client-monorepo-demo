@@ -62,6 +62,10 @@ export const AppTypes = {
 
 export const confirmBet = "confirmBet";
 
+export const GameIds = {
+    SeDieMultiplayer: 148,
+};
+
 export const LobbyGameId = 0;
 
 export const SwiperNoSwiping = "swiper-no-swiping";

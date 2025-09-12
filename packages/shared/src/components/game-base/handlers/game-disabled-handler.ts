@@ -47,6 +47,8 @@ export class GameDisableHandler {
             useGameStore.getState().setRoundState(RoundState.Disabled);
             useGameStore.getState().setUMMessage(um_message);
             useGameStore.getState().setShowResultInfo(false);
+
+            updateURLContext({ gameId: 0 });
         }
     }
 }

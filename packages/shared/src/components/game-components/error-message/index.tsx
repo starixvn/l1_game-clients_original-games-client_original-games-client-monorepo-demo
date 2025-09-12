@@ -25,13 +25,14 @@ export const ConnectFailedMessage: React.FC<{
     const handleBackToLobby = () => {
         console.log("[ConnectFailedMessage] handleBackToLobby called");
         clickSound();
+        updateURLContext({ gameId: 0 });
         backToRedirectUrl?.(redirectUrl);
     };
 
     const handleBackToLobbyWithReload = () => {
         console.log("[ConnectFailedMessage] handleBackToLobbyWithReload called");
         clickSound();
-        updateURLContext({ backToLobby: true });
+        updateURLContext({ backToLobby: true, gameId: 0 });
         redirectUrl ? backToRedirectUrl?.(redirectUrl) : window.location.reload();
     };
 

@@ -1,6 +1,7 @@
 import isEmpty from "lodash/isEmpty";
 import { createContext, useContext } from "react";
 import { StorageHelper, localStorageKeys } from "../helpers/storage-helper";
+import { GameIds } from "../constants";
 import { AnalyticsHelper } from "../helpers/analytic-helper";
 import { GameUtils } from "../helpers/base-64-helper";
 import { broadcastBackToLobby } from "../helpers/global-events-helper";
@@ -8,6 +9,7 @@ import { broadcastBackToLobby } from "../helpers/global-events-helper";
 export type URLContextModel = {
     token?: string;
     language?: string;
+    gameId?: number;
     redirectUrl?: string;
     backToLobby?: boolean;
     backToRedirectUrl?: Function;
@@ -27,9 +29,14 @@ export function parseContextFromURL(): URLContextModel | undefined {
 
     const token = params.get("token");
     const language = params.get("lang");
+    const gameIdParam = params.get("gameId");
+    let gameId = Number(gameIdParam);
+    if (!gameIdParam || Number.isNaN(gameId) || gameId <= 0) {
+        gameId = GameIds.SeDieMultiplayer;
+    }
     const redirectUrl = params.get("rurl");
 
-    return { token, language, redirectUrl };
+    return { token, language, gameId, redirectUrl };
 }
 
 export function loadURLContext(): URLContextModel {
@@ -60,7 +67,7 @@ export const initialURLContextData = {
             const decodedUrl = GameUtils.base64Decode(redirectUrl);
             globalThis.location.href = decodedUrl;
         } else {
-            updateURLContext({ backToLobby: true });
+            updateURLContext({ backToLobby: true, gameId: 0 });
             broadcastBackToLobby();
         }
     },
@@ -72,6 +79,8 @@ export const useURLContext = () => useContext(URLContext);
 
 export function updateURLContext(context: Partial<URLContextModel>) {
     const contextFromLocalStorage = StorageHelper.get<URLContextModel>(localStorageKeys.url) || {};
+
+    // latestGameId persistence removed due to one-game-per-session behavior
 
     const updatedContext = { ...contextFromLocalStorage, ...context };
     StorageHelper.set(localStorageKeys.url, updatedContext);

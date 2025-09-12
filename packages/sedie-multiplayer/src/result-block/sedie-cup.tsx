@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import styles from "./sedie-cup.module.scss";
-import { RoundState } from '@shared/components/game-base/type';
-import { useGameStateContext } from '@shared/react-contexts/game-state-context/game-state-context';
-import { useGameContext } from '@shared/react-contexts';
-import { Spritesheet } from '@shared/components/game-components/sprites-sheet';
+import { RoundState } from "@shared/components/game-base/type";
+import { useGameStateContext } from "@shared/react-contexts/game-state-context/game-state-context";
+import { useGameContext } from "@shared/react-contexts";
+import { Spritesheet } from "@shared/components/game-components/sprites-sheet";
 import { motion } from "motion/react";
 import { getWinningSubOption } from "../history/sedie-multiplayer-bet-detail-result-block";
-import { CachedImage } from '@shared/components/game-components/cached-image';
-import { useMemoriedImage } from '@shared/react-hooks/use-memoried-image';
+import { CachedImage } from "@shared/components/game-components/cached-image";
+import { useMemoriedImage } from "@shared/react-hooks/use-memoried-image";
 import { SeDieBetOptions } from "../sedie-multiplayer-constants";
+import { useDiceShakingRollingSound } from "@shared/react-hooks/use-sound";
 
-const OPEN_DURATION = 1500; // Open duration in milliseconds
+const OPEN_DURATION = 500; // Open duration in milliseconds
 
 type AnimationState = "idle" | "shake" | "open" | "close";
 
@@ -20,8 +21,11 @@ const SedieCup = () => {
     const { durations } = useGameContext();
     const { roundState, settlementResult, playResultAnimation } = useGameStateContext();
     const [isShow, setIsShow] = useState(false);
+    const [isAnimatingOut, setIsAnimatingOut] = useState(false);
     const [animationState, setAnimationState] = useState<AnimationState>("idle");
-    const { data } = useMemoriedImage(`/static/images/sedie-multiplayer/result/${getWinningSubOption(settlementResult)}.webp`);
+    const { data: defaultAnimationPhase1 } = useMemoriedImage(
+        `/static/images/sedie-multiplayer/result/${getWinningSubOption(settlementResult)}.webp`
+    );
     const [isUseDefaultAnimation, setIsUseDefaultAnimation] = useState(true);
     const { data: animationPhase1 } = useMemoriedImage(`/static/images/sedie-multiplayer/animation/phase-1/animation-phase-1.webp`);
     const { data: red2 } = useMemoriedImage(`/static/images/sedie-multiplayer/animation/phase-2/red2.webp`);
@@ -47,43 +51,68 @@ const SedieCup = () => {
         }
     }, [settlementResult]);
 
-    const [phase, setPhase] = useState<"spin" | "result">("spin");
     const resultRef = useRef(null);
+    const phase2Ref = useRef(null);
+
+    const playDiceShakingRollingSound = useDiceShakingRollingSound();
+    const playDiceShakingRollingRef = useRef(playDiceShakingRollingSound);
+    useEffect(() => {
+        playDiceShakingRollingRef.current = playDiceShakingRollingSound;
+    }, [playDiceShakingRollingSound]);
 
     useEffect(() => {
-        console.log("animationPhase1", isUseDefaultAnimation);
         if (animationPhase1 && animationPhase2) {
             setIsUseDefaultAnimation(false);
         }
     }, [animationPhase1, animationPhase2]);
 
+    const animationPhase1Data = useMemo(() => {
+        if (isUseDefaultAnimation) {
+            return defaultAnimationPhase1;
+        }
+        return animationPhase1;
+    }, [isUseDefaultAnimation]);
+
     useEffect(() => {
         const resetState = () => {
-            setIsShow(false);
             setAnimationState("idle");
-            setPhase("spin");
         };
+
+        const startExitAnimation = () => {
+            setIsAnimatingOut(true);
+            setTimeout(() => {
+                setIsShow(false);
+                setIsAnimatingOut(false);
+                resetState();
+            }, 300); // Match animation duration
+        };
+
         let timeout;
         let delayDisplayResult;
         switch (roundState) {
             case RoundState.LockingBet:
                 setIsShow(false);
+                setIsAnimatingOut(false);
                 setAnimationState("shake");
                 break;
             case RoundState.DisplayResult:
                 if (playResultAnimation) {
                     setIsShow(true);
+                    setIsAnimatingOut(false);
                     delayDisplayResult = setTimeout(() => {
+                        playDiceShakingRollingRef.current();
                         setAnimationState("open");
                     }, OPEN_DURATION);
                 }
 
                 timeout = setTimeout(() => {
-                    resetState();
+                    startExitAnimation();
                 }, durations.showResult * 1000);
                 break;
             case RoundState.BeforePlaceBet:
             case RoundState.InRound:
+                setIsShow(false);
+                setIsAnimatingOut(false);
                 resetState();
                 break;
             default:
@@ -104,9 +133,9 @@ const SedieCup = () => {
             <div className={`absolute w-[370px] h-[286px] left-[50%] -translate-x-1/2 z-10`}>
                 <motion.div
                     initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
+                    animate={isAnimatingOut ? { scale: 0, opacity: 0 } : { scale: 1, opacity: 1 }}
                     transition={{
-                        duration: 0.5,
+                        duration: isAnimatingOut ? 0.3 : 0.5,
                         delay: 0,
                         ease: [0.2, 1.4, 0.6, 1],
                     }}
@@ -151,60 +180,56 @@ const SedieCup = () => {
                         height={187}
                     />
 
-                    <div className="absolute w-full h-full top-[-59px] left-[0px] scale-[50%] z-[5]">
+                    <div className="relative w-full h-full top-[13px] left-[83px] z-[5] scale-[92%]">
                         {animationState === "open" ? (
                             <div>
                                 <Spritesheet
                                     key={`phase-1`}
-                                    className={`absolute inset-0 transition-opacity duration-[145ms] ${
-                                        phase === "spin" ? "opacity-100" : "opacity-0"
-                                    }`}
-                                    imageData={isUseDefaultAnimation ? data : animationPhase1}
+                                    className={`absolute inset-0`}
+                                    imageData={animationPhase1Data}
                                     widthFrame={195}
                                     heightFrame={195}
-                                    isResponsive
-                                    steps={20}
+                                    isResponsive={false}
+                                    steps={isUseDefaultAnimation ? 20 : 21}
                                     autoplay={true}
                                     fps={40}
                                     startAt={1}
-                                    endAt={isUseDefaultAnimation ? 100 : 60}
+                                    endAt={isUseDefaultAnimation ? 100 : 61}
                                     onPause={(spritesheet) => {
-                                        if (!isUseDefaultAnimation) {
-                                            setPhase("result");
-                                            console.log("onPause phase 1", phase);
-                                            if (resultRef.current) {
-                                                resultRef.current.goToAndPlay(0);
-                                            }
+                                        if (!isUseDefaultAnimation && resultRef.current) {
+                                            resultRef.current?.goToAndPlay(0);
+                                            phase2Ref.current.style.opacity = "1";
                                         }
                                     }}
                                 />
-
-                                <Spritesheet
-                                    key={`phase-2`}
-                                    className={`absolute inset-0 transition-opacity duration-[145ms] ${
-                                        phase === "result" ? "opacity-100" : "opacity-0"
-                                    }`}
-                                    ref={resultRef}
-                                    imageData={isUseDefaultAnimation ? data : animationPhase2}
-                                    widthFrame={195}
-                                    heightFrame={195}
-                                    isResponsive
-                                    steps={20}
-                                    fps={40}
-                                    startAt={1}
-                                    endAt={60}
-                                    autoplay={false}
-                                    getInstance={(spritesheet) => (resultRef.current = spritesheet)}
-                                />
+                                <div ref={phase2Ref} style={{ opacity: 0 }}>
+                                    <Spritesheet
+                                        key={`phase-2`}
+                                        className={`absolute inset-0`}
+                                        ref={resultRef}
+                                        imageData={animationPhase2}
+                                        widthFrame={195}
+                                        heightFrame={195}
+                                        isResponsive={false}
+                                        steps={21}
+                                        fps={40}
+                                        startAt={1}
+                                        endAt={61}
+                                        autoplay={false}
+                                        getInstance={(spritesheet) => {
+                                            resultRef.current = spritesheet;                                         
+                                        }}
+                                    />
+                                </div>
                             </div>
                         ) : (
                             <Spritesheet
                                 key={`waiting`}
                                 className={`fade-in`}
-                                imageData={isUseDefaultAnimation ? data : animationPhase1}
+                                imageData={animationPhase1Data}
                                 widthFrame={195}
                                 heightFrame={195}
-                                isResponsive
+                                isResponsive={false}
                                 steps={0}
                                 autoplay
                                 fps={30}

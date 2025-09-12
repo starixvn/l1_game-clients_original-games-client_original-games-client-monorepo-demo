@@ -28,17 +28,13 @@ const SabaNumberApp = ({ Component, pageProps }: AppProps) => {
 };
 
 export const AppTittle = () => {
-    // Get gameId dynamically from window object set by _document.tsx
-    const gameId = typeof window !== 'undefined' ? (window as any).__GAME_ID__ : '148';
-    const basePath = `/game-${gameId}`;
-
     return (
         <Head>
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-            <title>Original Games - Game {gameId}</title>
-            <link rel="shortcut icon" type="image/x-icon" href={`${basePath}/favicons/favicon.ico?v=${buildVersion}`} sizes="any" />
-            <link rel="icon" type="image/png" href={`${basePath}/favicons/favicon2.png?v=${buildVersion}`} sizes="16x16" />
-            <link rel="apple-touch-icon" type="image/png" href={`${basePath}/favicons/favicon2.png?v=${buildVersion}`} sizes="any" />
+            <title>Original Games</title>
+            <link rel="shortcut icon" type="image/x-icon" href={`/favicons/favicon.ico?v=${buildVersion}`} sizes="any" />
+            <link rel="icon" type="image/png" href={`/favicons/favicon2.png?v=${buildVersion}`} sizes="16x16" />
+            <link rel="apple-touch-icon" type="image/png" href={`/favicons/favicon2.png?v=${buildVersion}`} sizes="any" />
         </Head>
     );
 };

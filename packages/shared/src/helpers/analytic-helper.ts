@@ -1,7 +1,6 @@
 import { SSOResponse } from "sc-user-service-client/dist/auth";
 import { getAppSettings, getGameSettings } from "../app-settings";
 import { URLContextModel } from "../react-contexts";
-import { getDefaultGameId } from "@shared/components/page-components/splash-screen";
 
 export enum TrackingEvent {
     Function = "function_event",
@@ -86,15 +85,20 @@ export class AnalyticsHelper {
 
     static login(urlContext: URLContextModel) {
         try {
-            let ssoMethod = "SSO_To_Game";
+            let ssoMethod = "SSO_To_Lobby";
+            if (urlContext?.gameId) {
+                ssoMethod = `SSO_To_Game`;
+            }
 
             AnalyticsHelper.ssoContext = {
                 ssoMethod,
-                gameId: getDefaultGameId(),
+                gameId: urlContext?.gameId,
                 language: urlContext.language,
             };
 
-            AnalyticsHelper.ssoContext.gameName = getGameSettings(getDefaultGameId())?.gameName;
+            if (urlContext?.gameId > 0) {
+                AnalyticsHelper.ssoContext.gameName = getGameSettings(urlContext?.gameId)?.gameName;
+            }
         } catch (e) {
             console.error("[AnalyticsHelper] login error:", e);
         }
