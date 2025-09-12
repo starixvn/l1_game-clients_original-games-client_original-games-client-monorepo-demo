@@ -8,7 +8,8 @@
         "build": "node -e \"console.log('Skipping sedie-multiplayer package build (using app sources)')\"",
         "clean": "rimraf dist",
         "generate-tolgee-data": "cd ../.. && npm run generate-tolgee-data && cd packages/sedie-multiplayer",
-        "dev:standalone": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 FAST_REFRESH=false next dev -p 3001",
+        "dev:standalone": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 NEXT_PUBLIC_GAME_ID=148 FAST_REFRESH=false next dev -p 3001",
+        "dev:game-dynamic": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 FAST_REFRESH=false next dev -p 3001",
         "build:standalone": "npm run generate-tolgee-data && next build",
         "start:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 next start -p 3001",
         "obfuscator-config-file": "node ./configs/config-obfuscator.js"
@@ -18,7 +19,7 @@
         "@tolgee/format-icu": "^5.28.6",
         "@tolgee/react": "^5.28.6",
         "@use-gesture/react": "^10.3.1",
-        "axios": "^1.8.2",
+        "axios": "^0.30.0",
         "base64-string": "^1.1.2",
         "classnames": "^2.3.2",
         "clsx": "^2.1.1",
@@ -54,5 +55,9 @@
         "@next/bundle-analyzer": "^14.2.31",
         "ts-node": "^10.9.2",
         "rimraf": "^5.0.0"
+    },
+    "resolutions": {
+        "axios": "^0.30.0",
+        "form-data": "^3.0.4"
     }
 }

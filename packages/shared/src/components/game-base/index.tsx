@@ -44,7 +44,7 @@ import PreloadResources from '@shared/helpers/preload-resources';
 import { BetHistoryTable } from "../game-components/bet-history/bet-history-table";
 import { Menu } from "../game-components/menu/menu";
 import ChipControlPanel from "../game-components/chip-slider";
-import { Menu as MenuSettings } from "../game-components/settings/menu";
+const MenuIconWrapper = dynamic(() => import("../game-components/menu/menu-icon-wrapper"), { ssr: false });
 import useGameStore from '@shared/stores/game-store/game-store';
 const Header = dynamic(() => import("../page-components/header"), { ssr: false });
 const Background = dynamic(() => import("../game-components/background"), { ssr: false });
@@ -627,6 +627,10 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
         return <></>;
     }
 
+    renderMoreMenuIcon() {
+        return <></>;
+    }
+
     renderMenu() {
         return (
             <Menu
@@ -635,11 +639,7 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
                         Nova88 Original
                     </div>
                 }
-                rightSide={
-                    <>
-                        <MenuSettings />
-                    </>
-                }
+                rightSide={<MenuIconWrapper>{this.renderMoreMenuIcon()}</MenuIconWrapper>}
             />
         );
     }
