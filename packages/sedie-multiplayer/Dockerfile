@@ -51,7 +51,8 @@ COPY packages/shared packages/shared
 WORKDIR /app/packages/sedie-multiplayer
 
 # Allow configuring Next.js basePath/assetPrefix at build time
-ARG NEXT_PUBLIC_BASE_PATH=/game-148
+# Default to empty string (serve from root) unless explicitly set
+ARG NEXT_PUBLIC_BASE_PATH=
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 
 # Obfuscate deployment configs and build

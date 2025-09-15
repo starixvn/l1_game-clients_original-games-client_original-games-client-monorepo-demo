@@ -19,8 +19,8 @@ const baseAppSettings = createAppSettings(configs);
 
 // Simple configuration based on working game-admin-client
 const simpleConfig = {
-    basePath,
-    assetPrefix: basePath,
+    ...(basePath && { basePath }),
+    ...(basePath && { assetPrefix: basePath }),
     webpack: (config, { isServer }) => {
         config.devtool = false;
         config.resolve.alias = {
@@ -33,7 +33,8 @@ const simpleConfig = {
     },
     exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
         return {
-            [basePath || "/"]: { page: "/" },
+            "/": { page: "/" },
+            ...(basePath && { [basePath]: { page: "/" } }),
         };
     },
     env: {
