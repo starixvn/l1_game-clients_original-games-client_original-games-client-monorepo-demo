@@ -29,7 +29,6 @@ const simpleConfig = {
         };
         return config;
     },
-    assetPrefix: "./",
     exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
         return {
             "/game-148": { page: "/" },
