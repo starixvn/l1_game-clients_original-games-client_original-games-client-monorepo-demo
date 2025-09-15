@@ -17,21 +17,15 @@ const createAppSettings = (config) => ({
 
 const baseAppSettings = createAppSettings(configs);
 
-const nextConfig = withSentryConfig({
-    publicRuntimeConfig: {
-        ...baseAppSettings,
-        basePath,
-    },
-    productionBrowserSourceMaps: false,
-    sentry: {
-        disableServerWebpackPlugin: true,
-        disableClientWebpackPlugin: true,
-        hideSourceMaps: true,
-    },
-    generateBuildId: async () => uuidv4(),
-    experimental: { externalDir: true },
-    transpilePackages: ["@shared/merged"],
+// Simple configuration based on working game-admin-client
+const simpleConfig = {
     webpack: (config, { isServer }) => {
+        if (!isServer) {
+            config.node = {
+                fs: "empty",
+            };
+        }
+
         config.devtool = false;
         config.resolve.alias = {
             ...config.resolve.alias,
@@ -41,8 +35,12 @@ const nextConfig = withSentryConfig({
         };
         return config;
     },
-    basePath,
-    assetPrefix: basePath ? `${basePath}/` : undefined,
+    assetPrefix: "./",
+    exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
+        return {
+            "/game-148": { page: "/" },
+        };
+    },
     env: {
         buildVersion: String(buildVersion),
         REACT_APP_TOLGEE_API_URL: "https://tolgee.sabagame.com/",
@@ -61,6 +59,24 @@ const nextConfig = withSentryConfig({
         },
     },
     output: "standalone",
+};
+
+// Apply Sentry and Bundle Analyzer
+const nextConfig = withSentryConfig({
+    ...simpleConfig,
+    publicRuntimeConfig: {
+        ...baseAppSettings,
+        basePath,
+    },
+    productionBrowserSourceMaps: false,
+    sentry: {
+        disableServerWebpackPlugin: true,
+        disableClientWebpackPlugin: true,
+        hideSourceMaps: true,
+    },
+    generateBuildId: async () => uuidv4(),
+    experimental: { externalDir: true },
+    transpilePackages: ["@shared/merged"],
 });
 
 module.exports = withBundleAnalyzer(nextConfig);
