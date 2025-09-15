@@ -66,19 +66,34 @@ RUN pwd && ls -la && \
 # Build with detailed logging and standalone output verification
 RUN echo "Starting Next.js standalone build from $(pwd)..." && \
     echo "Next.js version: $(yarn next --version 2>/dev/null || echo 'unknown')" && \
-    yarn build:standalone 2>&1; \
+    echo "Node version: $(node --version)" && \
+    echo "Yarn version: $(yarn --version)" && \
+    echo "Running build:standalone..." && \
+    yarn build:standalone; \
     BUILD_EXIT_CODE=$?; \
     echo "Build exit code: $BUILD_EXIT_CODE"; \
     if [ "$BUILD_EXIT_CODE" -ne 0 ]; then \
         echo "Build failed with exit code $BUILD_EXIT_CODE!"; \
         echo "Checking if any .next directory was created:"; \
         ls -la .next/ 2>/dev/null || echo "No .next directory found"; \
+        echo "Checking build output for errors..."; \
+        if [ -d ".next" ]; then \
+            echo "Contents of .next directory:"; \
+            find .next -type f -name "*.log" -o -name "trace" | head -5 | xargs -I {} sh -c 'echo "=== {} ==="; head -50 "{}" 2>/dev/null || echo "Cannot read {}"'; \
+        fi; \
+        echo "Checking for common build issues..."; \
+        echo "Next.js config output setting:"; \
+        grep -n "output.*standalone" next.config.js || echo "output: standalone not found in config"; \
+        echo "Checking for missing dependencies..."; \
+        yarn list --depth=0 2>/dev/null | grep -E "(error|missing|not found)" || echo "No obvious dependency issues"; \
         exit "$BUILD_EXIT_CODE"; \
     fi && \
-    echo "Build completed. Checking if standalone was actually created:" && \
+    echo "Build completed successfully. Checking if standalone was actually created:" && \
     if [ ! -d ".next/standalone" ]; then \
         echo "WARNING: .next/standalone directory not found after build!" && \
         echo "This suggests the build did not create standalone output as expected." && \
+        echo "Checking what was created instead:" && \
+        ls -la .next/ 2>/dev/null && \
         echo "Checking next.config.js output setting..." && \
         grep -n "output.*standalone" next.config.js || echo "output: standalone not found in config"; \
     else \
