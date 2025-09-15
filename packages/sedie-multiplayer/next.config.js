@@ -27,6 +27,7 @@ const nextConfig = withSentryConfig({
     },
     generateBuildId: async () => uuidv4(),
     experimental: { externalDir: true },
+    trailingSlash: true,
     transpilePackages: ["@shared/merged"],
     webpack: (config, { isServer }) => {
         config.devtool = false;
@@ -51,7 +52,7 @@ const nextConfig = withSentryConfig({
         return config;
     },
     basePath,
-    assetPrefix: basePath,
+    assetPrefix: basePath || "/game-148",
     exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
         const pathMap = {};
         const gamePath = basePath || "/";
