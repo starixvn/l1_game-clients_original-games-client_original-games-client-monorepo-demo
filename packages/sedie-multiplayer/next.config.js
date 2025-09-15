@@ -37,15 +37,6 @@ const nextConfig = {
     },
     basePath,
     assetPrefix: basePath || undefined,
-    exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
-        const pathMap = {};
-        const gamePath = basePath || "/";
-
-        // Map the game route
-        pathMap[gamePath] = { page: "/" };
-
-        return pathMap;
-    },
     env: {
         buildVersion: String(buildVersion),
         REACT_APP_TOLGEE_API_URL: "https://tolgee.sabagame.com/",
