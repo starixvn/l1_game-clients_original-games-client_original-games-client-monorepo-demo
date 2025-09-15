@@ -20,12 +20,6 @@ const baseAppSettings = createAppSettings(configs);
 // Simple configuration based on working game-admin-client
 const simpleConfig = {
     webpack: (config, { isServer }) => {
-        if (!isServer) {
-            config.node = {
-                fs: "empty",
-            };
-        }
-
         config.devtool = false;
         config.resolve.alias = {
             ...config.resolve.alias,
