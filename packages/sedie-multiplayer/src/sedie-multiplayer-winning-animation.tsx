@@ -3,6 +3,7 @@ import { useMemoriedImage } from '@shared/react-hooks';
 import { isHighLightWinningResult } from '@shared/react-hooks/use-high-light';
 import { RoundState } from '@shared/components/game-base/type';
 import { Spritesheet } from '@shared/components/game-components/sprites-sheet';
+import { getStaticAssetPath } from '@shared/constants';
 import { SeDieBetOptions } from "./sedie-multiplayer-constants";
 import Styles from "./sedie-multiplayer.module.scss";
 
@@ -29,7 +30,7 @@ const SeDieMultiplayerWinningAnimation: React.FC<Props> = ({ choice, resourceNam
     const winningHighLightResult = isHighLightWinningResult;
     const [width, height] = ChoiceWinningSize[choice] || [146, 74];
 
-    const imagePath = `/static/images/sedie-multiplayer/highlight-winning-${resourceName}.png`;
+    const imagePath = getStaticAssetPath(`/static/images/sedie-multiplayer/highlight-winning-${resourceName}.png`);
     const { data } = useMemoriedImage(imagePath);
 
     if (!data) {

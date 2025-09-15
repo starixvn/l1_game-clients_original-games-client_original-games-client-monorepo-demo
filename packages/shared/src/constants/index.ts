@@ -63,7 +63,9 @@ export const buildVersion = process?.env?.buildVersion || 111;
  * @returns The full path including basePath if configured
  */
 export const getStaticAssetPath = (path: string): string => {
-    const basePath = process?.env?.NEXT_PUBLIC_BASE_PATH || "";
+    // In Next.js, NEXT_PUBLIC_* variables are inlined at build time
+    // This works on both client and server side
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
     if (path.startsWith("/static/")) {
         return basePath ? `${basePath}${path}` : path;
     }

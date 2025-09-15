@@ -39,6 +39,7 @@ const nextConfig = withSentryConfig({
         return config;
     },
     basePath,
+    assetPrefix: basePath || undefined,
     exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
         const pathMap = {};
         const gamePath = basePath || "/";
@@ -54,7 +55,7 @@ const nextConfig = withSentryConfig({
         REACT_APP_TOLGEE_API_KEY: "tgpak_gvpw45brha2xg3btoztxeytunvudc5dbn5twqodtonztc",
     },
     sassOptions: {
-        prependData: `$version-image: '${buildVersion}';`,
+        prependData: `$version-image: '${buildVersion}'; $base-path: '${basePath}'; $asset-prefix: '${basePath ? basePath + "/" : ""}';`,
         includePaths: [path.resolve(__dirname, "../shared/src/styles"), path.resolve(__dirname, "../shared/src/components")],
         importer: function (url) {
             // Resolve SCSS imports that use the @shared alias
