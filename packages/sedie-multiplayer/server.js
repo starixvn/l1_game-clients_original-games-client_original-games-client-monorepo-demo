@@ -37,6 +37,34 @@ app.prepare().then(() => {
                 }
             }
 
+            // Handle Next.js chunks and assets
+            if (pathname.startsWith("/_next/")) {
+                const nextPath = pathname;
+                let filePath;
+
+                if (nextPath.startsWith("/_next/static/")) {
+                    // Handle static chunks
+                    const relativePath = nextPath.replace("/_next/static/", "");
+                    filePath = path.join(process.cwd(), ".next", "static", relativePath);
+                } else {
+                    // Handle other _next paths
+                    filePath = path.join(process.cwd(), ".next", nextPath.replace("/_next/", ""));
+                }
+
+                // Check if file exists
+                if (fs.existsSync(filePath)) {
+                    const ext = path.extname(filePath);
+                    const contentType = getContentType(ext);
+
+                    res.setHeader("Content-Type", contentType);
+                    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+
+                    const fileStream = fs.createReadStream(filePath);
+                    fileStream.pipe(res);
+                    return;
+                }
+            }
+
             // Handle all other requests normally
             await handle(req, res, parsedUrl);
         } catch (err) {
