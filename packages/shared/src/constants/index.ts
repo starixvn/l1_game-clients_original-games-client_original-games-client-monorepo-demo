@@ -56,6 +56,19 @@ export const sabaNumberName = "Saba.numbers";
 export const sabaClubName = "Saba.games";
 
 export const buildVersion = process?.env?.buildVersion || 111;
+
+/**
+ * Helper function to get static asset paths with basePath support
+ * @param path - The static asset path (should start with /static/)
+ * @returns The full path including basePath if configured
+ */
+export const getStaticAssetPath = (path: string): string => {
+    const basePath = process?.env?.NEXT_PUBLIC_BASE_PATH || "";
+    if (path.startsWith("/static/")) {
+        return basePath ? `${basePath}${path}` : path;
+    }
+    return path;
+};
 export const AppTypes = {
     mobile: 1,
 };

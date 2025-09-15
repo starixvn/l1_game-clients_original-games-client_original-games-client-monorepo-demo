@@ -99,7 +99,7 @@
 .red {
     @extend %statistic-icon;
     --colorText: #ff5e5e;
-    background: url("/static/images/dot/dot-red-medium.svg?v=#{$version-image}") no-repeat;
+    background: url("#{$base-path}/static/images/dot/dot-red-medium.svg?v=#{$version-image}") no-repeat;
     background-size: contain;
 
     &.big-road-tie {
@@ -110,7 +110,7 @@
 .blue {
     @extend %statistic-icon;
     --colorText: #1c7bdf;
-    background: url("/static/images/dot/dot-blue-medium.svg?v=#{$version-image}") no-repeat;
+    background: url("#{$base-path}/static/images/dot/dot-blue-medium.svg?v=#{$version-image}") no-repeat;
     background-size: contain;
 
     &.big-road-tie {
@@ -121,7 +121,7 @@
 .green {
     @extend %statistic-icon;
     --colorText: #3eac3e;
-    background: url("/static/images/dot/dot-green-medium.svg?v=#{$version-image}") no-repeat;
+    background: url("#{$base-path}/static/images/dot/dot-green-medium.svg?v=#{$version-image}") no-repeat;
     background-size: contain;
 }
 
