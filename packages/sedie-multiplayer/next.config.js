@@ -36,10 +36,22 @@ const nextConfig = withSentryConfig({
             "@": path.resolve(__dirname, "src"),
             "@sedie-multiplayer": path.resolve(__dirname, "src"),
         };
+
+        // Add rules for static assets (fonts, images, etc.)
+        config.module.rules.push({
+            test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2|mp3|webp)$/,
+            use: {
+                loader: "url-loader",
+                options: {
+                    limit: 100000,
+                },
+            },
+        });
+
         return config;
     },
     basePath,
-    assetPrefix: "./",
+    assetPrefix: basePath,
     exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
         const pathMap = {};
         const gamePath = basePath || "/";
@@ -65,6 +77,20 @@ const nextConfig = withSentryConfig({
             }
             return null;
         },
+    },
+    async headers() {
+        return [
+            {
+                source: "/:all*(js|png|json|mp3|webp|svg|jpg|gif|ttf|woff|woff2|eot)",
+                locale: false,
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=31536000, must-revalidate",
+                    },
+                ],
+            },
+        ];
     },
     output: "standalone",
 });
