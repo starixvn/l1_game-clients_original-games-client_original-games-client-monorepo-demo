@@ -9,6 +9,9 @@ const hostname = process.env.HOSTNAME || "0.0.0.0";
 const port = parseInt(process.env.PORT, 10) || 5000;
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
+console.log(`[SERVER] Starting with basePath: ${basePath}`);
+console.log(`[SERVER] Environment: ${process.env.NODE_ENV}`);
+
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
@@ -21,6 +24,25 @@ app.prepare().then(() => {
             // Handle static assets - serve them from the public directory
             if (pathname.startsWith("/static/")) {
                 const staticPath = pathname;
+                const filePath = path.join(process.cwd(), "public", staticPath);
+
+                // Check if file exists
+                if (fs.existsSync(filePath)) {
+                    const ext = path.extname(filePath);
+                    const contentType = getContentType(ext);
+
+                    res.setHeader("Content-Type", contentType);
+                    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+
+                    const fileStream = fs.createReadStream(filePath);
+                    fileStream.pipe(res);
+                    return;
+                }
+            }
+
+            // Redirect static assets without base path
+            if (pathname.startsWith("/game-148/static/")) {
+                const staticPath = pathname.replace("/game-148", "");
                 const filePath = path.join(process.cwd(), "public", staticPath);
 
                 // Check if file exists
@@ -65,32 +87,25 @@ app.prepare().then(() => {
                 }
             }
 
-            // Handle i18n translation files (both with and without base path)
+            // Handle i18n translation files - redirect if missing base path
             if (pathname.startsWith("/i18n/")) {
-                const i18nPath = pathname;
-                const filePath = path.join(process.cwd(), "public", "i18n", i18nPath.replace("/i18n/", ""));
-
-                // Check if file exists
-                if (fs.existsSync(filePath)) {
-                    const ext = path.extname(filePath);
-                    const contentType = getContentType(ext);
-
-                    res.setHeader("Content-Type", contentType);
-                    res.setHeader("Cache-Control", "public, max-age=3600, immutable");
-
-                    const fileStream = fs.createReadStream(filePath);
-                    fileStream.pipe(res);
-                    return;
-                }
+                const redirectUrl = `/game-148${pathname}`;
+                console.log(`[SERVER] Redirecting i18n request: ${pathname} -> ${redirectUrl}`);
+                res.writeHead(302, { Location: redirectUrl });
+                res.end();
+                return;
             }
 
             // Handle i18n translation files with base path
             if (pathname.startsWith("/game-148/i18n/")) {
-                const i18nPath = pathname;
-                const filePath = path.join(process.cwd(), "public", "i18n", i18nPath.replace("/game-148/i18n/", ""));
+                const i18nPath = pathname.replace("/game-148/i18n/", "");
+                const filePath = path.join(process.cwd(), "public", "i18n", i18nPath);
+
+                console.log(`[SERVER] i18n request: ${pathname} -> ${filePath}`);
 
                 // Check if file exists
                 if (fs.existsSync(filePath)) {
+                    console.log(`[SERVER] Serving i18n file: ${filePath}`);
                     const ext = path.extname(filePath);
                     const contentType = getContentType(ext);
 
@@ -100,6 +115,8 @@ app.prepare().then(() => {
                     const fileStream = fs.createReadStream(filePath);
                     fileStream.pipe(res);
                     return;
+                } else {
+                    console.log(`[SERVER] i18n file not found: ${filePath}`);
                 }
             }
 

@@ -67,6 +67,7 @@ ENV NODE_ENV=production
 # Optionally expose base path at runtime for any custom logic
 ARG NEXT_PUBLIC_BASE_PATH
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
+RUN echo "NEXT_PUBLIC_BASE_PATH is set to: $NEXT_PUBLIC_BASE_PATH"
 
 RUN addgroup --system --gid 1001 nodejs  \
      && adduser --system --uid 1001 nextjs

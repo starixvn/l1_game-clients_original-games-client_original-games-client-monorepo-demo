@@ -19,18 +19,12 @@ const getPath: GetPath = ({ namespace, language, prefix }: { namespace: string; 
     return namespace ? `${fullPath}/${namespace}/${language}.json?v=${buildVersion}` : `${fullPath}/${language}.json?v=${buildVersion}`;
 };
 
-// Get the base path from the current window location if running in browser
-const getRuntimeBasePath = () => {
-    if (typeof window !== 'undefined') {
-        const path = window.location.pathname.split('/')[1];
-        return path ? `/${path}` : '';
-    }
-    return basePath;
-};
+// Use the build-time basePath directly
+const runtimeBasePath = basePath || '';
 
 export const tolgee = Tolgee().use(FormatIcu()).use(BackendFetch({
     getPath,
-    prefix: `${getRuntimeBasePath()}/i18n`
+    prefix: `${runtimeBasePath}/i18n`
 })).init({
     fallbackLanguage: "en",
     defaultLanguage: "en",
