@@ -28,7 +28,13 @@ const nextConfig = withSentryConfig({
     generateBuildId: async () => uuidv4(),
     experimental: { externalDir: true },
     transpilePackages: ["@shared/merged"],
-    webpack: (config, options) => {
+    webpack: (config, { isServer }) => {
+        if (!isServer) {
+            config.node = {
+                fs: "empty",
+            };
+        }
+
         config.devtool = false;
         config.resolve.alias = {
             ...config.resolve.alias,
@@ -39,7 +45,16 @@ const nextConfig = withSentryConfig({
         return config;
     },
     basePath,
-    assetPrefix: basePath || undefined,
+    assetPrefix: "./",
+    exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
+        const pathMap = {};
+        const gamePath = basePath || "/";
+
+        // Map the game route
+        pathMap[gamePath] = { page: "/" };
+
+        return pathMap;
+    },
     env: {
         buildVersion: String(buildVersion),
         REACT_APP_TOLGEE_API_URL: "https://tolgee.sabagame.com/",
