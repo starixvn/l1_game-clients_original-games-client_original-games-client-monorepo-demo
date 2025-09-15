@@ -18,9 +18,19 @@ const getPath: GetPath = ({ namespace, language, prefix }: { namespace: string; 
     const fullPath = trimSlashes(prefix);
     return namespace ? `${fullPath}/${namespace}/${language}.json?v=${buildVersion}` : `${fullPath}/${language}.json?v=${buildVersion}`;
 };
+
+// Get the base path from the current window location if running in browser
+const getRuntimeBasePath = () => {
+    if (typeof window !== 'undefined') {
+        const path = window.location.pathname.split('/')[1];
+        return path ? `/${path}` : '';
+    }
+    return basePath;
+};
+
 export const tolgee = Tolgee().use(FormatIcu()).use(BackendFetch({
     getPath,
-    prefix: `${basePath}/i18n`
+    prefix: `${getRuntimeBasePath()}/i18n`
 })).init({
     fallbackLanguage: "en",
     defaultLanguage: "en",
