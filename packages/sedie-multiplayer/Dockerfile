@@ -69,11 +69,11 @@ RUN echo "Starting Next.js standalone build from $(pwd)..." && \
     yarn build:standalone 2>&1; \
     BUILD_EXIT_CODE=$?; \
     echo "Build exit code: $BUILD_EXIT_CODE"; \
-    if [ $BUILD_EXIT_CODE -ne 0 ]; then \
+    if [ "$BUILD_EXIT_CODE" -ne 0 ]; then \
         echo "Build failed with exit code $BUILD_EXIT_CODE!"; \
         echo "Checking if any .next directory was created:"; \
         ls -la .next/ 2>/dev/null || echo "No .next directory found"; \
-        exit $BUILD_EXIT_CODE; \
+        exit "$BUILD_EXIT_CODE"; \
     fi && \
     echo "Build completed. Checking if standalone was actually created:" && \
     if [ ! -d ".next/standalone" ]; then \
@@ -188,10 +188,16 @@ CMD ["sh", "-c", "cd /app && \
             echo 'Found index.js instead of server.js, trying that...' && \
             NEXT_PUBLIC_DEFAULT_GAME_ID=148 PORT=5000 node .next/standalone/index.js; \
         else \
-            echo 'No server.js or index.js found in standalone. Checking entire .next for server files:' && \
-            find .next -name '*server*.js' -type f 2>/dev/null | head -5 && \
-            echo 'Cannot start server - no suitable server file found' && \
-            exit 1; \
+            echo 'No server.js or index.js found in standalone. Checking for any main JS files:' && \
+            find .next/standalone -name '*.js' -type f -exec grep -l 'createServer\|listen' {} \; 2>/dev/null | head -5 && \
+            SERVER_FILE=$(find .next/standalone -name '*.js' -type f -exec grep -l 'createServer\|listen' {} \; 2>/dev/null | head -1) && \
+            if [ -n \"$SERVER_FILE\" ]; then \
+                echo \"Found server file: $SERVER_FILE, starting...\" && \
+                NEXT_PUBLIC_DEFAULT_GAME_ID=148 PORT=5000 node \"$SERVER_FILE\"; \
+            else \
+                echo 'No suitable server file found with server code' && \
+                exit 1; \
+            fi; \
         fi; \
     else \
         echo 'Standalone directory not found! Checking .next directory:' && \

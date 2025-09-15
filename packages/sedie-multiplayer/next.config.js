@@ -23,8 +23,6 @@ const nextConfig = {
     publicRuntimeConfig: baseAppSettings,
     productionBrowserSourceMaps: false,
     generateBuildId: async () => uuidv4(),
-    experimental: { externalDir: true },
-    transpilePackages: ["@shared/merged"],
     webpack: (config, { isServer }) => {
         config.devtool = false;
         config.resolve.alias = {
@@ -57,10 +55,4 @@ const nextConfig = {
     output: "standalone",
 };
 
-const sentryConfig = {
-    disableServerWebpackPlugin: true,
-    disableClientWebpackPlugin: true,
-    hideSourceMaps: true,
-};
-
-module.exports = withSentryConfig(withBundleAnalyzer(nextConfig), sentryConfig);
+module.exports = withBundleAnalyzer(nextConfig);
