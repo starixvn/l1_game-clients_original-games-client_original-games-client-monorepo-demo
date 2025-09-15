@@ -55,8 +55,18 @@ ARG NEXT_PUBLIC_BASE_PATH=/game-148
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 
 # Obfuscate deployment configs and build
-RUN yarn obfuscator-config-file
-RUN yarn build:standalone
+RUN pwd && ls -la && yarn obfuscator-config-file
+RUN pwd && yarn build:standalone && \
+    echo "Build completed. Current directory: $(pwd)" && \
+    echo "Checking .next directory structure:" && \
+    ls -la .next/ && \
+    if [ -d ".next/standalone" ]; then \
+        echo "Standalone directory found:" && \
+        ls -la .next/standalone/; \
+    else \
+        echo "Standalone directory NOT found! Listing all .next contents:" && \
+        find .next -type f -name "*.js" | head -10; \
+    fi
 
 FROM base AS runner
 
@@ -79,8 +89,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/next.c
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/game-settings.json ./game-settings.json
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/configs.json ./configs.json
 
-# Ensure proper permissions for the .next directory
-RUN chown -R nextjs:nodejs .next
+# Ensure proper permissions for the .next directory and verify standalone structure
+RUN chown -R nextjs:nodejs .next && \
+    ls -la .next/ && \
+    if [ -d ".next/standalone" ]; then echo "Standalone directory exists"; ls -la .next/standalone/; else echo "Standalone directory NOT found"; fi
 
 USER nextjs
 
@@ -88,4 +100,4 @@ EXPOSE 5000
 ENV PORT=5000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 PORT=5000 node .next/standalone/server.js"]
+CMD ["sh", "-c", "cd /app && NEXT_PUBLIC_DEFAULT_GAME_ID=148 PORT=5000 node .next/standalone/server.js"]
