@@ -7,7 +7,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",
 });
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+// For standalone builds, we need to set basePath explicitly
+// This ensures Next.js generates assets with the correct base path
+const basePath = "/game-148";
 const buildVersion = new Date().getTime();
 
 const createAppSettings = (config) => ({
@@ -55,7 +57,7 @@ const nextConfig = withSentryConfig({
         REACT_APP_TOLGEE_API_KEY: "tgpak_gvpw45brha2xg3btoztxeytunvudc5dbn5twqodtonztc",
     },
     sassOptions: {
-        prependData: `$version-image: '${buildVersion}'; $base-path: '${basePath}'; $asset-prefix: '${basePath ? basePath + "/" : ""}';`,
+        prependData: `$version-image: '${buildVersion}'; $base-path: '${basePath}'; $asset-prefix: '${basePath}/';`,
         includePaths: [path.resolve(__dirname, "../shared/src/styles"), path.resolve(__dirname, "../shared/src/components")],
         importer: function (url) {
             // Resolve SCSS imports that use the @shared alias
