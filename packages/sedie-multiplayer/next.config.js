@@ -29,12 +29,6 @@ const nextConfig = withSentryConfig({
     experimental: { externalDir: true },
     transpilePackages: ["@shared/merged"],
     webpack: (config, { isServer }) => {
-        if (!isServer) {
-            config.node = {
-                fs: "empty",
-            };
-        }
-
         config.devtool = false;
         config.resolve.alias = {
             ...config.resolve.alias,
