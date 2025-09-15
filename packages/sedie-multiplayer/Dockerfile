@@ -63,8 +63,9 @@ RUN pwd && ls -la && \
     echo "Yarn version: $(yarn --version)" && \
     yarn obfuscator-config-file
 
-# Build with detailed logging
+# Build with detailed logging and standalone output verification
 RUN echo "Starting Next.js standalone build from $(pwd)..." && \
+    echo "Next.js version: $(yarn next --version 2>/dev/null || echo 'unknown')" && \
     yarn build:standalone 2>&1; \
     BUILD_EXIT_CODE=$?; \
     echo "Build exit code: $BUILD_EXIT_CODE"; \
@@ -73,6 +74,16 @@ RUN echo "Starting Next.js standalone build from $(pwd)..." && \
         echo "Checking if any .next directory was created:"; \
         ls -la .next/ 2>/dev/null || echo "No .next directory found"; \
         exit $BUILD_EXIT_CODE; \
+    fi && \
+    echo "Build completed. Checking if standalone was actually created:" && \
+    if [ ! -d ".next/standalone" ]; then \
+        echo "WARNING: .next/standalone directory not found after build!" && \
+        echo "This suggests the build did not create standalone output as expected." && \
+        echo "Checking next.config.js output setting..." && \
+        grep -n "output.*standalone" next.config.js || echo "output: standalone not found in config"; \
+    else \
+        echo "Standalone directory found. Checking for server files:" && \
+        find .next/standalone -maxdepth 2 -name "*.js" -type f 2>/dev/null | head -5; \
     fi
 
 # Copy standalone assets (required for standalone builds to work)
@@ -163,14 +174,28 @@ ENV PORT=5000
 ENV HOSTNAME=0.0.0.0
 
 CMD ["sh", "-c", "cd /app && \
-    echo 'Starting server... Checking for standalone server.js:' && \
-    if [ -f '.next/standalone/server.js' ]; then \
-        echo 'Found standalone server.js, starting...' && \
-        NEXT_PUBLIC_DEFAULT_GAME_ID=148 PORT=5000 node .next/standalone/server.js; \
+    echo 'Starting server... Checking standalone directory contents:' && \
+    if [ -d '.next/standalone' ]; then \
+        echo 'Standalone directory exists. Contents:' && \
+        ls -la .next/standalone/ && \
+        echo 'Looking for server files in standalone directory:' && \
+        find .next/standalone -name '*.js' -type f 2>/dev/null | head -10 && \
+        echo 'Checking for server.js specifically:' && \
+        if [ -f '.next/standalone/server.js' ]; then \
+            echo 'Found server.js! Starting...' && \
+            NEXT_PUBLIC_DEFAULT_GAME_ID=148 PORT=5000 node .next/standalone/server.js; \
+        elif [ -f '.next/standalone/index.js' ]; then \
+            echo 'Found index.js instead of server.js, trying that...' && \
+            NEXT_PUBLIC_DEFAULT_GAME_ID=148 PORT=5000 node .next/standalone/index.js; \
+        else \
+            echo 'No server.js or index.js found in standalone. Checking entire .next for server files:' && \
+            find .next -name '*server*.js' -type f 2>/dev/null | head -5 && \
+            echo 'Cannot start server - no suitable server file found' && \
+            exit 1; \
+        fi; \
     else \
-        echo 'Standalone server.js not found! Checking .next directory:' && \
+        echo 'Standalone directory not found! Checking .next directory:' && \
         ls -la .next/ 2>/dev/null || echo 'No .next directory found' && \
-        find .next -name '*.js' 2>/dev/null | head -5 || echo 'No JS files found in .next' && \
         echo 'Cannot start server - missing standalone build output' && \
         exit 1; \
     fi"]
