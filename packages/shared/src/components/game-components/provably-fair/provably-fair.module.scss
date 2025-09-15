@@ -24,11 +24,11 @@
 }
 
 .red {
-    --bg: url("#{$base-path}/static/images/ball/ball-red.png?v=#{$version-image}") no-repeat;
+    --bg: url("/static/images/ball/ball-red.png?v=#{$version-image}") no-repeat;
 }
 
 .blue {
-    --bg: url("#{$base-path}/static/images/ball/ball-blue.png?v=#{$version-image}") no-repeat;
+    --bg: url("/static/images/ball/ball-blue.png?v=#{$version-image}") no-repeat;
 }
 
 .balls-container {

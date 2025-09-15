@@ -18,10 +18,10 @@
 
 .dot-red {
     @extend %dot;
-    background: url("#{$base-path}/static/images/happy-four/dot-red.svg?v=#{$version-image}") no-repeat;
+    background: url("/static/images/happy-four/dot-red.svg?v=#{$version-image}") no-repeat;
 }
 
 .dot-blue {
     @extend %dot;
-    background: url("#{$base-path}/static/images/happy-four/dot-blue.svg?v=#{$version-image}") no-repeat;
+    background: url("/static/images/happy-four/dot-blue.svg?v=#{$version-image}") no-repeat;
 }
