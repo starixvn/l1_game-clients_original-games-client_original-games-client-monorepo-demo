@@ -28,7 +28,7 @@ const nextConfig = withSentryConfig({
     generateBuildId: async () => uuidv4(),
     experimental: { externalDir: true },
     transpilePackages: ["@shared/merged"],
-    webpack: (config, { isServer }) => {
+    webpack: (config, { isServer, dev }) => {
         config.devtool = false;
         config.resolve.alias = {
             ...config.resolve.alias,
@@ -36,10 +36,16 @@ const nextConfig = withSentryConfig({
             "@": path.resolve(__dirname, "src"),
             "@sedie-multiplayer": path.resolve(__dirname, "src"),
         };
+
+        // Handle static asset paths for basePath in production builds
+        if (!isServer && !dev && basePath) {
+            // Set publicPath for static assets
+            config.output.publicPath = `${basePath}/`;
+        }
+
         return config;
     },
     basePath,
-    assetPrefix: basePath ? `${basePath}/` : "",
     trailingSlash: true,
     exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
         const pathMap = {};

@@ -43,6 +43,7 @@ COPY packages/sedie-multiplayer/game-settings.json packages/sedie-multiplayer/ga
 COPY packages/sedie-multiplayer/src packages/sedie-multiplayer/src
 COPY packages/sedie-multiplayer/public packages/sedie-multiplayer/public
 COPY packages/sedie-multiplayer/configs packages/sedie-multiplayer/configs
+COPY packages/sedie-multiplayer/server.js packages/sedie-multiplayer/server.js
 
 # Copy shared package
 COPY packages/shared packages/shared
@@ -76,6 +77,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next 
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/package.json ./package.json
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/next.config.js ./next.config.js
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/server.js ./server.js
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/game-settings.json ./game-settings.json
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/configs.json ./configs.json
 
@@ -88,4 +90,4 @@ EXPOSE 5000
 ENV PORT=5000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 ./node_modules/.bin/next start -p 5000"]
+CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 node server.js"]
