@@ -7,7 +7,6 @@ import { TolgeeProvider } from "@tolgee/react";
 import { ThemeProvider } from "next-themes";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-import getConfig from "next/config";
 import { buildVersion, Themes } from "@shared/constants";
 import { tolgee } from "@shared/tolgee";
 import { LoadingSpinner } from "@shared/components/game-components/game-loading/loading-spinner";
@@ -29,14 +28,10 @@ const SabaNumberApp = ({ Component, pageProps }: AppProps) => {
 };
 
 export const AppTittle = () => {
-    const { publicRuntimeConfig } = getConfig();
-    const basePath = publicRuntimeConfig?.basePath || "";
-
     return (
         <Head>
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
             <title>Original Games</title>
-            {basePath && <base href={`${basePath}/`} />}
             <link rel="shortcut icon" type="image/x-icon" href={`/favicons/favicon.ico?v=${buildVersion}`} sizes="any" />
             <link rel="icon" type="image/png" href={`/favicons/favicon2.png?v=${buildVersion}`} sizes="16x16" />
             <link rel="apple-touch-icon" type="image/png" href={`/favicons/favicon2.png?v=${buildVersion}`} sizes="any" />

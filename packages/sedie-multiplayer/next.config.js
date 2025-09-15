@@ -42,15 +42,7 @@ const nextConfig = withSentryConfig({
         return config;
     },
     basePath,
-    exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
-        const pathMap = {};
-        const gamePath = basePath || "/";
-
-        // Map the game route
-        pathMap[gamePath] = { page: "/" };
-
-        return pathMap;
-    },
+    assetPrefix: basePath ? `${basePath}/` : undefined,
     env: {
         buildVersion: String(buildVersion),
         REACT_APP_TOLGEE_API_URL: "https://tolgee.sabagame.com/",
