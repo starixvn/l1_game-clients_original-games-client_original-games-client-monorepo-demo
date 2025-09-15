@@ -59,6 +59,9 @@ ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 RUN yarn obfuscator-config-file
 RUN yarn build:standalone
 
+# Copy the built app to the correct runtime location
+RUN cp -r .next /app/.next && cp -r public /app/public
+
 FROM base AS runner
 
 WORKDIR /app
@@ -73,8 +76,8 @@ RUN addgroup --system --gid 1001 nodejs  \
 
 # Copy the built app and required assets
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next ./.next
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/package.json ./package.json
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/next.config.js ./next.config.js
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/game-settings.json ./game-settings.json
