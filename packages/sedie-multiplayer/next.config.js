@@ -7,7 +7,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",
 });
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+// Dynamic basePath will be handled by middleware
+// We don't set basePath here to allow middleware to handle multiple sub-paths
+const basePath = "";
 const buildVersion = new Date().getTime();
 
 const createAppSettings = (config) => ({
@@ -78,6 +80,47 @@ const nextConfig = withSentryConfig({
             }
             return null;
         },
+    },
+    async rewrites() {
+        return [
+            // Handle desktop variant assets
+            {
+                source: "/game-148-d/_next/:path*",
+                destination: "/_next/:path*",
+            },
+            // Handle mobile variant assets
+            {
+                source: "/game-148-m/_next/:path*",
+                destination: "/_next/:path*",
+            },
+            // Handle tablet variant assets
+            {
+                source: "/game-148-t/_next/:path*",
+                destination: "/_next/:path*",
+            },
+            // Handle default variant assets
+            {
+                source: "/game-148/_next/:path*",
+                destination: "/_next/:path*",
+            },
+            // Handle other static assets for all variants
+            {
+                source: "/game-148-d/:path*",
+                destination: "/:path*",
+            },
+            {
+                source: "/game-148-m/:path*",
+                destination: "/:path*",
+            },
+            {
+                source: "/game-148-t/:path*",
+                destination: "/:path*",
+            },
+            {
+                source: "/game-148/:path*",
+                destination: "/:path*",
+            },
+        ];
     },
     async headers() {
         return [
