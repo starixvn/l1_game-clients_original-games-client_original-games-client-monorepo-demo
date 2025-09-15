@@ -39,6 +39,8 @@ const nextConfig = withSentryConfig({
         return config;
     },
     basePath,
+    assetPrefix: basePath ? `${basePath}/` : "",
+    trailingSlash: true,
     exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
         const pathMap = {};
         const gamePath = basePath || "/";
