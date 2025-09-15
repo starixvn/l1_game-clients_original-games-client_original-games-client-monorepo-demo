@@ -67,7 +67,6 @@ const readDirectorySafely = (dirPath: string): string[] => {
             return [".jpg", ".png", ".gif", ".webp", ".svg"].includes(ext);
         });
     } catch (error) {
-        console.error('Error reading directory:', error);
         return [];
     }
 };
@@ -87,8 +86,7 @@ const readFilesFromPath = (dirPath: string, imagesDir: string, maxDepth = 3, cur
         const fullPath = path.join(fullDirPath, file);
         try {
             return fs.statSync(fullPath).isDirectory();
-        } catch (error) {
-            console.error('Error checking if path is directory:', error);
+        } catch {
             return false;
         }
     });
@@ -129,15 +127,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<any[]>
         return res.status(200).json([]);
     }
 
-    // Use absolute path resolution for Docker compatibility
     const imagesDir = path.join(process.cwd(), DEFAULT_STATIC_PATH);
-    console.log('🔍 API Debug Info:');
-    console.log('- Images directory:', imagesDir);
-    console.log('- Current working directory:', process.cwd());
-    console.log('- Directory exists:', fs.existsSync(imagesDir));
-    if (fs.existsSync(imagesDir)) {
-        console.log('- Files in directory:', fs.readdirSync(imagesDir).slice(0, 5), '...');
-    }
     const imageFiles: string[] = [];
 
     for (const dirPath of pathsImg) {

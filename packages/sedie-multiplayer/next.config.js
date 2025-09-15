@@ -17,10 +17,17 @@ const createAppSettings = (config) => ({
 
 const baseAppSettings = createAppSettings(configs);
 
-// Simple configuration based on working game-admin-client
-const simpleConfig = {
-    ...(basePath && { basePath }),
-    ...(basePath && { assetPrefix: basePath }),
+const nextConfig = withSentryConfig({
+    publicRuntimeConfig: baseAppSettings,
+    productionBrowserSourceMaps: false,
+    sentry: {
+        disableServerWebpackPlugin: true,
+        disableClientWebpackPlugin: true,
+        hideSourceMaps: true,
+    },
+    generateBuildId: async () => uuidv4(),
+    experimental: { externalDir: true },
+    transpilePackages: ["@shared/merged"],
     webpack: (config, { isServer }) => {
         config.devtool = false;
         config.resolve.alias = {
@@ -31,11 +38,15 @@ const simpleConfig = {
         };
         return config;
     },
+    basePath,
     exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
-        return {
-            "/": { page: "/" },
-            ...(basePath && { [basePath]: { page: "/" } }),
-        };
+        const pathMap = {};
+        const gamePath = basePath || "/";
+
+        // Map the game route
+        pathMap[gamePath] = { page: "/" };
+
+        return pathMap;
     },
     env: {
         buildVersion: String(buildVersion),
@@ -55,24 +66,6 @@ const simpleConfig = {
         },
     },
     output: "standalone",
-};
-
-// Apply Sentry and Bundle Analyzer
-const nextConfig = withSentryConfig({
-    ...simpleConfig,
-    publicRuntimeConfig: {
-        ...baseAppSettings,
-        basePath,
-    },
-    productionBrowserSourceMaps: false,
-    sentry: {
-        disableServerWebpackPlugin: true,
-        disableClientWebpackPlugin: true,
-        hideSourceMaps: true,
-    },
-    generateBuildId: async () => uuidv4(),
-    experimental: { externalDir: true },
-    transpilePackages: ["@shared/merged"],
 });
 
 module.exports = withBundleAnalyzer(nextConfig);
