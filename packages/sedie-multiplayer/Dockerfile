@@ -65,7 +65,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Optionally expose base path at runtime for any custom logic
-ARG NEXT_PUBLIC_BASE_PATH
+ARG NEXT_PUBLIC_BASE_PATH=/game-148
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 RUN echo "NEXT_PUBLIC_BASE_PATH is set to: $NEXT_PUBLIC_BASE_PATH"
 

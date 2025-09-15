@@ -17,14 +17,9 @@ const createAppSettings = (config) => ({
 
 const baseAppSettings = createAppSettings(configs);
 
-const nextConfig = withSentryConfig({
+const nextConfig = {
     publicRuntimeConfig: baseAppSettings,
     productionBrowserSourceMaps: false,
-    sentry: {
-        disableServerWebpackPlugin: true,
-        disableClientWebpackPlugin: true,
-        hideSourceMaps: true,
-    },
     generateBuildId: async () => uuidv4(),
     experimental: { externalDir: true },
     transpilePackages: ["@shared/merged"],
@@ -68,6 +63,12 @@ const nextConfig = withSentryConfig({
         },
     },
     output: "standalone",
+};
+
+const finalConfig = withSentryConfig(nextConfig, {
+    disableServerWebpackPlugin: true,
+    disableClientWebpackPlugin: true,
+    hideSourceMaps: true,
 });
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = withBundleAnalyzer(finalConfig);
