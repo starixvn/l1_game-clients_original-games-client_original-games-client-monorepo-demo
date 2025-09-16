@@ -3,18 +3,20 @@ import Document, { DocumentContext, Head, Html, Main, NextScript } from "next/do
 import React from "react";
 import { buildVersion } from "@shared/constants";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default class extends Document<{ headScript?: string }> {
     static async getInitialProps(ctx: DocumentContext) {
         const initialProps = await Document.getInitialProps(ctx);
 
         // Always use single env config script now
-        const headScript = "./c.js";
+        const headScript = `${basePath}/c.js`;
         return { ...initialProps, headScript };
     }
 
     render() {
-        const headScript = (this.props as any)?.headScript || "./c.js";
+        const headScript = (this.props as any)?.headScript || `${basePath}/c.js`;
         const configFileWithVersion = `${headScript}?${buildVersion}`;
 
         return (
