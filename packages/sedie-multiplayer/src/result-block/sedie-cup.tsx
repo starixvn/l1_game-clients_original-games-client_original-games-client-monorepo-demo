@@ -16,6 +16,7 @@ const OPEN_DURATION = 500; // Open duration in milliseconds
 type AnimationState = "idle" | "shake" | "open" | "close";
 
 const operatorName = "nova88";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const SedieCup = () => {
     const { durations } = useGameContext();
@@ -24,15 +25,15 @@ const SedieCup = () => {
     const [isAnimatingOut, setIsAnimatingOut] = useState(false);
     const [animationState, setAnimationState] = useState<AnimationState>("idle");
     const { data: defaultAnimationPhase1 } = useMemoriedImage(
-        `/static/images/sedie-multiplayer/result/${getWinningSubOption(settlementResult)}.webp`
+        `${basePath}/static/images/sedie-multiplayer/result/${getWinningSubOption(settlementResult)}.webp`
     );
     const [isUseDefaultAnimation, setIsUseDefaultAnimation] = useState(true);
-    const { data: animationPhase1 } = useMemoriedImage(`/static/images/sedie-multiplayer/animation/phase-1/animation-phase-1.webp`);
-    const { data: red2 } = useMemoriedImage(`/static/images/sedie-multiplayer/animation/phase-2/red2.webp`);
-    const { data: red3 } = useMemoriedImage(`/static/images/sedie-multiplayer/animation/phase-2/red3.webp`);
-    const { data: red4 } = useMemoriedImage(`/static/images/sedie-multiplayer/animation/phase-2/red4.webp`);
-    const { data: white3 } = useMemoriedImage(`/static/images/sedie-multiplayer/animation/phase-2/white3.webp`);
-    const { data: white4 } = useMemoriedImage(`/static/images/sedie-multiplayer/animation/phase-2/white4.webp`);
+    const { data: animationPhase1 } = useMemoriedImage(`${basePath}/static/images/sedie-multiplayer/animation/phase-1/animation-phase-1.webp`);
+    const { data: red2 } = useMemoriedImage(`${basePath}/static/images/sedie-multiplayer/animation/phase-2/red2.webp`);
+    const { data: red3 } = useMemoriedImage(`${basePath}/static/images/sedie-multiplayer/animation/phase-2/red3.webp`);
+    const { data: red4 } = useMemoriedImage(`${basePath}/static/images/sedie-multiplayer/animation/phase-2/red4.webp`);
+    const { data: white3 } = useMemoriedImage(`${basePath}/static/images/sedie-multiplayer/animation/phase-2/white3.webp`);
+    const { data: white4 } = useMemoriedImage(`${basePath}/static/images/sedie-multiplayer/animation/phase-2/white4.webp`);
 
     const animationPhase2 = useMemo(() => {
         switch (getWinningSubOption(settlementResult)) {
@@ -144,7 +145,7 @@ const SedieCup = () => {
                 >
                     {/* Back */}
                     <CachedImage
-                        src="/static/images/sedie-multiplayer/result/box-back.webp"
+                        src={`${basePath}/static/images/sedie-multiplayer/result/box-back.webp`}
                         alt="Box Back"
                         width={202}
                         height={103}
@@ -153,7 +154,7 @@ const SedieCup = () => {
 
                     {/* Inside */}
                     <CachedImage
-                        src={`/static/images/sedie-multiplayer/result/box-inside-${operatorName}.webp`}
+                        src={`${basePath}/static/images/sedie-multiplayer/result/box-inside-${operatorName}.webp`}
                         alt="Box Bottom"
                         width={168}
                         height={91}
@@ -164,7 +165,7 @@ const SedieCup = () => {
 
                     {/* Front */}
                     <CachedImage
-                        src="/static/images/sedie-multiplayer/result/box-front.webp"
+                        src={`${basePath}/static/images/sedie-multiplayer/result/box-front.webp`}
                         alt="Box Front"
                         width={205}
                         height={120}
@@ -173,7 +174,7 @@ const SedieCup = () => {
 
                     {/*Cover */}
                     <CachedImage
-                        src="/static/images/sedie-multiplayer/result/box-cover.webp"
+                        src={`${basePath}/static/images/sedie-multiplayer/result/box-cover.webp`}
                         alt="Box Cover"
                         className=" absolute top-[13px] left-[91px] scale-[98%] z-[4]"
                         width={185}

@@ -8,6 +8,8 @@ import { Markup } from "interweave";
 import PfRoundBaseHelper from '@shared/helpers/pf/pf-round-base-helper';
 import { ResourceTypes } from '@shared/resources';
 import { useGameContext } from '@shared/react-contexts';
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 import { useShallow } from "zustand/react/shallow";
 import Image from "next/image";
 import { getWinningSubOption } from "../history/sedie-multiplayer-bet-detail-result-block";
@@ -106,7 +108,7 @@ const PFVerification: FC = () => {
                     >
                         <div className="flex gap-2 items-center">
                         <Image 
-                            src={`/static/images/sedie-multiplayer/bet-detail/bet-detail-${winningSubOption}.svg`} 
+                            src={`${basePath}/static/images/sedie-multiplayer/bet-detail/bet-detail-${winningSubOption}.svg`} 
                             alt={`${winningSubOption} result`} 
                             width={IMAGE_SIZE} 
                             height={IMAGE_SIZE} 

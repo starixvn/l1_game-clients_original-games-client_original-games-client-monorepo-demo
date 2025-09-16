@@ -9,6 +9,8 @@ import Styles from "./statistic-popup.module.scss";
 import AnimatedContent from "@shared/components/game-components/animations/animated-content";
 import { useClickSound } from "@shared/react-hooks";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 interface SedieMultiplayerStatisticPopupProps {
     onClose?: () => void;
     inline?: boolean;
@@ -64,11 +66,11 @@ export const SedieMultiplayerStatisticPopup: React.FC<SedieMultiplayerStatisticP
                             mainChoices={sideChoices as any}
                             iconRenderer={(choice) => {
                                 const map = {
-                                    red2: "/static/images/sedie-multiplayer/scoreboard/statistic-icon-red2.webp",
-                                    red3: "/static/images/sedie-multiplayer/scoreboard/statistic-icon-red3.webp",
-                                    red4: "/static/images/sedie-multiplayer/scoreboard/statistic-icon-red4.webp",
-                                    white3: "/static/images/sedie-multiplayer/scoreboard/statistic-icon-white3.webp",
-                                    white4: "/static/images/sedie-multiplayer/scoreboard/statistic-icon-white4.webp",
+                                    red2: `${basePath}/static/images/sedie-multiplayer/scoreboard/statistic-icon-red2.webp`,
+                                    red3: `${basePath}/static/images/sedie-multiplayer/scoreboard/statistic-icon-red3.webp`,
+                                    red4: `${basePath}/static/images/sedie-multiplayer/scoreboard/statistic-icon-red4.webp`,
+                                    white3: `${basePath}/static/images/sedie-multiplayer/scoreboard/statistic-icon-white3.webp`,
+                                    white4: `${basePath}/static/images/sedie-multiplayer/scoreboard/statistic-icon-white4.webp`,
                                 } as Record<string, string>;
                                 const src = map[choice];
                                 return src ? <Image src={src} alt={choice} width={18} height={18} /> : null;
