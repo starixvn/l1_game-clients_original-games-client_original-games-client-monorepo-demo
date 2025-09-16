@@ -5,11 +5,14 @@ const fs = require("fs");
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = process.env.HOSTNAME || "0.0.0.0";
-const port = parseInt(process.env.PORT, 10) || 5000;
+// Use a different internal port to avoid conflicts
+const port = parseInt(process.env.INTERNAL_PORT, 10) || 3000;
+const externalPort = parseInt(process.env.PORT, 10) || 5000;
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 console.log(`[SERVER] Starting with basePath: ${basePath}`);
 console.log(`[SERVER] Environment: ${process.env.NODE_ENV}`);
+console.log(`[SERVER] Internal port: ${port}, External port: ${externalPort}`);
 
 // Use standalone server for production
 let app, handle;
