@@ -36,6 +36,7 @@ COPY packages/sedie-multiplayer/postcss.config.js packages/sedie-multiplayer/pos
 COPY packages/sedie-multiplayer/sentry.client.config.js packages/sedie-multiplayer/sentry.client.config.js
 COPY packages/sedie-multiplayer/sentry.edge.config.js packages/sedie-multiplayer/sentry.edge.config.js
 COPY packages/sedie-multiplayer/sentry.server.config.js packages/sedie-multiplayer/sentry.server.config.js
+COPY packages/sedie-multiplayer/custom-server.js packages/sedie-multiplayer/custom-server.js
 COPY packages/sedie-multiplayer/configs.json packages/sedie-multiplayer/configs.json
 COPY packages/sedie-multiplayer/game-settings.json packages/sedie-multiplayer/game-settings.json
 
@@ -78,6 +79,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/packag
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/next.config.js ./next.config.js
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/game-settings.json ./game-settings.json
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/configs.json ./configs.json
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/custom-server.js ./custom-server.js
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next/static ./.next/static
 
 # Ensure proper permissions for the .next directory
@@ -89,4 +91,4 @@ EXPOSE 5000
 ENV PORT=5000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 node .next/standalone/packages/sedie-multiplayer/server.js"]
+CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 NEXT_PUBLIC_BASE_PATH=/game-148 node custom-server.js"]
