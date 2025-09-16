@@ -20,6 +20,7 @@ const baseAppSettings = createAppSettings(configs);
 const nextConfig = withSentryConfig({
     publicRuntimeConfig: baseAppSettings,
     productionBrowserSourceMaps: false,
+    pageExtensions: ["tsx", "ts", "jsx", "js"],
     sentry: {
         disableServerWebpackPlugin: true,
         disableClientWebpackPlugin: true,
@@ -39,7 +40,7 @@ const nextConfig = withSentryConfig({
         return config;
     },
     basePath,
-    assetPrefix: "./",
+    assetPrefix: process.env.NODE_ENV === 'production' ? basePath : undefined,
     exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
         const pathMap = {};
         const gamePath = basePath || "/";
