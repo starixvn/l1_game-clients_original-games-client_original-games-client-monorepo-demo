@@ -17,28 +17,24 @@ const createAppSettings = (config) => ({
 
 const baseAppSettings = createAppSettings(configs);
 
-const nextConfig = withSentryConfig({
+const nextConfig = {
     publicRuntimeConfig: baseAppSettings,
     productionBrowserSourceMaps: false,
     pageExtensions: ["tsx", "ts", "jsx", "js"],
-    sentry: {
-        disableServerWebpackPlugin: true,
-        disableClientWebpackPlugin: true,
-        hideSourceMaps: true,
-    },
     generateBuildId: async () => uuidv4(),
     async rewrites() {
-        return [
-            {
-                source: "/api/health",
-                destination: `${basePath}/api/health`,
-                basePath: false,
-            },
-        ];
+        return basePath
+            ? [
+                  {
+                      source: "/api/health",
+                      destination: `/api/health`,
+                      basePath: false,
+                  },
+              ]
+            : [];
     },
     experimental: {
         externalDir: true,
-        staticFileGlobbing: true,
         serverComponentsExternalPackages: [],
         esmExternals: "loose",
     },
@@ -73,6 +69,12 @@ const nextConfig = withSentryConfig({
         },
     },
     output: "standalone",
-});
+};
 
-module.exports = withBundleAnalyzer(nextConfig);
+const sentryConfig = {
+    disableServerWebpackPlugin: true,
+    disableClientWebpackPlugin: true,
+    hideSourceMaps: true,
+};
+
+module.exports = withBundleAnalyzer(withSentryConfig(nextConfig, sentryConfig));
