@@ -15,15 +15,24 @@ type Props = {
     onLoad?: ReactEventHandler<HTMLImageElement>;
 };
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export const CachedImage: React.FC<Props> = ({ src, blurSrc, alt, width, height, priority, className, onLoad, fallbackSrcs }) => {
-    const [source, setSource] = useState<string | null>(imageCache[src]?.data || null);
+    // Ensure src has basePath prepended if it's a relative static path
+    const fullSrc = src.startsWith('/static/') && !src.startsWith(basePath) ? `${basePath}${src}` : src;
+    // Ensure fallbackSrcs have basePath prepended if they are relative static paths
+    const fullFallbackSrcs = fallbackSrcs?.map(fallback =>
+        fallback.startsWith('/static/') && !fallback.startsWith(basePath) ? `${basePath}${fallback}` : fallback
+    );
+
+    const [source, setSource] = useState<string | null>(imageCache[fullSrc]?.data || null);
     const props = { width, height, priority, className, onLoad };
     Object.keys(props).forEach((key) => props[key] === undefined && delete props[key]);
     useEffect(() => {
         const loadImage = async () => {
-            let result = await downloadAndCacheImage(src);
-            if (!result.valid && Array.isArray(fallbackSrcs) && fallbackSrcs.length > 0) {
-                for (const fallback of fallbackSrcs) {
+            let result = await downloadAndCacheImage(fullSrc);
+            if (!result.valid && Array.isArray(fullFallbackSrcs) && fullFallbackSrcs.length > 0) {
+                for (const fallback of fullFallbackSrcs) {
                     result = await downloadAndCacheImage(fallback);
                     if (result.valid) {
                         break;
@@ -32,11 +41,11 @@ export const CachedImage: React.FC<Props> = ({ src, blurSrc, alt, width, height,
             }
             setSource(result.imageBase64 || null);
         };
-        if (!imageCache[src]) {
+        if (!imageCache[fullSrc]) {
             loadImage();
         } else {
-            setSource(imageCache[src].data);
+            setSource(imageCache[fullSrc].data);
         }
-    }, [src, fallbackSrcs]);
+    }, [fullSrc, fullFallbackSrcs, src, fallbackSrcs]);
     return (source || blurSrc) && <Image className={className} src={source || blurSrc} alt={alt} {...props} />;
 };

@@ -10,6 +10,8 @@ type Props = {
     children?: React.ReactNode;
 };
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export const BgCachedImage: React.FC<Props> = ({
     pathImage,
     className,
@@ -18,21 +20,23 @@ export const BgCachedImage: React.FC<Props> = ({
     backgroundPosition,
     children,
 }) => {
-    const [source, setSource] = useState<string | null>(imageCache[pathImage]?.data || null);
+    // Ensure path has basePath prepended if it's a relative static path
+    const fullPathImage = pathImage.startsWith('/static/') && !pathImage.startsWith(basePath) ? `${basePath}${pathImage}` : pathImage;
+    const [source, setSource] = useState<string | null>(imageCache[fullPathImage]?.data || null);
     const props = { backgroundSize, backgroundRepeat, backgroundPosition };
     Object.keys(props).forEach((key) => props[key] === undefined && delete props[key]);
 
     useEffect(() => {
         const loadImage = async () => {
-            const result = await downloadAndCacheImage(pathImage);
+            const result = await downloadAndCacheImage(fullPathImage);
             setSource(result.imageBase64);
         };
-        if (!imageCache[pathImage]) {
+        if (!imageCache[fullPathImage]) {
             loadImage();
         } else {
-            setSource(imageCache[pathImage].data);
+            setSource(imageCache[fullPathImage].data);
         }
-    }, [pathImage]);
+    }, [fullPathImage, pathImage]);
 
     return source ? (
         <div
