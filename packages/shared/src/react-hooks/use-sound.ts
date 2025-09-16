@@ -2,7 +2,9 @@ import useSound from "use-sound";
 import { buildVersion } from "../constants";
 import { StorageHelper, formatVolume, localStorageKeys, objectMap } from "../helpers";
 import { useSettingContext } from "../react-contexts";
-export const path = "./static/sounds/";
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+export const path = `${basePath}/static/sounds/`;
 
 const mp3File = {
     placeBet: `place-bet`,

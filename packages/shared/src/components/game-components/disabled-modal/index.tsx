@@ -46,8 +46,8 @@ const DisabledModal: React.FC<{ disableMessage: string }> = ({ disableMessage })
                 </div>
                 <div className="mt-4">
                     {showOkButton && (
-                        <PopupButton 
-                            onClick={handleOkClick} 
+                        <PopupButton
+                            onClick={handleOkClick}
                             className="active:bg-btn-green-hover active:bg-[length:100%]"
                             label={t({ key: "ok" })}
                         />
