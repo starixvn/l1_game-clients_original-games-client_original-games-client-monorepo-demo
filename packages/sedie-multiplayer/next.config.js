@@ -7,8 +7,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",
 });
 
-// Temporarily disable basePath to test if assets work
-const basePath = "";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const buildVersion = new Date().getTime();
 
 const createAppSettings = (config) => ({

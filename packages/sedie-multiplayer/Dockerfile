@@ -38,7 +38,6 @@ COPY packages/sedie-multiplayer/sentry.edge.config.js packages/sedie-multiplayer
 COPY packages/sedie-multiplayer/sentry.server.config.js packages/sedie-multiplayer/sentry.server.config.js
 COPY packages/sedie-multiplayer/configs.json packages/sedie-multiplayer/configs.json
 COPY packages/sedie-multiplayer/game-settings.json packages/sedie-multiplayer/game-settings.json
-COPY packages/sedie-multiplayer/custom-server.js packages/sedie-multiplayer/custom-server.js
 
 # Copy source code
 COPY packages/sedie-multiplayer/src packages/sedie-multiplayer/src
@@ -79,7 +78,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/packag
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/next.config.js ./next.config.js
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/game-settings.json ./game-settings.json
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/configs.json ./configs.json
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/custom-server.js ./custom-server.js
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next/static ./.next/static
 
 # Ensure proper permissions for the .next directory
 RUN chown -R nextjs:nodejs .next
@@ -90,8 +89,4 @@ EXPOSE 5000
 ENV PORT=5000
 ENV HOSTNAME=0.0.0.0
 
-# Install Express for the custom server
-RUN npm install express
-
-# Use the custom server that properly serves static assets
-CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 node custom-server.js"]
+CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 node .next/standalone/packages/sedie-multiplayer/server.js"]
