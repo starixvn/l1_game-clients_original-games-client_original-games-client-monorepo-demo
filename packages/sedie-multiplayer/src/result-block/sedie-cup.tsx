@@ -158,9 +158,8 @@ const SedieCup = () => {
                         alt="Box Bottom"
                         width={168}
                         height={91}
-                        className={`z-[2] absolute top-[100px] left-[99px] ${
-                            animationState === "open" ? styles["box-bottom-animation"] : ""
-                        }`}
+                        className={`z-[2] absolute top-[100px] left-[99px] ${animationState === "open" ? styles["box-bottom-animation"] : ""
+                            }`}
                     />
 
                     {/* Front */}
@@ -218,7 +217,7 @@ const SedieCup = () => {
                                         endAt={61}
                                         autoplay={false}
                                         getInstance={(spritesheet) => {
-                                            resultRef.current = spritesheet;                                         
+                                            resultRef.current = spritesheet;
                                         }}
                                     />
                                 </div>

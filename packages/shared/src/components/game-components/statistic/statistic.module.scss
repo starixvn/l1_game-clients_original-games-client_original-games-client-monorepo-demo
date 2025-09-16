@@ -29,6 +29,8 @@
     }
 }
 
+$base-path: "/game-148";
+
 .statistic-container {
     position: relative;
     border-top-left-radius: 4px;
@@ -101,7 +103,7 @@
 .red {
     @extend %statistic-icon;
     --colorText: #ff5e5e;
-    background: url("/static/images/dot/scoreboard-red-dot.webp?v=#{$version-image}") no-repeat;
+    background: url("#{$base-path}/static/images/dot/scoreboard-red-dot.webp?v=#{$version-image}") no-repeat;
     background-size: contain;
 
     &.big-road-tie {
@@ -112,7 +114,7 @@
 .blue {
     @extend %statistic-icon;
     --colorText: #1c7bdf;
-    background: url("/static/images/dot/scoreboard-blue-dot.webp?v=#{$version-image}") no-repeat;
+    background: url("#{$base-path}/static/images/dot/scoreboard-blue-dot.webp?v=#{$version-image}") no-repeat;
     background-size: contain;
 
     &.big-road-tie {
@@ -123,7 +125,7 @@
 .green {
     @extend %statistic-icon;
     --colorText: #3eac3e;
-    background: url("/static/images/dot/dot-green-medium.svg?v=#{$version-image}") no-repeat;
+    background: url("#{$base-path}/static/images/dot/dot-green-medium.svg?v=#{$version-image}") no-repeat;
     background-size: contain;
 }
 

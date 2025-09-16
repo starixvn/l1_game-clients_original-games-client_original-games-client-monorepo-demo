@@ -8,6 +8,8 @@ import BaseDialog from "../base-dialog";
 import { ModalType } from "../base-dialog/type";
 import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store';
 import { useNoticeStore } from '@shared/stores/notice-store/notice-store';
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 import { useShallow } from "zustand/react/shallow";
 import { cn } from '@shared/utils/merge-tailwind-util';
 
@@ -37,7 +39,7 @@ const BaseNotice: React.FC<{
                 )}
             >
                 <Image
-                    src="/static/images/icons/toast-mask.svg"
+                    src={`${basePath}/static/images/icons/toast-mask.svg`}
                     alt="toast mask"
                     width={240}
                     height={240}

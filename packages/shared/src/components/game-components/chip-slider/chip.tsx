@@ -3,6 +3,8 @@ import Styles from "./chip-slider.module.scss";
 import useBettingStore from '@shared/stores/betting-store/betting-store';
 import { BgCachedImage } from "../cached-image/bg-cached-image";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 type ChipProps = {
     value: number;
     text: string;
@@ -18,7 +20,7 @@ export const Chip: React.FC<ChipProps> = ({
     value,
     text,
     color,
-    onClickChip = () => {},
+    onClickChip = () => { },
     size = 46,
     fontSize = 18,
     isHideValue = false,
@@ -55,14 +57,14 @@ export const Chip: React.FC<ChipProps> = ({
             >
                 {renderColorChip()}
                 <BgCachedImage
-                    pathImage="/static/images/chips/chip.svg"
+                    pathImage={`${basePath}/static/images/chips/chip.svg`}
                     className="absolute w-full h-full rounded-full"
                     backgroundSize="100% 100%"
                     backgroundRepeat="no-repeat"
                     backgroundPosition="center"
                 />
                 <BgCachedImage
-                    pathImage={`/static/images/chips/chip-${value >= 1000 ? "yellow-" : ""}border.svg`}
+                    pathImage={`${basePath}/static/images/chips/chip-${value >= 1000 ? "yellow-" : ""}border.svg`}
                     className="absolute w-full h-full rounded-full"
                     backgroundSize="100% 100%"
                     backgroundRepeat="no-repeat"

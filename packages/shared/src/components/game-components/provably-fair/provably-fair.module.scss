@@ -23,12 +23,14 @@
     @extend %ballSmall;
 }
 
+$base-path: "/game-148";
+
 .red {
-    --bg: url("/static/images/ball/ball-red.png?v=#{$version-image}") no-repeat;
+    --bg: url("#{$base-path}/static/images/ball/ball-red.png?v=#{$version-image}") no-repeat;
 }
 
 .blue {
-    --bg: url("/static/images/ball/ball-blue.png?v=#{$version-image}") no-repeat;
+    --bg: url("#{$base-path}/static/images/ball/ball-blue.png?v=#{$version-image}") no-repeat;
 }
 
 .balls-container {

@@ -10,10 +10,10 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 export interface RoundInfoSeDie extends DrawInfo {
     roundId: number;
     result:
-        | {
-              balls?: Array<number>;
-          }
-        | Record<string, boolean>;
+    | {
+        balls?: Array<number>;
+    }
+    | Record<string, boolean>;
     odds: Record<string, number>;
     settlementResult: Record<string, boolean>;
 }
