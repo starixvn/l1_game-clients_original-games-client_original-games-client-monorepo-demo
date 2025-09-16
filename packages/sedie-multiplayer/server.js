@@ -24,12 +24,55 @@ if (dev) {
 } else {
     // For production with standalone output
     try {
-        app = require("./.next/standalone/server.js");
-        handle = app.default || app;
+        console.log("[SERVER] Attempting to load standalone server...");
+        console.log("[SERVER] Current directory:", process.cwd());
+        console.log("[SERVER] Checking for .next directory:", require("fs").existsSync("./.next"));
+
+        // Check different possible locations for the standalone server
+        const possiblePaths = [
+            "./.next/standalone/server.js",
+            "./.next/standalone/packages/sedie-multiplayer/server.js",
+            "./.next/server.js",
+        ];
+
+        let loaded = false;
+        for (const path of possiblePaths) {
+            try {
+                console.log(`[SERVER] Trying to load: ${path}`);
+                if (require("fs").existsSync(path)) {
+                    app = require(path);
+                    handle = app.default || app;
+                    console.log(`[SERVER] Successfully loaded standalone server from: ${path}`);
+                    loaded = true;
+                    break;
+                }
+            } catch (e) {
+                console.log(`[SERVER] Failed to load from ${path}:`, e.message);
+            }
+        }
+
+        if (!loaded) {
+            throw new Error("Could not find standalone server in any expected location");
+        }
+
         startServer();
     } catch (err) {
         console.error("[SERVER] Failed to load standalone server:", err);
-        process.exit(1);
+
+        // Fallback to regular Next.js server for production
+        console.log("[SERVER] Falling back to regular Next.js server...");
+        try {
+            const next = require("next");
+            app = next({ dev: false, hostname, port });
+            handle = app.getRequestHandler();
+
+            app.prepare().then(() => {
+                startServer();
+            });
+        } catch (fallbackErr) {
+            console.error("[SERVER] Fallback also failed:", fallbackErr);
+            process.exit(1);
+        }
     }
 }
 
