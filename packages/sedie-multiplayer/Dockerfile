@@ -74,7 +74,8 @@ RUN addgroup --system --gid 1001 nodejs  \
 
 # Copy the built app and required assets
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next/standalone ./.next/standalone
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/package.json ./package.json
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/next.config.js ./next.config.js

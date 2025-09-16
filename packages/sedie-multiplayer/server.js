@@ -1,6 +1,5 @@
 const { createServer } = require("http");
 const { URL } = require("url");
-const next = require("next");
 const path = require("path");
 const fs = require("fs");
 
@@ -12,14 +11,43 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 console.log(`[SERVER] Starting with basePath: ${basePath}`);
 console.log(`[SERVER] Environment: ${process.env.NODE_ENV}`);
 
-const app = next({ dev, hostname, port });
-const handle = app.getRequestHandler();
+// Use standalone server for production
+let app, handle;
+if (dev) {
+    const next = require("next");
+    app = next({ dev, hostname, port });
+    handle = app.getRequestHandler();
 
-app.prepare().then(() => {
+    app.prepare().then(() => {
+        startServer();
+    });
+} else {
+    // For production with standalone output
+    try {
+        app = require("./.next/standalone/server.js");
+        handle = app.default || app;
+        startServer();
+    } catch (err) {
+        console.error("[SERVER] Failed to load standalone server:", err);
+        process.exit(1);
+    }
+}
+
+function startServer() {
     createServer(async (req, res) => {
         try {
+            // Handle empty or malformed URLs
+            if (!req.url || req.url === "") {
+                req.url = "/";
+            }
+
             const url = new URL(req.url, `http://${req.headers.host}`);
-            const pathname = url.pathname;
+            let pathname = url.pathname;
+
+            // Handle empty pathname
+            if (!pathname || pathname === "") {
+                pathname = "/";
+            }
 
             // Handle static assets - serve them from the public directory
             if (pathname.startsWith("/static/")) {
@@ -121,9 +149,20 @@ app.prepare().then(() => {
             }
 
             // Handle all other requests normally
+            console.log(`[SERVER] Handling request: ${req.method} ${pathname}`);
             await handle(req, res, url.href);
         } catch (err) {
             console.error("Error occurred handling", req.url, err);
+            console.error("Error stack:", err.stack);
+
+            // If pathname is empty, redirect to root
+            if (err.message && err.message.includes("pathname can't be empty")) {
+                console.log("[SERVER] Redirecting empty pathname to root");
+                res.writeHead(302, { Location: basePath || "/" });
+                res.end();
+                return;
+            }
+
             res.statusCode = 500;
             res.end("internal server error");
         }
@@ -131,7 +170,7 @@ app.prepare().then(() => {
         if (err) throw err;
         console.log(`> Ready on http://${hostname}:${port}`);
     });
-});
+}
 
 function getContentType(ext) {
     const types = {
