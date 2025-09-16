@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { downloadAndCacheImage, imageCache } from '@shared/helpers/image-cache-controller';
+import { BASE_PATH } from '@shared/constants/base-path';
 
 type Props = {
     pathImage: string;
@@ -10,8 +11,6 @@ type Props = {
     children?: React.ReactNode;
 };
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-
 export const BgCachedImage: React.FC<Props> = ({
     pathImage,
     className,
@@ -21,7 +20,7 @@ export const BgCachedImage: React.FC<Props> = ({
     children,
 }) => {
     // Ensure path has basePath prepended if it's a relative static path
-    const fullPathImage = pathImage.startsWith('/static/') && !pathImage.startsWith(basePath) ? `${basePath}${pathImage}` : pathImage;
+    const fullPathImage = pathImage.startsWith('/static/') && !pathImage.startsWith(BASE_PATH) ? `${BASE_PATH}${pathImage}` : pathImage;
     const [source, setSource] = useState<string | null>(imageCache[fullPathImage]?.data || null);
     const props = { backgroundSize, backgroundRepeat, backgroundPosition };
     Object.keys(props).forEach((key) => props[key] === undefined && delete props[key]);

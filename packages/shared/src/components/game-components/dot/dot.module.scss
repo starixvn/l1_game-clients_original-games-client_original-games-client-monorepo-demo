@@ -1,3 +1,5 @@
+@import "../../../styles/constants/base-path.scss";
+
 %dot {
     width: 15px;
     height: 15px;
@@ -15,8 +17,6 @@
     flex-wrap: wrap;
     width: 50px;
 }
-
-$base-path: "/game-148";
 
 .dot-red {
     @extend %dot;

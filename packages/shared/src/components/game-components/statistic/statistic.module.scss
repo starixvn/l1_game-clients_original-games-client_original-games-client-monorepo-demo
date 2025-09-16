@@ -1,3 +1,5 @@
+@import "../../../styles/constants/base-path.scss";
+
 %statistic-icon {
     position: relative;
     width: 100%;
@@ -29,7 +31,7 @@
     }
 }
 
-$base-path: "/game-148";
+@import "../../../styles/constants/base-path.scss";
 
 .statistic-container {
     position: relative;

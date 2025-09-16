@@ -1,4 +1,4 @@
-$base-path: "/game-148";
+@import "./constants/base-path.scss";
 
 [data-theme="light"] .error-page {
     --error-page-background: #061827;

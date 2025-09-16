@@ -1,6 +1,7 @@
 import { ReactEventHandler, useEffect, useState } from "react";
 import { downloadAndCacheImage, imageCache } from '@shared/helpers/image-cache-controller';
 import Image from "next/image";
+import { BASE_PATH } from '@shared/constants/base-path';
 
 type Props = {
     src: string;
@@ -15,14 +16,12 @@ type Props = {
     onLoad?: ReactEventHandler<HTMLImageElement>;
 };
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-
 export const CachedImage: React.FC<Props> = ({ src, blurSrc, alt, width, height, priority, className, onLoad, fallbackSrcs }) => {
     // Ensure src has basePath prepended if it's a relative static path
-    const fullSrc = src.startsWith('/static/') && !src.startsWith(basePath) ? `${basePath}${src}` : src;
+    const fullSrc = src.startsWith('/static/') && !src.startsWith(BASE_PATH) ? `${BASE_PATH}${src}` : src;
     // Ensure fallbackSrcs have basePath prepended if they are relative static paths
     const fullFallbackSrcs = fallbackSrcs?.map(fallback =>
-        fallback.startsWith('/static/') && !fallback.startsWith(basePath) ? `${basePath}${fallback}` : fallback
+        fallback.startsWith('/static/') && !fallback.startsWith(BASE_PATH) ? `${BASE_PATH}${fallback}` : fallback
     );
 
     const [source, setSource] = useState<string | null>(imageCache[fullSrc]?.data || null);

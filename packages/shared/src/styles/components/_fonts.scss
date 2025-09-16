@@ -1,5 +1,5 @@
 /* NEW NUMBER GAME */
-$base-path: "/game-148";
+@import "../constants/base-path.scss";
 @font-face {
     font-family: "Inter";
     src: url("#{$base-path}/static/fonts/Inter-Regular.ttf") format("truetype");
