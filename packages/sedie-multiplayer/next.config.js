@@ -7,7 +7,8 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",
 });
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+// Temporarily disable basePath to test if assets work
+const basePath = "";
 const buildVersion = new Date().getTime();
 
 const createAppSettings = (config) => ({
@@ -27,7 +28,12 @@ const nextConfig = withSentryConfig({
         hideSourceMaps: true,
     },
     generateBuildId: async () => uuidv4(),
-    experimental: { externalDir: true },
+    experimental: {
+        externalDir: true,
+        staticFileGlobbing: true,
+        serverComponentsExternalPackages: [],
+        esmExternals: "loose",
+    },
     transpilePackages: ["@shared/merged"],
     webpack: (config, { isServer }) => {
         config.devtool = false;
