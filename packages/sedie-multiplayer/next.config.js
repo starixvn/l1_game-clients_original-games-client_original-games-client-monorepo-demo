@@ -27,6 +27,15 @@ const nextConfig = withSentryConfig({
         hideSourceMaps: true,
     },
     generateBuildId: async () => uuidv4(),
+    async rewrites() {
+        return [
+            {
+                source: "/api/health",
+                destination: `${basePath}/api/health`,
+                basePath: false,
+            },
+        ];
+    },
     experimental: {
         externalDir: true,
         staticFileGlobbing: true,
