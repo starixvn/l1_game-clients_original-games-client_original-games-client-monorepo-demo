@@ -48,7 +48,7 @@ const nextConfig = {
         };
         return config;
     },
-    basePath,
+    basePath: "", // Handled by custom server
     assetPrefix: basePath,
     env: {
         buildVersion: String(buildVersion),

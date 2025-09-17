@@ -75,8 +75,7 @@ app.prepare()
             console.log(`🔄 [Next.js Handler] Processing: ${originalUrl}`);
 
             // Handle basePath routing for production deployments
-            // If reverse proxy strips basePath, we need to add it back
-            // If reverse proxy keeps basePath, we need to handle it correctly
+            // Since Next.js basePath is disabled, we handle it entirely in the custom server
             if (basePath) {
                 console.log(`📍 [BasePath Logic] basePath: "${basePath}", originalUrl: "${originalUrl}"`);
 
@@ -85,21 +84,30 @@ app.prepare()
                     req.url = "/";
                     console.log(`✅ [BasePath] Root request transformed: "${originalUrl}" → "/"`);
                 } else if (req.url.startsWith(basePath + "/")) {
-                    // Request has basePath prefix - remove it for Next.js internal routing
+                    // Request has basePath prefix - remove it for Next.js (which has no basePath configured)
                     const newUrl = req.url.slice(basePath.length);
                     req.url = newUrl;
                     console.log(`✅ [BasePath] Prefixed request transformed: "${originalUrl}" → "${newUrl}"`);
                 } else {
-                    // Request does NOT have basePath prefix - ADD it for Next.js
-                    // This happens when reverse proxy strips the basePath
-                    req.url = basePath + req.url;
-                    console.log(`🔧 [BasePath] Missing prefix added: "${originalUrl}" → "${req.url}"`);
+                    // Request does NOT have basePath prefix - this is normal for reverse proxy
+                    console.log(`🔄 [BasePath] No prefix needed: "${originalUrl}" (reverse proxy scenario)`);
                 }
             } else {
                 console.log(`ℹ️  [BasePath] No basePath configured, passing through: "${originalUrl}"`);
             }
 
             console.log(`🎯 [Next.js Handler] Final URL for Next.js: "${req.url}"`);
+
+            // Intercept redirects to add basePath back
+            const originalRedirect = res.redirect;
+            res.redirect = function(status, url) {
+                if (basePath && url && typeof url === 'string' && !url.startsWith('http') && !url.startsWith(basePath)) {
+                    url = basePath + url;
+                    console.log(`🔀 [Redirect] BasePath added to redirect: "${url}"`);
+                }
+                return originalRedirect.call(this, status, url);
+            };
+
             try {
                 return handle(req, res);
             } catch (error) {
