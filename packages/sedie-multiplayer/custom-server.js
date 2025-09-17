@@ -84,6 +84,7 @@ app.prepare()
                 if (err) {
                     console.log(`📁 [Static] File not found or error: ${req.url}`, err.message);
                 }
+                console.log(`📁 [Static] Calling next() for: ${req.url}`);
                 next(err);
             });
         });
@@ -129,20 +130,25 @@ app.prepare()
             let transformedUrl = url;
             let shouldServeIndex = false;
 
-            if (url === basePath || url === basePath + "/") {
-                // Root page request with basePath - convert to internal root
-                transformedUrl = "/";
-                console.log(`✅ [BasePath] Root request transformed: "${originalUrl}" → "/"`);
-            } else if (url.startsWith(basePath + "/")) {
+            console.log(`🔍 [BasePath Check] url: "${url}", basePath: "${basePath}", startsWith: ${url.startsWith(basePath)}`);
+            if (url.startsWith(basePath)) {
                 // Request has basePath prefix - remove it for Next.js (which has no basePath configured)
                 const newUrl = url.slice(basePath.length);
-                transformedUrl = newUrl;
-                console.log(`✅ [BasePath] Prefixed request transformed: "${originalUrl}" → "${newUrl}"`);
+                console.log(`🔍 [BasePath Processing] newUrl after slice: "${newUrl}"`);
 
-                // Check if this is a potential SPA route that should fall back to index
-                if (isSPARoute(newUrl)) {
-                    shouldServeIndex = true;
-                    console.log(`🏠 [SPA Fallback] Will serve index.html for potential SPA route: "${originalUrl}"`);
+                // If the result is empty or just a query string, it's the root page
+                if (newUrl === "" || newUrl === "/" || newUrl.startsWith("?")) {
+                    transformedUrl = "/";
+                    console.log(`✅ [BasePath] Root request transformed: "${originalUrl}" → "/"`);
+                } else {
+                    transformedUrl = newUrl;
+                    console.log(`✅ [BasePath] Prefixed request transformed: "${originalUrl}" → "${newUrl}"`);
+
+                    // Check if this is a potential SPA route that should fall back to index
+                    if (isSPARoute(newUrl)) {
+                        shouldServeIndex = true;
+                        console.log(`🏠 [SPA Fallback] Will serve index.html for potential SPA route: "${originalUrl}"`);
+                    }
                 }
             } else {
                 // Request does NOT have basePath prefix - this is normal for reverse proxy
@@ -220,10 +226,12 @@ app.prepare()
         // Handle all other routes with Next.js
         server.all("*", (req, res) => {
             const originalUrl = req.url;
-            console.log(`🔄 [Next.js Handler] Processing: ${originalUrl}`);
+            console.log(`🚨 [DEBUG] Handler called for: ${originalUrl}`);
 
             // If basePath is configured and URL doesn't start with basePath, redirect to basePath version
+            console.log(`🔍 [Redirect Check] basePath: "${basePath}", originalUrl: "${originalUrl}"`);
             if (basePath && !originalUrl.startsWith(basePath)) {
+                console.log(`🔀 [BasePath Redirect] DETECTED: "${originalUrl}" does not start with "${basePath}"`);
                 let redirectUrl;
                 if (originalUrl === "/" || originalUrl === "") {
                     // Root request - redirect to basePath root
@@ -233,12 +241,16 @@ app.prepare()
                     redirectUrl = basePath + originalUrl;
                 }
 
-                console.log(`🔀 [BasePath Redirect] Redirecting "${originalUrl}" → "${redirectUrl}"`);
+                console.log(`🔀 [BasePath Redirect] EXECUTING: "${originalUrl}" → "${redirectUrl}"`);
                 res.status(302); // Temporary redirect
                 res.setHeader("Location", redirectUrl);
                 res.end();
+                console.log(`🔀 [BasePath Redirect] COMPLETED: Response sent`);
                 return;
             }
+            console.log(`🔍 [Redirect Check] SKIPPED: "${originalUrl}" starts with "${basePath}" or no basePath configured`);
+
+            console.log(`🔄 [Next.js Handler] Processing: ${originalUrl}`);
 
             // Process the URL for basePath handling
             const { transformedUrl, shouldServeIndex } = processBasePathRouting(req, originalUrl, basePath);
