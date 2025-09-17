@@ -7,6 +7,34 @@ const hostname = process.env.HOSTNAME || "localhost";
 const port = parseInt(process.env.PORT, 10) || 3000;
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
+// Helper functions for basePath handling
+function ensureBasePath(url, basePath) {
+    if (!basePath) return url;
+
+    // If URL already starts with basePath, return as is
+    if (url.startsWith(basePath)) return url;
+
+    // If URL is just "/" or empty, return basePath
+    if (url === "/" || url === "") return basePath;
+
+    // If URL starts with "/", prepend basePath
+    if (url.startsWith("/")) return basePath + url;
+
+    // Otherwise, treat as relative path and prepend basePath + "/"
+    return basePath + "/" + url;
+}
+
+function stripBasePath(url, basePath) {
+    if (!basePath || !url.startsWith(basePath)) return url;
+
+    const pathWithoutBase = url.slice(basePath.length);
+    return pathWithoutBase || "/";
+}
+
+function isUnderBasePath(url, basePath) {
+    return basePath ? url.startsWith(basePath) : true;
+}
+
 console.log(`🚀 Starting server with config:`);
 console.log(`  - Environment: ${process.env.NODE_ENV}`);
 console.log(`  - Hostname: ${hostname}`);
@@ -164,11 +192,26 @@ app.prepare()
             // Override res.send to intercept 404 responses
             res.send = function (body) {
                 if (is404) {
-                    console.log(`🔄 [SPA Fallback] Detected 404 for "${originalUrl}", serving index.html instead`);
-                    // Reset the response and serve the index page
-                    res.status(200);
-                    req.url = "/"; // Serve the root page for SPA fallback
-                    return handle(req, res);
+                    console.log(`🔄 [SPA Fallback] Detected 404 for "${originalUrl}", redirecting to basePath URL`);
+
+                    // Calculate the basePath URL
+                    let redirectUrl = originalUrl;
+                    if (basePath) {
+                        if (originalUrl === "/" || originalUrl === "") {
+                            // Root request - redirect to basePath root
+                            redirectUrl = basePath;
+                        } else if (!originalUrl.startsWith(basePath)) {
+                            // Request without basePath - prepend basePath
+                            redirectUrl = basePath + (originalUrl.startsWith("/") ? originalUrl : "/" + originalUrl);
+                        }
+                        // If already has basePath, redirectUrl stays the same
+                    }
+
+                    console.log(`🔀 [SPA Redirect] Redirecting "${originalUrl}" → "${redirectUrl}"`);
+                    res.status(302); // Temporary redirect
+                    res.setHeader("Location", redirectUrl);
+                    res.end();
+                    return;
                 }
                 return originalSend.call(this, body);
             };
@@ -178,6 +221,24 @@ app.prepare()
         server.all("*", (req, res) => {
             const originalUrl = req.url;
             console.log(`🔄 [Next.js Handler] Processing: ${originalUrl}`);
+
+            // If basePath is configured and URL doesn't start with basePath, redirect to basePath version
+            if (basePath && !originalUrl.startsWith(basePath)) {
+                let redirectUrl;
+                if (originalUrl === "/" || originalUrl === "") {
+                    // Root request - redirect to basePath root
+                    redirectUrl = basePath;
+                } else {
+                    // Request without basePath - prepend basePath
+                    redirectUrl = basePath + originalUrl;
+                }
+
+                console.log(`🔀 [BasePath Redirect] Redirecting "${originalUrl}" → "${redirectUrl}"`);
+                res.status(302); // Temporary redirect
+                res.setHeader("Location", redirectUrl);
+                res.end();
+                return;
+            }
 
             // Process the URL for basePath handling
             const { transformedUrl, shouldServeIndex } = processBasePathRouting(req, originalUrl, basePath);

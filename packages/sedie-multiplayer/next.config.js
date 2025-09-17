@@ -44,8 +44,8 @@ const nextConfig = {
         // Allow images from any domain for flexibility
         remotePatterns: [
             {
-                protocol: 'https',
-                hostname: '**',
+                protocol: "https",
+                hostname: "**",
             },
         ],
     },
