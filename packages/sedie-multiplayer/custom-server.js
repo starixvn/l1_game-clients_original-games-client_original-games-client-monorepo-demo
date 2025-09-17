@@ -44,12 +44,29 @@ app.prepare()
             })(req, res, next);
         });
 
-        // Serve static files from public
+        // Serve static files from public with basePath support
         server.use((req, res, next) => {
-            console.log(`📁 [Static] Checking public file: ${req.url}`);
+            let staticPath = req.url;
+
+            // Handle basePath for static files
+            if (basePath && req.url.startsWith(basePath)) {
+                staticPath = req.url.slice(basePath.length);
+                console.log(`📁 [Static] BasePath stripped for public file: ${req.url} → ${staticPath}`);
+            } else {
+                console.log(`📁 [Static] Checking public file: ${req.url}`);
+            }
+
+            // Temporarily modify req.url for static serving
+            const originalUrl = req.url;
+            req.url = staticPath;
+
             express.static(path.join(__dirname, "public"), {
                 maxAge: "1y",
-            })(req, res, next);
+            })(req, res, (err) => {
+                // Restore original URL
+                req.url = originalUrl;
+                next(err);
+            });
         });
 
         // Handle all other routes with Next.js
@@ -64,20 +81,19 @@ app.prepare()
                 console.log(`📍 [BasePath Logic] basePath: "${basePath}", originalUrl: "${originalUrl}"`);
 
                 if (req.url === basePath || req.url === basePath + "/") {
-                    // Root page request - redirect to basePath root
+                    // Root page request with basePath - convert to internal root
                     req.url = "/";
                     console.log(`✅ [BasePath] Root request transformed: "${originalUrl}" → "/"`);
                 } else if (req.url.startsWith(basePath + "/")) {
-                    // Remove basePath prefix for Next.js internal routing
+                    // Request has basePath prefix - remove it for Next.js internal routing
                     const newUrl = req.url.slice(basePath.length);
                     req.url = newUrl;
                     console.log(`✅ [BasePath] Prefixed request transformed: "${originalUrl}" → "${newUrl}"`);
-                } else if (!req.url.startsWith("/")) {
-                    // Handle edge cases
-                    req.url = "/" + req.url;
-                    console.log(`✅ [BasePath] Edge case transformed: "${originalUrl}" → "${req.url}"`);
                 } else {
-                    console.log(`⚠️  [BasePath] No transformation needed for: "${originalUrl}"`);
+                    // Request does NOT have basePath prefix - ADD it for Next.js
+                    // This happens when reverse proxy strips the basePath
+                    req.url = basePath + req.url;
+                    console.log(`🔧 [BasePath] Missing prefix added: "${originalUrl}" → "${req.url}"`);
                 }
             } else {
                 console.log(`ℹ️  [BasePath] No basePath configured, passing through: "${originalUrl}"`);
