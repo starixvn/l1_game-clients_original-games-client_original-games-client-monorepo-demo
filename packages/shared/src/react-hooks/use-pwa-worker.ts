@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+import { BASE_PATH } from '../constants/base-path';
+const basePath = BASE_PATH;
 
 export function usePWAWoker() {
     const workerRef = useRef(null);

@@ -3,7 +3,8 @@ import { buildVersion } from "../constants";
 import { StorageHelper, formatVolume, localStorageKeys, objectMap } from "../helpers";
 import { useSettingContext } from "../react-contexts";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+import { BASE_PATH } from '../constants/base-path';
+const basePath = BASE_PATH;
 export const path = `${basePath}/static/sounds/`;
 
 const mp3File = {

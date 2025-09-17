@@ -2,5 +2,5 @@
 // This is the single source of truth for basePath in SCSS across the entire application
 
 // Import this in SCSS files instead of defining $base-path locally
-// Note: This value should be kept in sync with NEXT_PUBLIC_BASE_PATH environment variable
-$base-path: "/game-148";
+// Updated: BasePath is now handled by custom server, so SCSS uses empty string
+$base-path: "";

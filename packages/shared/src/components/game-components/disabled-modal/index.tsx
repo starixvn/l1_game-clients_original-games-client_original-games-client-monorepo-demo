@@ -8,7 +8,8 @@ import { cn } from '@shared/utils/merge-tailwind-util';
 import PopupButton from "../popup-button";
 import Image from "next/image";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+import { BASE_PATH } from '../../../constants/base-path';
+const basePath = BASE_PATH;
 
 const DisabledModal: React.FC<{ disableMessage: string }> = ({ disableMessage }) => {
     const { t } = useCommonTranslate();

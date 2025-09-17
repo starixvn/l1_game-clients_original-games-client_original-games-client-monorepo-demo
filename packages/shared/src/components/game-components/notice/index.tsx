@@ -9,7 +9,8 @@ import { ModalType } from "../base-dialog/type";
 import { useGlobalEventsStore } from '@shared/stores/global-events-store/global-events-store';
 import { useNoticeStore } from '@shared/stores/notice-store/notice-store';
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+import { BASE_PATH } from '../../../constants/base-path';
+const basePath = BASE_PATH;
 import { useShallow } from "zustand/react/shallow";
 import { cn } from '@shared/utils/merge-tailwind-util';
 

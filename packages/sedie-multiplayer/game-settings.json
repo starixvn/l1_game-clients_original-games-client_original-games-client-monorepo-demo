@@ -22,21 +22,23 @@
         "gamePath": "sedie-multiplayer",
         "gameResourceConfigs": {
             "path": "sedie-multiplayer",
-            "optionalPaths": ["sedie-multiplayer/result"],
+            "optionalPaths": [
+                "sedie-multiplayer/result"
+            ],
             "cachePaths": [
-                "sedie-multiplayer/bet-detail-red2.svg",
-                "sedie-multiplayer/bet-detail-red3.svg",
-                "sedie-multiplayer/bet-detail-red4.svg",
-                "sedie-multiplayer/bet-detail-white3.svg",
-                "sedie-multiplayer/bet-detail-white4.svg",
-                "sedie-multiplayer/scoreboard-blue-dot.webp",
-                "sedie-multiplayer/scoreboard-red-dot.webp",
-                "sedie-multiplayer/statistic-icon-red2.webp",
-                "sedie-multiplayer/statistic-icon-red3.webp",
-                "sedie-multiplayer/statistic-icon-red4.webp",
-                "sedie-multiplayer/statistic-icon-white3.webp",
-                "sedie-multiplayer/statistic-icon-white4.webp",
-                "sedie-multiplayer/result/"
+                "/static/images/sedie-multiplayer/bet-detail-red2.svg",
+                "/static/images/sedie-multiplayer/bet-detail-red3.svg",
+                "/static/images/sedie-multiplayer/bet-detail-red4.svg",
+                "/static/images/sedie-multiplayer/bet-detail-white3.svg",
+                "/static/images/sedie-multiplayer/bet-detail-white4.svg",
+                "/static/images/sedie-multiplayer/scoreboard-blue-dot.webp",
+                "/static/images/sedie-multiplayer/scoreboard-red-dot.webp",
+                "/static/images/sedie-multiplayer/statistic-icon-red2.webp",
+                "/static/images/sedie-multiplayer/statistic-icon-red3.webp",
+                "/static/images/sedie-multiplayer/statistic-icon-red4.webp",
+                "/static/images/sedie-multiplayer/statistic-icon-white3.webp",
+                "/static/images/sedie-multiplayer/statistic-icon-white4.webp",
+                "/static/images/sedie-multiplayer/result/"
             ]
         }
     }

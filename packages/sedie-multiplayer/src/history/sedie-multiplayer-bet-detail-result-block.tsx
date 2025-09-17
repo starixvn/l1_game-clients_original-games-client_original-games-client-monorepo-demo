@@ -5,7 +5,8 @@ import { useCommonTranslate, useTranslator } from "@shared/react-hooks";
 import { DrawInfo } from "@shared/components/game-base/type";
 import { SeDieBetOptions } from "../sedie-multiplayer-constants";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+import { BASE_PATH } from '@shared/constants/base-path';
+const basePath = BASE_PATH;
 
 export interface RoundInfoSeDie extends DrawInfo {
     roundId: number;

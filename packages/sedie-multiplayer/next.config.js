@@ -7,7 +7,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",
 });
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+// Centralized basePath configuration
+const { BASE_PATH } = require("../shared/src/constants/base-path");
+const basePath = BASE_PATH;
 const buildVersion = new Date().getTime();
 
 const createAppSettings = (config) => ({
@@ -44,8 +46,8 @@ const nextConfig = {
         // Allow images from any domain for flexibility
         remotePatterns: [
             {
-                protocol: 'https',
-                hostname: '**',
+                protocol: "https",
+                hostname: "**",
             },
         ],
     },

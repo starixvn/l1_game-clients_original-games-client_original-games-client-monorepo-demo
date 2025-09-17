@@ -9,7 +9,8 @@ import dotStyles from "@shared/components/game-components/round-history/dot/dot.
 import { SeDieBetOptions, SeDieSettlementResult } from "../sedie-multiplayer-constants";
 import { BgCachedImage } from "@shared/components/game-components/cached-image/bg-cached-image";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+import { BASE_PATH } from '@shared/constants/base-path';
+const basePath = BASE_PATH;
 
 export class SeDieBigRoadConverter extends Converter<SeDieSettlementResult> {
     static addBlinkNode(rounds: SeDieSettlementResult[]) {

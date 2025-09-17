@@ -9,7 +9,8 @@ import Styles from "./statistic-popup.module.scss";
 import AnimatedContent from "@shared/components/game-components/animations/animated-content";
 import { useClickSound } from "@shared/react-hooks";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+import { BASE_PATH } from '@shared/constants/base-path';
+const basePath = BASE_PATH;
 
 interface SedieMultiplayerStatisticPopupProps {
     onClose?: () => void;
