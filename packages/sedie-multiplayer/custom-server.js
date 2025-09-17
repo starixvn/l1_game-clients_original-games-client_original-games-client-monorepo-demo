@@ -11,7 +11,7 @@ console.log(`🚀 Starting server with config:`);
 console.log(`  - Environment: ${process.env.NODE_ENV}`);
 console.log(`  - Hostname: ${hostname}`);
 console.log(`  - Port: ${port}`);
-console.log(`  - Base Path: ${basePath || '(none)'}`);
+console.log(`  - Base Path: ${basePath || "(none)"}`);
 console.log(`  - Dev Mode: ${dev}`);
 
 // Create the Next.js app
@@ -22,27 +22,34 @@ app.prepare()
     .then(() => {
         const server = express();
 
+        // Add comprehensive logging middleware FIRST to catch ALL requests
+        server.use((req, res, next) => {
+            const timestamp = new Date().toISOString();
+            console.log(`📨 [${timestamp}] ${req.method} ${req.url} (User-Agent: ${req.get("User-Agent")?.substring(0, 50) || "unknown"})`);
+
+            // Also log when response is finished
+            res.on("finish", () => {
+                console.log(`📨 [${timestamp}] ${req.method} ${req.url} → ${res.statusCode}`);
+            });
+
+            next();
+        });
+
         // Serve static files from .next/static
-        server.use(
-            "/_next/static",
+        server.use("/_next/static", (req, res, next) => {
+            console.log(`📁 [Static] Serving _next/static file: ${req.url}`);
             express.static(path.join(__dirname, ".next/static"), {
                 maxAge: "1y",
                 immutable: true,
-            })
-        );
+            })(req, res, next);
+        });
 
         // Serve static files from public
-        server.use(
+        server.use((req, res, next) => {
+            console.log(`📁 [Static] Checking public file: ${req.url}`);
             express.static(path.join(__dirname, "public"), {
                 maxAge: "1y",
-            })
-        );
-
-        // Add logging middleware to track all requests
-        server.use((req, res, next) => {
-            const timestamp = new Date().toISOString();
-            console.log(`📨 [${timestamp}] ${req.method} ${req.url}`);
-            next();
+            })(req, res, next);
         });
 
         // Handle all other routes with Next.js
@@ -81,7 +88,7 @@ app.prepare()
                 return handle(req, res);
             } catch (error) {
                 console.error(`❌ [Next.js Handler] Error handling request: ${originalUrl} → ${req.url}`, error);
-                res.status(500).send('Internal Server Error');
+                res.status(500).send("Internal Server Error");
             }
         });
 
@@ -91,8 +98,8 @@ app.prepare()
             if (basePath) {
                 console.log(`📁 Base path configured: ${basePath}`);
                 console.log(`🔍 Static files served from:`);
-                console.log(`   - /_next/static → ${path.join(__dirname, '.next/static')}`);
-                console.log(`   - /${basePath}/... → ${path.join(__dirname, 'public')}`);
+                console.log(`   - /_next/static → ${path.join(__dirname, ".next/static")}`);
+                console.log(`   - /${basePath}/... → ${path.join(__dirname, "public")}`);
             }
             console.log(`📊 Request logging enabled - watch for incoming requests`);
         });
