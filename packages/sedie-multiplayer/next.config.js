@@ -61,7 +61,6 @@ const nextConfig = {
         return config;
     },
     basePath: "", // Handled by custom server
-    assetPrefix: basePath,
     env: {
         buildVersion: String(buildVersion),
         REACT_APP_TOLGEE_API_URL: "https://tolgee.sabagame.com/",
