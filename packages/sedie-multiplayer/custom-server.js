@@ -60,49 +60,82 @@ app.prepare()
             });
         });
 
-        // Handle all other routes with Next.js
-        server.all("*", (req, res) => {
-            const originalUrl = req.url;
-            console.log(`🔄 [Next.js Handler] Processing: ${originalUrl}`);
+        // Helper function to process basePath routing logic
+        function processBasePathRouting(req, originalUrl, basePath) {
+            let shouldServeIndex = false;
+            let transformedUrl = originalUrl;
 
-            // Handle basePath routing for production deployments
-            // Since Next.js basePath is disabled, we handle it entirely in the custom server
             if (basePath) {
                 console.log(`📍 [BasePath Logic] basePath: "${basePath}", originalUrl: "${originalUrl}"`);
 
-                // Special handling for Next.js image optimization URLs
-                if (req.url.startsWith("/_next/image")) {
-                    console.log(`🖼️  [Image Optimization] Processing Next.js image URL: ${req.url}`);
+                // Handle Next.js image optimization URLs
+                handleImageOptimization(req, basePath);
 
-                    // Handle basePath in image URLs
-                    const urlParam = req.query.url;
-                    if (urlParam && urlParam.startsWith(basePath)) {
-                        const newUrl = urlParam.slice(basePath.length);
-                        req.query.url = newUrl;
-                        console.log(`🖼️  [Image Optimization] Updated image URL: ${urlParam} → ${newUrl}`);
-                    }
-                }
-
-                if (req.url === basePath || req.url === basePath + "/") {
-                    // Root page request with basePath - convert to internal root
-                    req.url = "/";
-                    console.log(`✅ [BasePath] Root request transformed: "${originalUrl}" → "/"`);
-                } else if (req.url.startsWith(basePath + "/")) {
-                    // Request has basePath prefix - remove it for Next.js (which has no basePath configured)
-                    const newUrl = req.url.slice(basePath.length);
-                    req.url = newUrl;
-                    console.log(`✅ [BasePath] Prefixed request transformed: "${originalUrl}" → "${newUrl}"`);
-                } else {
-                    // Request does NOT have basePath prefix - this is normal for reverse proxy
-                    console.log(`🔄 [BasePath] No prefix needed: "${originalUrl}" (reverse proxy scenario)`);
-                }
+                // Transform URL based on basePath
+                const result = transformUrlForBasePath(req.url, basePath, originalUrl);
+                transformedUrl = result.transformedUrl;
+                shouldServeIndex = result.shouldServeIndex;
             } else {
                 console.log(`ℹ️  [BasePath] No basePath configured, passing through: "${originalUrl}"`);
             }
 
-            console.log(`🎯 [Next.js Handler] Final URL for Next.js: "${req.url}"`);
+            return { transformedUrl, shouldServeIndex };
+        }
 
-            // Intercept redirects to add basePath back (for production reverse proxy)
+        // Helper function to handle Next.js image optimization URLs
+        function handleImageOptimization(req, basePath) {
+            if (req.url.startsWith("/_next/image")) {
+                console.log(`🖼️  [Image Optimization] Processing Next.js image URL: ${req.url}`);
+
+                const urlParam = req.query?.url;
+                if (urlParam?.startsWith(basePath)) {
+                    const newUrl = urlParam.slice(basePath.length);
+                    req.query.url = newUrl;
+                    console.log(`🖼️  [Image Optimization] Updated image URL: ${urlParam} → ${newUrl}`);
+                }
+            }
+        }
+
+        // Helper function to transform URLs for basePath handling
+        function transformUrlForBasePath(url, basePath, originalUrl) {
+            let transformedUrl = url;
+            let shouldServeIndex = false;
+
+            if (url === basePath || url === basePath + "/") {
+                // Root page request with basePath - convert to internal root
+                transformedUrl = "/";
+                console.log(`✅ [BasePath] Root request transformed: "${originalUrl}" → "/"`);
+            } else if (url.startsWith(basePath + "/")) {
+                // Request has basePath prefix - remove it for Next.js (which has no basePath configured)
+                const newUrl = url.slice(basePath.length);
+                transformedUrl = newUrl;
+                console.log(`✅ [BasePath] Prefixed request transformed: "${originalUrl}" → "${newUrl}"`);
+
+                // Check if this is a potential SPA route that should fall back to index
+                if (isSPARoute(newUrl)) {
+                    shouldServeIndex = true;
+                    console.log(`🏠 [SPA Fallback] Will serve index.html for potential SPA route: "${originalUrl}"`);
+                }
+            } else {
+                // Request does NOT have basePath prefix - this is normal for reverse proxy
+                console.log(`🔄 [BasePath] No prefix needed: "${originalUrl}" (reverse proxy scenario)`);
+            }
+
+            return { transformedUrl, shouldServeIndex };
+        }
+
+        // Helper function to determine if a URL should be treated as an SPA route
+        function isSPARoute(url) {
+            // Exclude API routes, static assets, and known file extensions
+            return (
+                !url.startsWith("/api/") &&
+                !url.includes("/_next/") &&
+                !url.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|json|xml|txt)$/i)
+            );
+        }
+
+        // Helper function to setup redirect interception
+        function setupRedirectInterception(res, basePath) {
             const originalRedirect = res.redirect;
             res.redirect = function (status, url) {
                 if (basePath && url && typeof url === "string" && !url.startsWith("http") && !url.startsWith(basePath)) {
@@ -112,6 +145,53 @@ app.prepare()
                 }
                 return originalRedirect.call(this, status, url);
             };
+        }
+
+        // Helper function to setup SPA fallback for 404 responses
+        function setupSPAFallback(req, res, originalUrl, handle) {
+            const originalSend = res.send;
+            const originalStatus = res.status;
+            let is404 = false;
+
+            // Override res.status to detect 404s
+            res.status = function (code) {
+                if (code === 404) {
+                    is404 = true;
+                }
+                return originalStatus.call(this, code);
+            };
+
+            // Override res.send to intercept 404 responses
+            res.send = function (body) {
+                if (is404) {
+                    console.log(`🔄 [SPA Fallback] Detected 404 for "${originalUrl}", serving index.html instead`);
+                    // Reset the response and serve the index page
+                    res.status(200);
+                    req.url = "/"; // Serve the root page for SPA fallback
+                    return handle(req, res);
+                }
+                return originalSend.call(this, body);
+            };
+        }
+
+        // Handle all other routes with Next.js
+        server.all("*", (req, res) => {
+            const originalUrl = req.url;
+            console.log(`🔄 [Next.js Handler] Processing: ${originalUrl}`);
+
+            // Process the URL for basePath handling
+            const { transformedUrl, shouldServeIndex } = processBasePathRouting(req, originalUrl, basePath);
+
+            req.url = transformedUrl;
+            console.log(`🎯 [Next.js Handler] Final URL for Next.js: "${req.url}"`);
+
+            // Setup redirect interception for basePath
+            setupRedirectInterception(res, basePath);
+
+            // Setup SPA fallback for 404s if needed
+            if (shouldServeIndex) {
+                setupSPAFallback(req, res, originalUrl, handle);
+            }
 
             try {
                 return handle(req, res);
