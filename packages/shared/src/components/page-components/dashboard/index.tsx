@@ -14,6 +14,7 @@ import { NotificationHandler } from "./handlers/notification-handler";
 import { DashboardProps, DashboardState } from "./type";
 import { LoadingSpinner } from "../../game-components/game-loading/loading-spinner";
 import BalanceSyncProvider from '@shared/react-hooks/providers/balance-sync-provider';
+import { BASE_PATH } from '@shared/constants/base-path';
 
 const SoundSettings = dynamic(() => import("../header/setting/settings-popup"), { ssr: false });
 // @ts-ignore - Next.js dynamic imports resolve at runtime
@@ -198,7 +199,9 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     }
 
     renderDashBoard() {
-        window.history.pushState(null, null, "/");
+        // Preserve basePath in URL when rendering dashboard
+        const dashboardPath = BASE_PATH || "/";
+        window.history.pushState(null, null, dashboardPath);
 
         const { authorizeInfo } = this.state;
         const renderOfferGameContainer = () => this.renderGames();
