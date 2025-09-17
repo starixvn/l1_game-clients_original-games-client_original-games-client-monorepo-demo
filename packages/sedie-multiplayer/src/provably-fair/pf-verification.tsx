@@ -9,8 +9,7 @@ import PfRoundBaseHelper from '@shared/helpers/pf/pf-round-base-helper';
 import { ResourceTypes } from '@shared/resources';
 import { useGameContext } from '@shared/react-contexts';
 
-import { BASE_PATH } from '@shared/constants/base-path';
-const basePath = BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 import { useShallow } from "zustand/react/shallow";
 import Image from "next/image";
 import { getWinningSubOption } from "../history/sedie-multiplayer-bet-detail-result-block";

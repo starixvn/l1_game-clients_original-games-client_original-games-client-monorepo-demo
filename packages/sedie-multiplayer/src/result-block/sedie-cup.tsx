@@ -16,8 +16,7 @@ const OPEN_DURATION = 500; // Open duration in milliseconds
 type AnimationState = "idle" | "shake" | "open" | "close";
 
 const operatorName = "nova88";
-import { BASE_PATH } from '@shared/constants/base-path';
-const basePath = BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const SedieCup = () => {
     const { durations } = useGameContext();

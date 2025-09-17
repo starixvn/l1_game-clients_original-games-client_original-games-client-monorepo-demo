@@ -2,8 +2,7 @@ import { buildVersion } from '@shared/constants';
 import { useCommonTranslate } from '@shared/react-hooks';
 import Styles from "./landscape-mode.module.scss";
 
-import { BASE_PATH } from '../../../../constants/base-path';
-const basePath = BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export const LandscapeMode = () => {
     const { t } = useCommonTranslate();

@@ -4,8 +4,7 @@ import styles from "./style.module.scss";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
-import { BASE_PATH } from '../../../constants/base-path';
-const basePath = BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 type Props = {
     gameId: number;

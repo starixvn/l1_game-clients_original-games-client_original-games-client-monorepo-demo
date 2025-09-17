@@ -9,8 +9,7 @@ const DEFAULT_PROGRESS_BAR_ID = "progress-bar";
 const MEMORIED_IMAGES = ["/chips/"];
 const REQUEST_TIMEOUT = 10000;
 const REQUEST_CLEANUP_THRESHOLD = 30000; // 30 seconds
-import { BASE_PATH } from '../constants/base-path';
-const basePath = BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 // Types
 interface PreloadResourcesProps {

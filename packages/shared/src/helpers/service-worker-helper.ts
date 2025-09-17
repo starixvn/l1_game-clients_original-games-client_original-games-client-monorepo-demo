@@ -1,6 +1,4 @@
 // Service Worker Helper for managing offline caching
-import { BASE_PATH } from '../constants/base-path';
-
 interface ServiceWorkerMessage {
     type: string;
     data?: any;
@@ -18,7 +16,7 @@ class ServiceWorkerHelper {
 
     private constructor() {
         this.isSupported = 'serviceWorker' in navigator;
-        this.basePath = BASE_PATH;
+        this.basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
         console.log('[ServiceWorkerHelper] Service Worker supported:', this.isSupported);
     }
 

@@ -9,8 +9,7 @@ import { cn } from '@shared/utils/merge-tailwind-util';
 import PopupButton from "../popup-button";
 import Image from "next/image";
 
-import { BASE_PATH } from '../../../constants/base-path';
-const basePath = BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 import { useClickSound } from '@shared/react-hooks';
 
 export const ConnectFailedMessage: React.FC<{

@@ -5,8 +5,7 @@ import { ResourceTypes } from "@shared/resources";
 import { getWinningSubOption } from "../history/sedie-multiplayer-bet-detail-result-block";
 import Image from "next/image";
 
-import { BASE_PATH } from '@shared/constants/base-path';
-const basePath = BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const PFVerifyResultBlock: FC<{ pfResult: DrawInfo }> = ({ pfResult }) => {
     const { t } = useTranslator();

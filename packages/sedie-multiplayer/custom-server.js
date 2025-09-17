@@ -5,9 +5,7 @@ const next = require("next");
 const dev = process.env.NODE_ENV !== "production";
 const hostname = process.env.HOSTNAME || "localhost";
 const port = parseInt(process.env.PORT, 10) || 3000;
-// Centralized basePath configuration
-const { BASE_PATH } = require("../shared/src/constants/base-path");
-const basePath = BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 console.log(`🚀 Starting server with config:`);
 console.log(`  - Environment: ${process.env.NODE_ENV}`);

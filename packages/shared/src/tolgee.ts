@@ -13,8 +13,7 @@ const trimSlashes = (path: string): string => {
     }
     return path;
 };
-import { BASE_PATH } from './constants/base-path';
-const basePath = BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const getPath: GetPath = ({ namespace, language, prefix }: { namespace: string; language: string; prefix: string }): string => {
     const fullPath = trimSlashes(prefix);
     return namespace ? `${fullPath}/${namespace}/${language}.json?v=${buildVersion}` : `${fullPath}/${language}.json?v=${buildVersion}`;

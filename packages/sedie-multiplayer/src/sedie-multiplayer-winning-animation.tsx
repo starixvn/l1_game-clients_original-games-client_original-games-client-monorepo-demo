@@ -6,8 +6,7 @@ import { Spritesheet } from '@shared/components/game-components/sprites-sheet';
 import { SeDieBetOptions } from "./sedie-multiplayer-constants";
 import Styles from "./sedie-multiplayer.module.scss";
 
-import { BASE_PATH } from '@shared/constants/base-path';
-const basePath = BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 type Props = {
     choice: string;
