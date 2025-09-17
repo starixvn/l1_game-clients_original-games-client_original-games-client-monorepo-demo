@@ -27,7 +27,7 @@ const nextConfig = {
             ? [
                   {
                       source: `${basePath}/api/health`,
-                      destination: "/api/health",
+                      destination: "/health",
                   },
               ]
             : [];
