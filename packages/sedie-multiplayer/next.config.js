@@ -37,6 +37,18 @@ const nextConfig = {
         serverComponentsExternalPackages: [],
         esmExternals: "loose",
     },
+    images: {
+        // Ensure image optimization works with custom basePath handling
+        unoptimized: false,
+        domains: [],
+        // Allow images from any domain for flexibility
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '**',
+            },
+        ],
+    },
     transpilePackages: ["@shared/merged"],
     webpack: (config, { isServer }) => {
         config.devtool = false;

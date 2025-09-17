@@ -46,25 +46,16 @@ app.prepare()
 
         // Serve static files from public with basePath support
         server.use((req, res, next) => {
-            let staticPath = req.url;
+            console.log(`📁 [Static] Processing: ${req.url}`);
 
-            // Handle basePath for static files
-            if (basePath && req.url.startsWith(basePath)) {
-                staticPath = req.url.slice(basePath.length);
-                console.log(`📁 [Static] BasePath stripped for public file: ${req.url} → ${staticPath}`);
-            } else {
-                console.log(`📁 [Static] Checking public file: ${req.url}`);
-            }
-
-            // Temporarily modify req.url for static serving
-            const originalUrl = req.url;
-            req.url = staticPath;
-
+            // For production with reverse proxy stripping basePath, serve files directly
+            // The reverse proxy sends requests like /static/images/... and we serve them as-is
             express.static(path.join(__dirname, "public"), {
                 maxAge: "1y",
             })(req, res, (err) => {
-                // Restore original URL
-                req.url = originalUrl;
+                if (err) {
+                    console.log(`📁 [Static] File not found or error: ${req.url}`, err.message);
+                }
                 next(err);
             });
         });
@@ -78,6 +69,19 @@ app.prepare()
             // Since Next.js basePath is disabled, we handle it entirely in the custom server
             if (basePath) {
                 console.log(`📍 [BasePath Logic] basePath: "${basePath}", originalUrl: "${originalUrl}"`);
+
+                // Special handling for Next.js image optimization URLs
+                if (req.url.startsWith("/_next/image")) {
+                    console.log(`🖼️  [Image Optimization] Processing Next.js image URL: ${req.url}`);
+
+                    // Handle basePath in image URLs
+                    const urlParam = req.query.url;
+                    if (urlParam && urlParam.startsWith(basePath)) {
+                        const newUrl = urlParam.slice(basePath.length);
+                        req.query.url = newUrl;
+                        console.log(`🖼️  [Image Optimization] Updated image URL: ${urlParam} → ${newUrl}`);
+                    }
+                }
 
                 if (req.url === basePath || req.url === basePath + "/") {
                     // Root page request with basePath - convert to internal root
@@ -98,10 +102,11 @@ app.prepare()
 
             console.log(`🎯 [Next.js Handler] Final URL for Next.js: "${req.url}"`);
 
-            // Intercept redirects to add basePath back
+            // Intercept redirects to add basePath back (for production reverse proxy)
             const originalRedirect = res.redirect;
-            res.redirect = function(status, url) {
-                if (basePath && url && typeof url === 'string' && !url.startsWith('http') && !url.startsWith(basePath)) {
+            res.redirect = function (status, url) {
+                if (basePath && url && typeof url === "string" && !url.startsWith("http") && !url.startsWith(basePath)) {
+                    // In production with reverse proxy, add basePath back to redirects
                     url = basePath + url;
                     console.log(`🔀 [Redirect] BasePath added to redirect: "${url}"`);
                 }
