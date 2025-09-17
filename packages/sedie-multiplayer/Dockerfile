@@ -52,7 +52,7 @@ COPY packages/shared packages/shared
 WORKDIR /app/packages/sedie-multiplayer
 
 # Allow configuring Next.js basePath/assetPrefix at build time
-ARG NEXT_PUBLIC_BASE_PATH
+ARG NEXT_PUBLIC_BASE_PATH=/game-148
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 
 # Obfuscate deployment configs and build
@@ -91,4 +91,4 @@ EXPOSE 5000
 ENV PORT=5000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 NEXT_PUBLIC_BASE_PATH=${NEXT_PUBLIC_BASE_PATH:-} PORT=5000 node custom-server.js"]
+CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 NEXT_PUBLIC_BASE_PATH=/game-148 PORT=5000 node custom-server.js"]

@@ -15,7 +15,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",
 });
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/game-148";
 
 // Create a configuration that can be dynamically updated
 const createAppSettings = (config, gameSettings) => ({
