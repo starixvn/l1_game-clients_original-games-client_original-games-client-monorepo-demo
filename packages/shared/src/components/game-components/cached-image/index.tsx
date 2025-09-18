@@ -1,6 +1,5 @@
 import { ReactEventHandler, useEffect, useState } from "react";
 import { downloadAndCacheImage, imageCache } from '@shared/helpers/image-cache-controller';
-import Image from "next/image";
 import { BASE_PATH } from '@shared/constants/base-path';
 
 type Props = {
@@ -25,8 +24,7 @@ export const CachedImage: React.FC<Props> = ({ src, blurSrc, alt, width, height,
     );
 
     const [source, setSource] = useState<string | null>(imageCache[fullSrc]?.data || null);
-    const props = { width, height, priority, className, onLoad };
-    Object.keys(props).forEach((key) => props[key] === undefined && delete props[key]);
+
     useEffect(() => {
         const loadImage = async () => {
             let result = await downloadAndCacheImage(fullSrc);
@@ -46,5 +44,15 @@ export const CachedImage: React.FC<Props> = ({ src, blurSrc, alt, width, height,
             setSource(imageCache[fullSrc].data);
         }
     }, [fullSrc, fullFallbackSrcs, src, fallbackSrcs]);
-    return (source || blurSrc) && <Image className={className} src={source || blurSrc} alt={alt} {...props} />;
+
+    const imgProps: any = {
+        className,
+        onLoad,
+        alt
+    };
+
+    if (width) imgProps.width = width;
+    if (height) imgProps.height = height;
+
+    return (source || blurSrc) && <img src={source || blurSrc} {...imgProps} />;
 };

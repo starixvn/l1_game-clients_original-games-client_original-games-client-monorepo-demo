@@ -35,18 +35,6 @@ const nextConfig = {
         serverComponentsExternalPackages: [],
         esmExternals: "loose",
     },
-    images: {
-        // Enable Next.js image optimization with basePath support
-        unoptimized: false,
-        domains: [],
-        // Allow images from any domain for flexibility
-        remotePatterns: [
-            {
-                protocol: "https",
-                hostname: "**",
-            },
-        ],
-    },
     transpilePackages: ["@shared/merged"],
     webpack: (config, { isServer }) => {
         config.devtool = false;
@@ -60,6 +48,7 @@ const nextConfig = {
     },
     basePath: basePath, // Next.js handles basePath for _next/image URLs
     assetPrefix: basePath,
+    trailingSlash: false, // Disable trailing slash redirects
     env: {
         buildVersion: String(buildVersion),
         REACT_APP_TOLGEE_API_URL: "https://tolgee.sabagame.com/",

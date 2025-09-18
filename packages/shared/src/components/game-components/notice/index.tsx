@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Image from "next/image";
 import { createOptionForHedgeBetGroup, getExtendMessageByErrorCode } from '@shared/helpers';
 import { numberWithCommas } from '@shared/helpers/number-helper';
 import { useGameContext } from '@shared/react-contexts';
@@ -38,7 +37,7 @@ const BaseNotice: React.FC<{
                     "flex justify-center gap-x-1"
                 )}
             >
-                <Image
+                <img
                     src={`${basePath}/static/images/icons/toast-mask.svg`}
                     alt="toast mask"
                     width={240}

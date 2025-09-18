@@ -11,7 +11,6 @@ import { useGameContext } from '@shared/react-contexts';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 import { useShallow } from "zustand/react/shallow";
-import Image from "next/image";
 import { getWinningSubOption } from "../history/sedie-multiplayer-bet-detail-result-block";
 import { useBetDetailStore } from '@shared/stores/bet-detail-store/bet-detail-store';
 
@@ -106,7 +105,7 @@ const PFVerification: FC = () => {
                         customTitleStyles={`m-0 ${Styles["title-fix-width"]}`}
                     >
                         <div className="flex gap-2 items-center">
-                            <Image
+                            <img
                                 src={`${basePath}/static/images/sedie-multiplayer/bet-detail/bet-detail-${winningSubOption}.svg`}
                                 alt={`${winningSubOption} result`}
                                 width={IMAGE_SIZE}

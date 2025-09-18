@@ -30,9 +30,6 @@ app.use(
         target: TARGET_HOST,
         changeOrigin: true,
         // Don't strip basePath - let Next.js handle it
-        // pathRewrite: {
-        //     "^/game-148": "", // Remove /game-148 prefix when forwarding
-        // },
         onProxyReq: (proxyReq, req, res) => {
             const timestamp = new Date().toISOString();
             const targetUrl = `${TARGET_HOST}${req.url}`;
@@ -90,8 +87,8 @@ app.listen(PORT, "0.0.0.0", () => {
     console.log("");
     console.log("This proxy simulates the exact deployment environment where:");
     console.log("  - External URL: http://domain/game-148/...");
-    console.log("  - Internal forwarding: http://localhost:5000/...");
-    console.log("  - BasePath is stripped during proxying");
+    console.log("  - Internal forwarding: http://localhost:5000/game-148/...");
+    console.log("  - BasePath is preserved during proxying (Next.js handles it internally)");
     console.log("");
 });
 

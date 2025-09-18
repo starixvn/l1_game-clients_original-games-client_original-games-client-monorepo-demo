@@ -58,54 +58,22 @@ app.prepare()
             next();
         });
 
-        // Serve static files from .next/static
-        server.use("/_next/static", (req, res, next) => {
-            console.log(`📁 [Static] Serving _next/static file: ${req.url}`);
-            express.static(path.join(__dirname, ".next/static"), {
-                maxAge: "1y",
-                immutable: true,
-            })(req, res, next);
-        });
+        // When Next.js has basePath configured, let it handle all static files
+        // The static middlewares can interfere with Next.js basePath handling
+        if (!basePath) {
+            server.use("/_next/static", (req, res, next) => {
+                console.log(`📁 [Static] Serving _next/static file: ${req.url}`);
+                express.static(path.join(__dirname, ".next/static"), {
+                    maxAge: "1y",
+                    immutable: true,
+                })(req, res, next);
+            });
+        }
 
         // Handle favicon.ico requests - browsers request this from root
         server.get("/favicon.ico", (req, res) => {
             console.log(`🎨 [Favicon] Serving favicon.ico from favicons directory`);
             res.sendFile(path.join(__dirname, "public", "favicons", "favicon.ico"));
-        });
-
-        // Handle Next.js image optimization URLs - ensure URL params don't have basePath
-        server.use("/_next/image", (req, res, next) => {
-            console.log(`🖼️  [Image Optimization] Intercepting Next.js image URL: ${req.url}`);
-            console.log(`🖼️  [Image Optimization] Query params:`, JSON.stringify(req.query));
-
-            const urlParam = req.query?.url;
-            console.log(`🖼️  [Image Optimization] URL parameter: "${urlParam}"`);
-
-            // Strip basePath from URL parameter if present (reverse proxy already stripped it from path)
-            if (urlParam?.startsWith(basePath)) {
-                const newUrl = urlParam.slice(basePath.length);
-                console.log(`🖼️  [Image Optimization] Stripped basePath from URL param: "${urlParam}" → "${newUrl}"`);
-                req.query.url = newUrl;
-            }
-
-            // Continue to Next.js image optimization
-            next();
-        });
-
-        // Serve static files from public with basePath support
-        server.use((req, res, next) => {
-            console.log(`📁 [Static] Processing: ${req.url}`);
-
-            // For production with reverse proxy stripping basePath, serve files directly
-            // The reverse proxy sends requests like /static/images/... and we serve them as-is
-            express.static(path.join(__dirname, "public"), {
-                maxAge: "1y",
-            })(req, res, (err) => {
-                if (err) {
-                    console.log(`📁 [Static] File not found or error: ${req.url}`, err.message);
-                }
-                next(err);
-            });
         });
 
         // Helper function to process basePath routing logic
@@ -116,10 +84,10 @@ app.prepare()
             if (basePath) {
                 console.log(`📍 [BasePath Logic] basePath: "${basePath}", originalUrl: "${originalUrl}"`);
 
-                // Note: Next.js handles basePath internally, reverse proxy preserves basePath in URLs
-                // No transformation needed - let Next.js handle the basePath
+                // Note: Next.js handles basePath internally, reverse proxy now preserves basePath
+                // When Next.js has basePath configured, we let it handle all routing
 
-                console.log(`✅ [BasePath] Next.js handles basePath, passing through: "${originalUrl}"`);
+                console.log(`✅ [BasePath] Next.js handles basePath internally: "${originalUrl}"`);
             } else {
                 console.log(`ℹ️  [BasePath] No basePath configured, passing through: "${originalUrl}"`);
             }
@@ -218,6 +186,17 @@ app.prepare()
                 }
                 return originalSend.call(this, body);
             };
+        }
+
+        // When Next.js has basePath configured, let it handle all static files
+        // The static middlewares can interfere with Next.js basePath handling
+        if (!basePath) {
+            server.use((req, res, next) => {
+                console.log(`📁 [Static] Processing: ${req.url}`);
+                express.static(path.join(__dirname, "public"), {
+                    maxAge: "1y",
+                })(req, res, next);
+            });
         }
 
         // Handle all other routes with Next.js
