@@ -216,6 +216,21 @@ app.prepare()
             };
         }
 
+        // Helper function to get content type from file extension
+        function getContentType(filename) {
+            const ext = filename.toLowerCase().split(".").pop();
+            const contentTypes = {
+                webp: "image/webp",
+                png: "image/png",
+                jpg: "image/jpeg",
+                jpeg: "image/jpeg",
+                gif: "image/gif",
+                svg: "image/svg+xml",
+                ico: "image/x-icon",
+            };
+            return contentTypes[ext] || "application/octet-stream";
+        }
+
         // Helper function to setup SPA fallback for 404 responses
         function setupSPAFallback(req, res, originalUrl, handle) {
             const originalSend = res.send;
@@ -251,6 +266,8 @@ app.prepare()
 
             const urlParam = req.query?.url;
             console.log(`🖼️  [Image Optimization] URL parameter: "${urlParam}"`);
+            console.log(`🖼️  [Image Optimization] URL starts with basePath: ${urlParam?.startsWith(basePath)}`);
+            console.log(`🖼️  [Image Optimization] First 20 chars of URL: "${urlParam?.substring(0, 20)}"`);
 
             if (urlParam?.startsWith(basePath)) {
                 const newUrl = urlParam.slice(basePath.length);
@@ -267,9 +284,17 @@ app.prepare()
                     const stats = fs.statSync(fullFilePath);
                     console.log(`🖼️  [Image Optimization] ✅ File exists: ${fullFilePath} (${stats.size} bytes)`);
 
-                    // Update the query parameter with the cleaned URL
-                    req.query.url = newUrl;
-                    console.log(`🖼️  [Image Optimization] Updated req.query.url to: "${newUrl}"`);
+                    // Instead of modifying query params, serve the file directly
+                    const contentType = getContentType(cleanUrl);
+                    console.log(`🖼️  [Image Optimization] Serving file directly with content-type: ${contentType}`);
+
+                    res.setHeader("Content-Type", contentType);
+                    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+
+                    const fileStream = fs.createReadStream(fullFilePath);
+                    fileStream.pipe(res);
+
+                    return; // Don't continue to Next.js
                 } else {
                     console.log(`🖼️  [Image Optimization] ❌ File NOT found: ${fullFilePath}`);
                     console.log(`🖼️  [Image Optimization] Available files in directory:`);
@@ -282,12 +307,15 @@ app.prepare()
                     } catch (err) {
                         console.log(`🖼️  [Image Optimization] Could not list directory: ${err.message}`);
                     }
+
+                    res.status(404).send("Image not found");
+                    return; // Don't continue to Next.js
                 }
             } else {
                 console.log(`🖼️  [Image Optimization] No basePath found in URL param: ${urlParam}`);
             }
 
-            // Continue to Next.js image optimization
+            // Continue to Next.js image optimization for non-basePath URLs
             next();
         });
 

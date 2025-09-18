@@ -2,9 +2,7 @@ version: "3.8"
 
 services:
     sedie-multiplayer:
-        build:
-            context: ..
-            dockerfile: packages/sedie-multiplayer/Dockerfile
+        image: sedie-multiplayer-game:latest
         container_name: sedie-game-container
         ports:
             - "5000:5000"
@@ -15,15 +13,14 @@ services:
             - game-network
 
     reverse-proxy:
-        image: node:18-alpine
+        image: sedie-multiplayer-game:latest
         container_name: sedie-proxy-container
-        working_dir: /app
+        working_dir: /app/packages/sedie-multiplayer
         ports:
             - "3000:3000"
         volumes:
-            - .:/app
-            - /app/node_modules
-        command: npm run proxy
+            - .:/app/packages/sedie-multiplayer
+        command: node reverse-proxy.js
         environment:
             - PROXY_PORT=3000
             - TARGET_HOST=http://sedie-multiplayer:5000
