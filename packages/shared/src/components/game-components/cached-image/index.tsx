@@ -1,6 +1,5 @@
 import { ReactEventHandler, useEffect, useState } from "react";
 import { downloadAndCacheImage, imageCache } from '@shared/helpers/image-cache-controller';
-import Image from "next/image";
 import { BASE_PATH } from '@shared/constants/base-path';
 
 type Props = {
@@ -46,5 +45,5 @@ export const CachedImage: React.FC<Props> = ({ src, blurSrc, alt, width, height,
             setSource(imageCache[fullSrc].data);
         }
     }, [fullSrc, fullFallbackSrcs, src, fallbackSrcs]);
-    return (source || blurSrc) && <Image className={className} src={source || blurSrc} alt={alt} {...props} />;
+    return (source || blurSrc) && <img className={className} src={source || blurSrc} alt={alt} {...props} />;
 };

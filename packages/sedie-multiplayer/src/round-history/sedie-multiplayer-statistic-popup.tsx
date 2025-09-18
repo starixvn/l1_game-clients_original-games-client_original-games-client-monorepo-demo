@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import ScoreboardSeDie from "../scoreboard/scoreboard";
 import { mainChoices, SeDieChoices, SeDieStatisticColors } from "../sedie-multiplayer-constants";
 import PercentageStatistic from "@shared/components/game-components/statistic";
@@ -73,7 +72,7 @@ export const SedieMultiplayerStatisticPopup: React.FC<SedieMultiplayerStatisticP
                                     white4: `${basePath}/static/images/sedie-multiplayer/scoreboard/statistic-icon-white4.webp`,
                                 } as Record<string, string>;
                                 const src = map[choice];
-                                return src ? <Image src={src} alt={choice} width={18} height={18} /> : null;
+                                return src ? <img src={src} alt={choice} width={18} height={18} /> : null;
                             }}
                         />
                         <PercentageStatistic

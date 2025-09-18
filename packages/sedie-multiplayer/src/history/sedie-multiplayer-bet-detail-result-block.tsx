@@ -1,5 +1,4 @@
 import { FC } from "react";
-import Image from "next/image";
 import { useGameContext } from "@shared/react-contexts";
 import { useCommonTranslate, useTranslator } from "@shared/react-hooks";
 import { DrawInfo } from "@shared/components/game-base/type";
@@ -51,7 +50,7 @@ export const BetDetailResultBlock: FC<{ roundInfo: RoundInfoSeDie }> = ({ roundI
                 {winningSubOption ? (
                     <span className="flex items-center gap-1.5">
                         <span className="text-secondary-text">{translateCommon("result")}</span>
-                        <Image
+                        <img
                             src={`${basePath}/static/images/sedie-multiplayer/bet-detail/bet-detail-${winningSubOption}.svg`}
                             alt={`${winningSubOption} result`}
                             width={IMAGE_SIZE}
@@ -90,7 +89,7 @@ export const BetChoice: FC<{ choice: string }> = ({ choice }) => {
             {isOddOrEven ? (
                 t(`glossary_${choice}`)
             ) : (
-                <Image
+                <img
                     src={`${basePath}/static/images/sedie-multiplayer/bet-detail/bet-detail-${choice}.svg`}
                     alt={`${choice} choice`}
                     width={IMAGE_SIZE}
