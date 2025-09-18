@@ -18,6 +18,7 @@ const MAX_CACHE_SIZE = 100; // Maximum number of cached entries
 
 const DEFAULT_STATIC_PATH = "public/static/images/";
 const DEFAULT_IMG_PATH = "/static/images/";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 interface RequestBody {
     gameId: number;
@@ -79,7 +80,7 @@ const readFilesFromPath = (dirPath: string, imagesDir: string, maxDepth = 3, cur
 
     const fullDirPath = path.join(imagesDir, dirPath);
     const files = readDirectorySafely(fullDirPath);
-    const imageFiles = files.map((file) => path.join(DEFAULT_IMG_PATH, dirPath, `${file}?v=${buildVersion}`).replace(/\\/g, "/"));
+    const imageFiles = files.map((file) => basePath + path.join(DEFAULT_IMG_PATH, dirPath, `${file}?v=${buildVersion}`).replace(/\\/g, "/"));
 
     // Recursively read subdirectories
     const subdirs = files.filter((file) => {
@@ -135,7 +136,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<any[]>
         const ext = path.extname(imagePath).toLowerCase();
         // Handle direct image files
         if ([".jpg", ".png", ".gif", ".webp", ".svg"].includes(ext)) {
-            const imageUrl = `${imagePath}?v=${buildVersion}`.replace(/\\/g, "/");
+            const imageUrl = basePath + `${imagePath}?v=${buildVersion}`.replace(/\\/g, "/");
             imageFiles.push(imageUrl);
         } else {
             // Handle directories
@@ -144,7 +145,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<any[]>
         }
     }
     // Remove duplicates and filter valid URLs
-    const uniqueImageFiles = Array.from(new Set(imageFiles)).filter((url) => url.startsWith("/static/images/") && url.includes("?v="));
+    const uniqueImageFiles = Array.from(new Set(imageFiles)).filter((url) => url.startsWith(basePath + "/static/images/") && url.includes("?v="));
 
     return res.status(200).json(uniqueImageFiles);
 }

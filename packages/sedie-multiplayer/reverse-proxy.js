@@ -22,29 +22,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Handle Next.js image optimization URLs - forward directly to game container
-app.use(
-    "/_next/image",
-    createProxyMiddleware({
-        target: TARGET_HOST,
-        changeOrigin: true,
-        onProxyReq: (proxyReq, req, res) => {
-            const timestamp = new Date().toISOString();
-            console.log(`🖼️ [${timestamp}] Proxying image: ${req.method} ${req.url} → ${TARGET_HOST}${req.url}`);
-        },
-        onProxyRes: (proxyRes, req, res) => {
-            const timestamp = new Date().toISOString();
-            const statusCode = proxyRes.statusCode;
-            const statusEmoji = statusCode >= 200 && statusCode < 300 ? "✅" : statusCode >= 400 ? "❌" : "⚠️";
-            console.log(`🖼️ [${timestamp}] Image response: ${req.method} ${req.url} → ${statusCode} ${statusEmoji}`);
-        },
-        onError: (err, req, res) => {
-            const timestamp = new Date().toISOString();
-            console.error(`❌ [${timestamp}] Image proxy error for ${req.method} ${req.url}:`, err.message);
-        },
-    })
-);
-
 // Proxy middleware that strips /game-148 prefix and forwards to the sedie-multiplayer container
 app.use(
     "/game-148",
