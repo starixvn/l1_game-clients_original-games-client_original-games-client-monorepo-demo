@@ -126,8 +126,12 @@ app.prepare()
                     console.log(`🖼️  [Image Optimization] BasePath "${basePath}" found in URL param`);
                     console.log(`🖼️  [Image Optimization] Updated image URL: "${urlParam}" → "${newUrl}"`);
 
+                    // Remove query string from URL for file path checking
+                    const urlWithoutQuery = newUrl.split('?')[0];
+                    console.log(`🖼️  [Image Optimization] URL without query: "${urlWithoutQuery}"`);
+
                     // Check if the file exists after basePath removal
-                    const fullFilePath = path.join(__dirname, "public", newUrl);
+                    const fullFilePath = path.join(__dirname, "public", urlWithoutQuery);
                     console.log(`🖼️  [Image Optimization] Checking file path: ${fullFilePath}`);
 
                     const fs = require("fs");
