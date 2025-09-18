@@ -27,6 +27,9 @@
             ],
             "cachePaths": [
                 "/static/images/background/bg-148.webp",
+                "/static/images/sedie-multiplayer/even-bg.svg",
+                "/static/images/sedie-multiplayer/odd-bg.svg",
+                "/static/images/sedie-multiplayer/sub-bet-option-bg.svg",
                 "/static/images/sedie-multiplayer/bet-detail-red2.svg",
                 "/static/images/sedie-multiplayer/bet-detail-red3.svg",
                 "/static/images/sedie-multiplayer/bet-detail-red4.svg",

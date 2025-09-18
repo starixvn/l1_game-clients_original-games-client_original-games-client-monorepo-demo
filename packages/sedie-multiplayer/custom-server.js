@@ -127,7 +127,7 @@ app.prepare()
                     console.log(`🖼️  [Image Optimization] Updated image URL: "${urlParam}" → "${newUrl}"`);
 
                     // Remove query string from URL for file path checking
-                    const urlWithoutQuery = newUrl.split('?')[0];
+                    const urlWithoutQuery = newUrl.split("?")[0];
                     console.log(`🖼️  [Image Optimization] URL without query: "${urlWithoutQuery}"`);
 
                     // Check if the file exists after basePath removal
@@ -141,14 +141,25 @@ app.prepare()
                         console.log(`🖼️  [Image Optimization] File size: ${stats.size} bytes`);
                     } else {
                         console.log(`🖼️  [Image Optimization] ❌ File NOT found: ${fullFilePath}`);
-                        console.log(`🖼️  [Image Optimization] Available files in directory:`, fs.readdirSync(path.dirname(fullFilePath)));
+                        try {
+                            const dirPath = path.dirname(fullFilePath);
+                            if (fs.existsSync(dirPath)) {
+                                console.log(`🖼️  [Image Optimization] Available files in directory:`, fs.readdirSync(dirPath));
+                            } else {
+                                console.log(`🖼️  [Image Optimization] Directory doesn't exist: ${dirPath}`);
+                            }
+                        } catch (dirError) {
+                            console.log(`🖼️  [Image Optimization] Error checking directory: ${dirError.message}`);
+                        }
                     }
 
                     req.query.url = newUrl;
+                    console.log(`🖼️  [Image Optimization] Final URL parameter set to: "${req.query.url}"`);
                 } else {
                     console.log(`🖼️  [Image Optimization] No basePath "${basePath}" found in URL param: "${urlParam}"`);
                     if (urlParam) {
                         console.log(`🖼️  [Image Optimization] URL starts with basePath: ${urlParam.startsWith(basePath)}`);
+                        console.log(`🖼️  [Image Optimization] First 20 chars of URL: "${urlParam.substring(0, 20)}"`);
                     }
                 }
             }
