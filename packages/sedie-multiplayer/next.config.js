@@ -23,14 +23,12 @@ const nextConfig = {
     pageExtensions: ["tsx", "ts", "jsx", "js"],
     generateBuildId: async () => uuidv4(),
     async rewrites() {
-        return basePath
-            ? [
-                  {
-                      source: `${basePath}/api/health`,
-                      destination: "/health",
-                  },
-              ]
-            : [];
+        return [
+            {
+                source: `${basePath}/api/health`,
+                destination: "/api/health",
+            },
+        ];
     },
     experimental: {
         externalDir: true,
