@@ -243,6 +243,54 @@ app.prepare()
             };
         }
 
+        // Handle Next.js image optimization URLs before the general Next.js handler
+        server.use("/_next/image", (req, res, next) => {
+            console.log(`🖼️  [Image Optimization] Processing Next.js image URL: ${req.url}`);
+            console.log(`🖼️  [Image Optimization] BasePath configured: "${basePath}"`);
+            console.log(`🖼️  [Image Optimization] Query params:`, JSON.stringify(req.query));
+
+            const urlParam = req.query?.url;
+            console.log(`🖼️  [Image Optimization] URL parameter: "${urlParam}"`);
+
+            if (urlParam?.startsWith(basePath)) {
+                const newUrl = urlParam.slice(basePath.length);
+                console.log(`🖼️  [Image Optimization] BasePath "${basePath}" found in URL param`);
+                console.log(`🖼️  [Image Optimization] Updated image URL: "${urlParam}" → "${newUrl}"`);
+
+                // Remove query string from URL for file path checking
+                const cleanUrl = newUrl.split("?")[0];
+                const fullFilePath = path.join(__dirname, "public", cleanUrl);
+                console.log(`🖼️  [Image Optimization] Checking file path: ${fullFilePath}`);
+
+                const fs = require("fs");
+                if (fs.existsSync(fullFilePath)) {
+                    const stats = fs.statSync(fullFilePath);
+                    console.log(`🖼️  [Image Optimization] ✅ File exists: ${fullFilePath} (${stats.size} bytes)`);
+
+                    // Update the query parameter with the cleaned URL
+                    req.query.url = newUrl;
+                    console.log(`🖼️  [Image Optimization] Updated req.query.url to: "${newUrl}"`);
+                } else {
+                    console.log(`🖼️  [Image Optimization] ❌ File NOT found: ${fullFilePath}`);
+                    console.log(`🖼️  [Image Optimization] Available files in directory:`);
+                    try {
+                        const dir = path.dirname(fullFilePath);
+                        if (fs.existsSync(dir)) {
+                            const files = fs.readdirSync(dir);
+                            console.log(`🖼️  [Image Optimization] Files in ${dir}:`, files.slice(0, 10));
+                        }
+                    } catch (err) {
+                        console.log(`🖼️  [Image Optimization] Could not list directory: ${err.message}`);
+                    }
+                }
+            } else {
+                console.log(`🖼️  [Image Optimization] No basePath found in URL param: ${urlParam}`);
+            }
+
+            // Continue to Next.js image optimization
+            next();
+        });
+
         // Handle all other routes with Next.js
         server.all("*", (req, res) => {
             const originalUrl = req.url;

@@ -11,6 +11,7 @@
         "dev:standalone": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 NEXT_PUBLIC_BASE_PATH=/game-148 FAST_REFRESH=false next dev -p 3001",
         "build:standalone": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_BASE_PATH=/game-148 next build",
         "start:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 NEXT_PUBLIC_BASE_PATH=/game-148 next start -p 3001",
+        "proxy": "node reverse-proxy.js",
         "obfuscator-config-file": "node ./configs/config-obfuscator.js"
     },
     "dependencies": {
@@ -21,10 +22,11 @@
         "axios": "^0.30.0",
         "base64-string": "^1.1.2",
         "classnames": "^2.3.2",
-        "express": "^4.18.2",
         "clsx": "^2.1.1",
         "cross-env": "^7.0.3",
+        "express": "^4.18.2",
         "gsap": "^3.13.0",
+        "http-proxy-middleware": "^2.0.9",
         "interweave": "^13.1.0",
         "motion": "^12.23.12",
         "next": "14.2.31",
@@ -51,10 +53,10 @@
         "zustand": "^5.0.7"
     },
     "devDependencies": {
-        "typescript": "^5.0.0",
         "@next/bundle-analyzer": "^14.2.31",
+        "rimraf": "^5.0.0",
         "ts-node": "^10.9.2",
-        "rimraf": "^5.0.0"
+        "typescript": "^5.0.0"
     },
     "resolutions": {
         "axios": "^0.30.0",
