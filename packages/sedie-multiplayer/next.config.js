@@ -36,9 +36,11 @@ const nextConfig = {
         esmExternals: "loose",
     },
     images: {
-        // Ensure image optimization works with custom basePath handling
-        unoptimized: false,
-        domains: [],
+        // Use custom image loader to handle basePath properly for reverse proxy environments
+        loader: "custom",
+        loaderFile: "./src/image-loader.js",
+        // Disable image optimization since static files are served directly and work fine
+        unoptimized: true,
         // Allow images from any domain for flexibility
         remotePatterns: [
             {

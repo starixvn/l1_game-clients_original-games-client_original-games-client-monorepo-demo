@@ -71,6 +71,9 @@ ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 RUN addgroup --system --gid 1001 nodejs  \
      && adduser --system --uid 1001 nextjs
 
+# Create src directory for image loader
+RUN mkdir -p src
+
 # Copy the built app and required assets
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next ./.next
@@ -80,6 +83,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/next.c
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/game-settings.json ./game-settings.json
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/configs.json ./configs.json
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/custom-server.js ./custom-server.js
+COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/src/image-loader.js ./src/image-loader.js
 COPY --from=builder --chown=nextjs:nodejs /app/packages/sedie-multiplayer/.next/static ./.next/static
 
 # Ensure proper permissions for the .next directory
