@@ -2,6 +2,7 @@ import { memo } from "react";
 import { buildVersion } from '@shared/constants';
 import styles from "./style.module.scss";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -14,12 +15,7 @@ const WinningBalanceEffect = dynamic(() => import("../balance-effect/winning-bal
 export const Background: React.FC<Props> = ({ gameId }) => {
     return (
         <>
-            <div
-                className={`${styles["game-background"]} md:left-0 md:w-full md:rounded-t-xl`}
-                style={{
-                    backgroundImage: `url(${basePath}/static/images/background/bg-${gameId}.webp?v=${buildVersion})`
-                }}
-            />
+            <Image src={`${basePath}/static/images/background/bg-${gameId}.webp?v=${buildVersion}`} alt="Background" fill className={`${styles["game-background"]} md:left-0 md:w-full md:rounded-t-xl`} />
 
             <WinningBalanceEffect />
         </>

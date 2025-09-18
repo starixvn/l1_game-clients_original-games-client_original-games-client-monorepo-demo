@@ -6,6 +6,7 @@ import BaseDialog from "../base-dialog";
 import { ModalType } from "../base-dialog/type";
 import { cn } from '@shared/utils/merge-tailwind-util';
 import PopupButton from "../popup-button";
+import Image from "next/image";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -29,10 +30,10 @@ const DisabledModal: React.FC<{ disableMessage: string }> = ({ disableMessage })
                     "bg-modal-bg border border-modal-border-color shadow-modal",
                 )}
             >
-                <img src={`${basePath}/static/images/icons/popup-mask.svg`} alt="popup-mask" className="absolute top-[-65px] left-[-74px]" width={212} height={212} />
+                <Image src={`${basePath}/static/images/icons/popup-mask.svg`} alt="popup-mask" className="absolute top-[-65px] left-[-74px]" width={212} height={212} />
                 <div className="relative mx-auto mb-5 w-[45px] h-[41px] md:w-[70px] md:h-[70px]">
-                    <img className="animate-spin-slow md:w-[50px] md:h-[50px]" src={`${basePath}/static/images/um-setting-big.svg`} alt="setting-um" width={30} height={30} />
-                    <img
+                    <Image className="animate-spin-slow md:w-[50px] md:h-[50px]" src={`${basePath}/static/images/um-setting-big.svg`} alt="setting-um" width={30} height={30} />
+                    <Image
                         className="absolute top-[35px] right-0 animate-spin-slow-reverse md:w-[35px] md:h-[35px]"
                         src={`${basePath}/static/images/um-setting-small.svg`}
                         alt="setting-um"

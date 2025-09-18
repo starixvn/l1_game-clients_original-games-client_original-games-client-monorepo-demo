@@ -22,22 +22,22 @@ app.use((req, res, next) => {
     next();
 });
 
-        // Proxy middleware that forwards /game-148 requests to the sedie-multiplayer container
-        // Next.js handles basePath internally, so we don't strip it
-        app.use(
-            "/game-148",
-            createProxyMiddleware({
-                target: TARGET_HOST,
-                changeOrigin: true,
-                // Don't strip basePath - let Next.js handle it
-                // pathRewrite: {
-                //     "^/game-148": "", // Remove /game-148 prefix when forwarding
-                // },
-                onProxyReq: (proxyReq, req, res) => {
-                    const timestamp = new Date().toISOString();
-                    const targetUrl = `${TARGET_HOST}${req.url}`;
-                    console.log(`🔄 [${timestamp}] Proxying: ${req.method} ${req.url} → ${targetUrl}`);
-                },
+// Proxy middleware that forwards /game-148 requests to the sedie-multiplayer container
+// Next.js handles basePath internally, so we don't strip it
+app.use(
+    "/game-148",
+    createProxyMiddleware({
+        target: TARGET_HOST,
+        changeOrigin: true,
+        // Don't strip basePath - let Next.js handle it
+        // pathRewrite: {
+        //     "^/game-148": "", // Remove /game-148 prefix when forwarding
+        // },
+        onProxyReq: (proxyReq, req, res) => {
+            const timestamp = new Date().toISOString();
+            const targetUrl = `${TARGET_HOST}${req.url}`;
+            console.log(`🔄 [${timestamp}] Proxying: ${req.method} ${req.url} → ${targetUrl}`);
+        },
         onProxyRes: (proxyRes, req, res) => {
             const timestamp = new Date().toISOString();
             const statusCode = proxyRes.statusCode;
