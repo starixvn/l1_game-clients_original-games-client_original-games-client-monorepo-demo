@@ -13,6 +13,29 @@ console.log(`  - Hostname: ${hostname}`);
 console.log(`  - Port: ${port}`);
 console.log(`  - Base Path: ${basePath || "(none)"}`);
 console.log(`  - Dev Mode: ${dev}`);
+console.log(`  - Working Directory: ${__dirname}`);
+
+// Check if the problematic image file exists
+const fs = require("fs");
+const imagePath = path.join(__dirname, "public", "static", "images", "sedie-multiplayer", "scoreboard", "statistic-icon-white4.webp");
+console.log(`🔍 Checking for statistic-icon-white4.webp:`);
+console.log(`  - Expected path: ${imagePath}`);
+console.log(`  - File exists: ${fs.existsSync(imagePath)}`);
+
+if (fs.existsSync(imagePath)) {
+    const stats = fs.statSync(imagePath);
+    console.log(`  - File size: ${stats.size} bytes`);
+    console.log(`  - Last modified: ${stats.mtime}`);
+} else {
+    console.log(`  - ❌ File not found!`);
+    // List files in the directory
+    const dirPath = path.dirname(imagePath);
+    if (fs.existsSync(dirPath)) {
+        console.log(`  - Available files in ${dirPath}:`, fs.readdirSync(dirPath));
+    } else {
+        console.log(`  - Directory doesn't exist: ${dirPath}`);
+    }
+}
 
 // Create the Next.js app
 const app = next({ dev, hostname, port });
@@ -42,6 +65,12 @@ app.prepare()
                 maxAge: "1y",
                 immutable: true,
             })(req, res, next);
+        });
+
+        // Handle favicon.ico requests - browsers request this from root
+        server.get("/favicon.ico", (req, res) => {
+            console.log(`🎨 [Favicon] Serving favicon.ico from favicons directory`);
+            res.sendFile(path.join(__dirname, "public", "favicons", "favicon.ico"));
         });
 
         // Serve static files from public with basePath support
@@ -86,12 +115,37 @@ app.prepare()
         function handleImageOptimization(req, basePath) {
             if (req.url.startsWith("/_next/image")) {
                 console.log(`🖼️  [Image Optimization] Processing Next.js image URL: ${req.url}`);
+                console.log(`🖼️  [Image Optimization] BasePath configured: "${basePath}"`);
+                console.log(`🖼️  [Image Optimization] Query params:`, JSON.stringify(req.query));
 
                 const urlParam = req.query?.url;
+                console.log(`🖼️  [Image Optimization] URL parameter: "${urlParam}"`);
+
                 if (urlParam?.startsWith(basePath)) {
                     const newUrl = urlParam.slice(basePath.length);
+                    console.log(`🖼️  [Image Optimization] BasePath "${basePath}" found in URL param`);
+                    console.log(`🖼️  [Image Optimization] Updated image URL: "${urlParam}" → "${newUrl}"`);
+
+                    // Check if the file exists after basePath removal
+                    const fullFilePath = path.join(__dirname, "public", newUrl);
+                    console.log(`🖼️  [Image Optimization] Checking file path: ${fullFilePath}`);
+
+                    const fs = require("fs");
+                    if (fs.existsSync(fullFilePath)) {
+                        console.log(`🖼️  [Image Optimization] ✅ File exists: ${fullFilePath}`);
+                        const stats = fs.statSync(fullFilePath);
+                        console.log(`🖼️  [Image Optimization] File size: ${stats.size} bytes`);
+                    } else {
+                        console.log(`🖼️  [Image Optimization] ❌ File NOT found: ${fullFilePath}`);
+                        console.log(`🖼️  [Image Optimization] Available files in directory:`, fs.readdirSync(path.dirname(fullFilePath)));
+                    }
+
                     req.query.url = newUrl;
-                    console.log(`🖼️  [Image Optimization] Updated image URL: ${urlParam} → ${newUrl}`);
+                } else {
+                    console.log(`🖼️  [Image Optimization] No basePath "${basePath}" found in URL param: "${urlParam}"`);
+                    if (urlParam) {
+                        console.log(`🖼️  [Image Optimization] URL starts with basePath: ${urlParam.startsWith(basePath)}`);
+                    }
                 }
             }
         }

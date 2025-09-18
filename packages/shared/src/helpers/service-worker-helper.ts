@@ -176,8 +176,8 @@ class ServiceWorkerHelper {
         if ('Notification' in window && Notification.permission === 'granted') {
             new Notification('Game Assets Updated', {
                 body: 'New game assets are available. Refresh to update.',
-                icon: `${this.basePath}/static/images/favicon.ico`,
-                badge: `${this.basePath}/static/images/favicon.ico`,
+                icon: `${this.basePath}/favicons/favicon.ico`,
+                badge: `${this.basePath}/favicons/favicon.ico`,
                 tag: 'game-update'
             });
         }

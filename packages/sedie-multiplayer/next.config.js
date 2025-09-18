@@ -44,8 +44,8 @@ const nextConfig = {
         // Allow images from any domain for flexibility
         remotePatterns: [
             {
-                protocol: 'https',
-                hostname: '**',
+                protocol: "https",
+                hostname: "**",
             },
         ],
     },
@@ -73,8 +73,18 @@ const nextConfig = {
         importer: function (url) {
             // Resolve SCSS imports that use the @shared alias
             if (typeof url === "string" && url.startsWith("@shared/")) {
-                const resolved = path.resolve(__dirname, "../shared/src", url.replace(/^@shared\//, ""));
-                return { file: resolved };
+                let resolvedPath = url.replace(/^@shared\//, "");
+
+                // If no extension provided, treat as SCSS partial (add _ prefix and .scss extension)
+                if (!resolvedPath.includes(".scss") && !resolvedPath.includes(".css")) {
+                    const parts = resolvedPath.split("/");
+                    const filename = parts.pop();
+                    const dirname = parts.join("/");
+                    resolvedPath = dirname ? `${dirname}/_${filename}.scss` : `_${filename}.scss`;
+                }
+
+                const fullPath = path.resolve(__dirname, "../shared/src", resolvedPath);
+                return { file: fullPath };
             }
             return null;
         },

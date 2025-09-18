@@ -26,6 +26,7 @@
                 "sedie-multiplayer/result"
             ],
             "cachePaths": [
+                "/static/images/background/bg-148.webp",
                 "/static/images/sedie-multiplayer/bet-detail-red2.svg",
                 "/static/images/sedie-multiplayer/bet-detail-red3.svg",
                 "/static/images/sedie-multiplayer/bet-detail-red4.svg",
@@ -33,11 +34,11 @@
                 "/static/images/sedie-multiplayer/bet-detail-white4.svg",
                 "/static/images/sedie-multiplayer/scoreboard-blue-dot.webp",
                 "/static/images/sedie-multiplayer/scoreboard-red-dot.webp",
-                "/static/images/sedie-multiplayer/statistic-icon-red2.webp",
-                "/static/images/sedie-multiplayer/statistic-icon-red3.webp",
-                "/static/images/sedie-multiplayer/statistic-icon-red4.webp",
-                "/static/images/sedie-multiplayer/statistic-icon-white3.webp",
-                "/static/images/sedie-multiplayer/statistic-icon-white4.webp",
+                "/static/images/sedie-multiplayer/scoreboard/statistic-icon-red2.webp",
+                "/static/images/sedie-multiplayer/scoreboard/statistic-icon-red3.webp",
+                "/static/images/sedie-multiplayer/scoreboard/statistic-icon-red4.webp",
+                "/static/images/sedie-multiplayer/scoreboard/statistic-icon-white3.webp",
+                "/static/images/sedie-multiplayer/scoreboard/statistic-icon-white4.webp",
                 "/static/images/sedie-multiplayer/result/"
             ]
         }
