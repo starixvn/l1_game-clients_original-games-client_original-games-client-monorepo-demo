@@ -82,6 +82,7 @@ app.prepare()
             const urlParam = req.query?.url;
             console.log(`🖼️  [Image Optimization] URL parameter: "${urlParam}"`);
 
+            // Handle both cases: with basePath and without basePath in query parameter
             if (urlParam?.startsWith(basePath)) {
                 const newUrl = urlParam.slice(basePath.length);
                 console.log(`🖼️  [Image Optimization] BasePath "${basePath}" found in URL param`);
@@ -90,8 +91,20 @@ app.prepare()
                 // Update the query parameter for Next.js to process
                 req.query.url = newUrl;
                 console.log(`🖼️  [Image Optimization] Final URL parameter set to: "${req.query.url}"`);
+            } else if (urlParam && !urlParam.startsWith("/static/")) {
+                // If URL parameter doesn't start with /static/ and doesn't have basePath,
+                // it might be a direct request that bypassed reverse proxy basePath handling
+                console.log(`🖼️  [Image Optimization] URL parameter doesn't start with /static/ or basePath: "${urlParam}"`);
+                console.log(`🖼️  [Image Optimization] This might be a direct request - checking if it needs basePath handling`);
+
+                // For direct requests that might have basePath in query, try to strip it
+                if (urlParam.startsWith(basePath)) {
+                    const newUrl = urlParam.slice(basePath.length);
+                    req.query.url = newUrl;
+                    console.log(`🖼️  [Image Optimization] Stripped basePath from direct request: "${urlParam}" → "${newUrl}"`);
+                }
             } else {
-                console.log(`🖼️  [Image Optimization] No basePath "${basePath}" found in URL param: "${urlParam}"`);
+                console.log(`🖼️  [Image Optimization] No basePath processing needed for: "${urlParam}"`);
             }
 
             // Continue to Next.js image optimization
