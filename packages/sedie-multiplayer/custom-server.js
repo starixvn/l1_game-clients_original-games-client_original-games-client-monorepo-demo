@@ -84,10 +84,25 @@ app.prepare()
             if (basePath) {
                 console.log(`📍 [BasePath Logic] basePath: "${basePath}", originalUrl: "${originalUrl}"`);
 
-                // Note: Next.js handles basePath internally, reverse proxy now preserves basePath
-                // When Next.js has basePath configured, we let it handle all routing
+                // The reverse proxy strips the basePath, so we need to add it back for Next.js
+                // But we need to be careful about trailing slashes to avoid redirect loops
 
-                console.log(`✅ [BasePath] Next.js handles basePath internally: "${originalUrl}"`);
+                if (originalUrl === "/" || originalUrl === "") {
+                    // Root request from reverse proxy - add basePath with trailing slash for Next.js
+                    transformedUrl = basePath + "/";
+                    console.log(`✅ [BasePath] Added basePath to root request: "${originalUrl}" → "${transformedUrl}"`);
+                } else if (originalUrl.startsWith("/?") || originalUrl.startsWith("?")) {
+                    // Root request with query parameters - add basePath with trailing slash
+                    const queryString = originalUrl.startsWith("/?") ? originalUrl.substring(1) : originalUrl;
+                    transformedUrl = basePath + "/?" + queryString;
+                    console.log(`✅ [BasePath] Added basePath to root request with query: "${originalUrl}" → "${transformedUrl}"`);
+                } else if (!originalUrl.startsWith(basePath)) {
+                    // Other requests that don't start with basePath - add it
+                    transformedUrl = basePath + originalUrl;
+                    console.log(`✅ [BasePath] Added basePath to request: "${originalUrl}" → "${transformedUrl}"`);
+                } else {
+                    console.log(`✅ [BasePath] Request already has basePath: "${originalUrl}"`);
+                }
             } else {
                 console.log(`ℹ️  [BasePath] No basePath configured, passing through: "${originalUrl}"`);
             }
