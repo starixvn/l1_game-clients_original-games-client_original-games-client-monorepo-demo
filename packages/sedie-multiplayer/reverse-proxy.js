@@ -1,10 +1,10 @@
-const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const path = require('path');
+const express = require("express");
+const { createProxyMiddleware } = require("http-proxy-middleware");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PROXY_PORT || 3000;
-const TARGET_HOST = process.env.TARGET_HOST || 'http://localhost:5000';
+const TARGET_HOST = process.env.TARGET_HOST || "http://localhost:5000";
 
 // Simulate the deployment environment where requests come in with /game-148 prefix
 console.log(`🚀 Starting Reverse Proxy Server`);
@@ -13,41 +13,67 @@ console.log(`  - Target Host: ${TARGET_HOST}`);
 console.log(`  - Base Path: /game-148`);
 console.log(`  - Environment: Simulating deployment environment`);
 console.log(`  - Access URL: http://localhost:${PORT}/game-148`);
-console.log('');
+console.log("");
 
 // Middleware to log all incoming requests
 app.use((req, res, next) => {
     const timestamp = new Date().toISOString();
-    console.log(`📨 [${timestamp}] ${req.method} ${req.url} (User-Agent: ${req.get('User-Agent')?.substring(0, 50)}...)`);
+    console.log(`📨 [${timestamp}] ${req.method} ${req.url} (User-Agent: ${req.get("User-Agent")?.substring(0, 50)}...)`);
     next();
 });
 
+// Handle Next.js image optimization URLs - forward directly to game container
+app.use(
+    "/_next/image",
+    createProxyMiddleware({
+        target: TARGET_HOST,
+        changeOrigin: true,
+        onProxyReq: (proxyReq, req, res) => {
+            const timestamp = new Date().toISOString();
+            console.log(`🖼️ [${timestamp}] Proxying image: ${req.method} ${req.url} → ${TARGET_HOST}${req.url}`);
+        },
+        onProxyRes: (proxyRes, req, res) => {
+            const timestamp = new Date().toISOString();
+            const statusCode = proxyRes.statusCode;
+            const statusEmoji = statusCode >= 200 && statusCode < 300 ? "✅" : statusCode >= 400 ? "❌" : "⚠️";
+            console.log(`🖼️ [${timestamp}] Image response: ${req.method} ${req.url} → ${statusCode} ${statusEmoji}`);
+        },
+        onError: (err, req, res) => {
+            const timestamp = new Date().toISOString();
+            console.error(`❌ [${timestamp}] Image proxy error for ${req.method} ${req.url}:`, err.message);
+        },
+    })
+);
+
 // Proxy middleware that strips /game-148 prefix and forwards to the sedie-multiplayer container
-app.use('/game-148', createProxyMiddleware({
-    target: TARGET_HOST,
-    changeOrigin: true,
-    pathRewrite: {
-        '^/game-148': '', // Remove /game-148 prefix when forwarding
-    },
-    onProxyReq: (proxyReq, req, res) => {
-        const timestamp = new Date().toISOString();
-        const targetUrl = `${TARGET_HOST}${req.url.replace('/game-148', '')}`;
-        console.log(`🔄 [${timestamp}] Proxying: ${req.method} ${req.url} → ${targetUrl}`);
-    },
-    onProxyRes: (proxyRes, req, res) => {
-        const timestamp = new Date().toISOString();
-        const statusCode = proxyRes.statusCode;
-        const statusEmoji = statusCode >= 200 && statusCode < 300 ? '✅' : statusCode >= 400 ? '❌' : '⚠️';
-        console.log(`📨 [${timestamp}] ${req.method} ${req.url} → ${statusCode} ${statusEmoji}`);
-    },
-    onError: (err, req, res) => {
-        const timestamp = new Date().toISOString();
-        console.error(`❌ [${timestamp}] Proxy Error for ${req.method} ${req.url}:`, err.message);
-    }
-}));
+app.use(
+    "/game-148",
+    createProxyMiddleware({
+        target: TARGET_HOST,
+        changeOrigin: true,
+        pathRewrite: {
+            "^/game-148": "", // Remove /game-148 prefix when forwarding
+        },
+        onProxyReq: (proxyReq, req, res) => {
+            const timestamp = new Date().toISOString();
+            const targetUrl = `${TARGET_HOST}${req.url.replace("/game-148", "")}`;
+            console.log(`🔄 [${timestamp}] Proxying: ${req.method} ${req.url} → ${targetUrl}`);
+        },
+        onProxyRes: (proxyRes, req, res) => {
+            const timestamp = new Date().toISOString();
+            const statusCode = proxyRes.statusCode;
+            const statusEmoji = statusCode >= 200 && statusCode < 300 ? "✅" : statusCode >= 400 ? "❌" : "⚠️";
+            console.log(`📨 [${timestamp}] ${req.method} ${req.url} → ${statusCode} ${statusEmoji}`);
+        },
+        onError: (err, req, res) => {
+            const timestamp = new Date().toISOString();
+            console.error(`❌ [${timestamp}] Proxy Error for ${req.method} ${req.url}:`, err.message);
+        },
+    })
+);
 
 // Handle direct requests (for debugging)
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
     res.send(`
         <h1>Reverse Proxy for Sedie-Multiplayer Game</h1>
         <p>This proxy simulates the deployment environment.</p>
@@ -68,29 +94,29 @@ app.get('/', (req, res) => {
 });
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get("/health", (req, res) => {
     res.json({
-        status: 'healthy',
+        status: "healthy",
         timestamp: new Date().toISOString(),
         proxy_target: TARGET_HOST,
-        base_path: '/game-148'
+        base_path: "/game-148",
     });
 });
 
 // Start the proxy server
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`✅ Reverse proxy server ready on http://0.0.0.0:${PORT}`);
     console.log(`🌐 Access the game at: http://localhost:${PORT}/game-148`);
     console.log(`🔍 Health check: http://localhost:${PORT}/health`);
-    console.log('');
-    console.log('This proxy simulates the exact deployment environment where:');
-    console.log('  - External URL: http://domain/game-148/...');
-    console.log('  - Internal forwarding: http://localhost:5000/...');
-    console.log('  - BasePath is stripped during proxying');
-    console.log('');
+    console.log("");
+    console.log("This proxy simulates the exact deployment environment where:");
+    console.log("  - External URL: http://domain/game-148/...");
+    console.log("  - Internal forwarding: http://localhost:5000/...");
+    console.log("  - BasePath is stripped during proxying");
+    console.log("");
 });
 
-process.on('SIGINT', () => {
-    console.log('\n🛑 Shutting down reverse proxy...');
+process.on("SIGINT", () => {
+    console.log("\n🛑 Shutting down reverse proxy...");
     process.exit(0);
 });
