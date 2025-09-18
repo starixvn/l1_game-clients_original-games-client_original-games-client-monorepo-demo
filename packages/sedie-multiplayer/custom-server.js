@@ -73,6 +73,24 @@ app.prepare()
             res.sendFile(path.join(__dirname, "public", "favicons", "favicon.ico"));
         });
 
+        // Handle Next.js image optimization URLs - ensure URL params don't have basePath
+        server.use("/_next/image", (req, res, next) => {
+            console.log(`🖼️  [Image Optimization] Intercepting Next.js image URL: ${req.url}`);
+            console.log(`🖼️  [Image Optimization] Query params:`, JSON.stringify(req.query));
+
+            const urlParam = req.query?.url;
+            console.log(`🖼️  [Image Optimization] URL parameter: "${urlParam}"`);
+
+            // Strip basePath from URL parameter if present (reverse proxy already stripped it from path)
+            if (urlParam?.startsWith(basePath)) {
+                const newUrl = urlParam.slice(basePath.length);
+                console.log(`🖼️  [Image Optimization] Stripped basePath from URL param: "${urlParam}" → "${newUrl}"`);
+                req.query.url = newUrl;
+            }
+
+            // Continue to Next.js image optimization
+            next();
+        });
 
         // Serve static files from public with basePath support
         server.use((req, res, next) => {
@@ -98,12 +116,10 @@ app.prepare()
             if (basePath) {
                 console.log(`📍 [BasePath Logic] basePath: "${basePath}", originalUrl: "${originalUrl}"`);
 
-                // Note: Using regular img tags, no image optimization middleware needed
+                // Note: Next.js handles basePath internally, reverse proxy preserves basePath in URLs
+                // No transformation needed - let Next.js handle the basePath
 
-                // Transform URL based on basePath
-                const result = transformUrlForBasePath(req.url, basePath, originalUrl);
-                transformedUrl = result.transformedUrl;
-                shouldServeIndex = result.shouldServeIndex;
+                console.log(`✅ [BasePath] Next.js handles basePath, passing through: "${originalUrl}"`);
             } else {
                 console.log(`ℹ️  [BasePath] No basePath configured, passing through: "${originalUrl}"`);
             }

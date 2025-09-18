@@ -35,6 +35,18 @@ const nextConfig = {
         serverComponentsExternalPackages: [],
         esmExternals: "loose",
     },
+    images: {
+        // Enable Next.js image optimization with basePath support
+        unoptimized: false,
+        domains: [],
+        // Allow images from any domain for flexibility
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "**",
+            },
+        ],
+    },
     transpilePackages: ["@shared/merged"],
     webpack: (config, { isServer }) => {
         config.devtool = false;
@@ -46,7 +58,7 @@ const nextConfig = {
         };
         return config;
     },
-    basePath: "", // Custom server handles basePath
+    basePath: basePath, // Next.js handles basePath for _next/image URLs
     assetPrefix: basePath,
     env: {
         buildVersion: String(buildVersion),
