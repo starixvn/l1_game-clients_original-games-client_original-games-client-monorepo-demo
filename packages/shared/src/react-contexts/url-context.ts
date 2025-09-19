@@ -1,7 +1,6 @@
 import isEmpty from "lodash/isEmpty";
 import { createContext, useContext } from "react";
 import { StorageHelper, localStorageKeys } from "../helpers/storage-helper";
-import { GameIds } from "../constants";
 import { AnalyticsHelper } from "../helpers/analytic-helper";
 import { GameUtils } from "../helpers/base-64-helper";
 import { broadcastBackToLobby } from "../helpers/global-events-helper";
@@ -9,7 +8,6 @@ import { broadcastBackToLobby } from "../helpers/global-events-helper";
 export type URLContextModel = {
     token?: string;
     language?: string;
-    gameId?: number;
     redirectUrl?: string;
     backToLobby?: boolean;
     backToRedirectUrl?: Function;
@@ -29,21 +27,16 @@ export function parseContextFromURL(): URLContextModel | undefined {
 
     const token = params.get("token");
     const language = params.get("lang");
-    const gameIdParam = params.get("gameId");
-    let gameId = Number(gameIdParam);
-    if (!gameIdParam || Number.isNaN(gameId) || gameId <= 0) {
-        gameId = GameIds.SeDieMultiplayer;
-    }
     const redirectUrl = params.get("rurl");
 
-    return { token, language, gameId, redirectUrl };
+    return { token, language, redirectUrl };
 }
 
 export function loadURLContext(): URLContextModel {
     const contextFromURL = parseContextFromURL();
     const contextFromLocalStorage = StorageHelper?.get(localStorageKeys.url) || null;
 
-    if (!!contextFromURL) {
+    if (contextFromURL) {
         const contextString = { ...contextFromURL, token: undefined };
         // Keep URL params during development to make debugging easier
         const isLocalhost = typeof window !== "undefined"
@@ -67,7 +60,7 @@ export const initialURLContextData = {
             const decodedUrl = GameUtils.base64Decode(redirectUrl);
             globalThis.location.href = decodedUrl;
         } else {
-            updateURLContext({ backToLobby: true, gameId: 0 });
+            updateURLContext({ backToLobby: true });
             broadcastBackToLobby();
         }
     },

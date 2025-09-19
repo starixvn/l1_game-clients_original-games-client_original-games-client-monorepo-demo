@@ -6,7 +6,7 @@ import { memo, useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { AuthorizeResponse, SSOResponse } from "sc-user-service-client/dist/auth";
 import { getAppSettings } from '@shared/app-settings';
-import { Themes, languageMapper, locales, GameIds } from '@shared/constants';
+import { Themes, languageMapper, locales } from '@shared/constants';
 import { AnalyticsHelper, StorageHelper, getRenderGameSettings, localStorageKeys, randomInteger } from '@shared/helpers';
 import PreloadResources from '@shared/helpers/preload-resources';
 import { PlayerContextModel, URLContext, usePlayerContext } from '@shared/react-contexts';
@@ -59,6 +59,17 @@ export function onStartupError(error: Error): void {
     globalThis.location.pathname = "timeout";
 }
 
+export const getDefaultGameId = (): number => {
+    // Use environment variable if set, otherwise fallback to a known game ID
+
+    const envGameId = process.env.NEXT_PUBLIC_DEFAULT_GAME_ID;
+    if (envGameId) {
+        return Number(envGameId);
+    }
+
+    return 148;
+};
+
 const isTimeoutSession = (session: SSOResponse) => {
     return !session || (!session?.isUM && !session?.isAuthenticated);
 };
@@ -84,7 +95,7 @@ const autoCreateNickname = async (session: SSOResponse, signOut: Function) => {
 };
 
 const SplashScreen: React.FC = () => {
-    const { gameId, token, language } = useContext(URLContext);
+    const { token, language } = useContext(URLContext);
 
     const router = useRouter();
     const player = usePlayerContext();
@@ -157,26 +168,29 @@ const SplashScreen: React.FC = () => {
                 }
             }
 
-            // Custom version: Always direct to specific game, default to SeDie if no valid gameId
-            let toLoadGameId = gameId;
+            // Get default game ID from environment or fallback
+            const defaultGameId = getDefaultGameId();
+            console.log("DEFAULT GAME ID", defaultGameId);
+
+            let toLoadGameId = defaultGameId;
 
             // If no gameId provided or gameId is 0, use default SeDie game
             if (!toLoadGameId || toLoadGameId === 0) {
-                toLoadGameId = GameIds.SeDieMultiplayer;
+                toLoadGameId = 148;
             }
 
             // Validate if the gameId is available in the enabled games
             const enabledRenderGameSettings = getRenderGameSettings(authorizeInfo);
 
             // Bypass validation for SeDie so we can deep-link even if not in lobby/offer
-            let isGameAvailable = toLoadGameId === GameIds.SeDieMultiplayer;
+            let isGameAvailable = toLoadGameId === 148;
             if (!isGameAvailable) {
                 isGameAvailable = enabledRenderGameSettings.some((game) => game.id === toLoadGameId);
             }
 
             // If game is not available, use default SeDie game
             if (!isGameAvailable) {
-                toLoadGameId = GameIds.SeDieMultiplayer;
+                toLoadGameId = 148;
             }
 
             setCurrentGameId(toLoadGameId);
@@ -208,7 +222,7 @@ const SplashScreen: React.FC = () => {
             <Dashboard
                 data-testid="dashboard-component"
                 session={player?.session}
-                queryGame={currentGameId < 0 ? gameId : currentGameId}
+                queryGame={currentGameId}
                 setIsUm={setIsUm}
                 tolgee={tolgee}
                 authorizeResponse={authorizeResponse}
@@ -248,16 +262,14 @@ const SplashScreen: React.FC = () => {
             </div>
 
             {isDoneLoadConfig && currentGameId >= 0 && (
-                <>
-                    <PreloadResources
-                        data-testid="preload-resources"
-                        setIsDonePreload={() => {
-                            setIsRenderDashboard(true);
-                        }}
-                        gameId={currentGameId}
-                        onProgressUpdate={handlePreloadProgress}
-                    />
-                </>
+                <PreloadResources
+                    data-testid="preload-resources"
+                    setIsDonePreload={() => {
+                        setIsRenderDashboard(true);
+                    }}
+                    gameId={currentGameId}
+                    onProgressUpdate={handlePreloadProgress}
+                />
             )}
         </>
     );

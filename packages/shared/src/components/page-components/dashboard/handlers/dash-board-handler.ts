@@ -1,10 +1,9 @@
 import { getOfferGamesIds } from '@shared/helpers';
-import { GameIds } from '@shared/constants';
 
 import { DashboardProps } from "../type";
 
 export class DashboardHandler {
-    constructor(private readonly props: DashboardProps) {}
+    constructor(private readonly props: DashboardProps) { }
 
     checkIsNotOfferGame = () => {
         // Custom version: Simplified logic for direct-to-game functionality
@@ -13,7 +12,7 @@ export class DashboardHandler {
         }
 
         // Allow direct access for SeDieMultiplayer (VG) even if not in offerGames
-        if (this.props.queryGame === GameIds.SeDieMultiplayer) {
+        if (this.props.queryGame === 148) {
             return false;
         }
 

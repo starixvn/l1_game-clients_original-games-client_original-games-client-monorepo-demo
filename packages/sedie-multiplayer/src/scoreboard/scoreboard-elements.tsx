@@ -3,7 +3,7 @@ import { Converter } from "sc-scoreboards";
 
 import { BigRoadElement, BigRoadRound } from "@shared/components/game-components/round-history/scoreboard/elements";
 import { registerBigRoadElement } from "@shared/helpers/scoreboard-registry";
-import { GameIds } from "@shared/constants";
+import { GAME_ID } from '../game-constants';
 import styles from "./scoreboard-elements.module.scss";
 import dotStyles from "@shared/components/game-components/round-history/dot/dot.module.scss";
 import { SeDieBetOptions, SeDieSettlementResult } from "../sedie-multiplayer-constants";
@@ -58,4 +58,4 @@ export class SeDieBigRoadElement extends BigRoadElement<SeDieSettlementResult> {
 }
 
 // Register for SeDieMultiplayer only
-registerBigRoadElement(SeDieBigRoadElement, SeDieBigRoadConverter as any, GameIds.SeDieMultiplayer);
+registerBigRoadElement(SeDieBigRoadElement, SeDieBigRoadConverter as any, GAME_ID);
