@@ -11,6 +11,7 @@ export type URLContextModel = {
     redirectUrl?: string;
     backToLobby?: boolean;
     backToRedirectUrl?: Function;
+    gameId?: number;
 };
 
 export function parseContextFromURL(): URLContextModel | undefined {
