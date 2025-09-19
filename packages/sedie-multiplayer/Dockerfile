@@ -51,9 +51,11 @@ COPY packages/shared packages/shared
 # Build sedie-multiplayer app
 WORKDIR /app/packages/sedie-multiplayer
 
-# Allow configuring Next.js basePath/assetPrefix at build time
+# Allow configuring Next.js basePath/assetPrefix and game ID at build time
 ARG NEXT_PUBLIC_BASE_PATH=/game-148
+ARG NEXT_PUBLIC_DEFAULT_GAME_ID=148
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
+ENV NEXT_PUBLIC_DEFAULT_GAME_ID=$NEXT_PUBLIC_DEFAULT_GAME_ID
 
 # Obfuscate deployment configs and build
 RUN yarn obfuscator-config-file
@@ -64,9 +66,11 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-# Optionally expose base path at runtime for any custom logic
+# Optionally expose base path and game ID at runtime for any custom logic
 ARG NEXT_PUBLIC_BASE_PATH
+ARG NEXT_PUBLIC_DEFAULT_GAME_ID
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
+ENV NEXT_PUBLIC_DEFAULT_GAME_ID=$NEXT_PUBLIC_DEFAULT_GAME_ID
 
 RUN addgroup --system --gid 1001 nodejs  \
      && adduser --system --uid 1001 nextjs
@@ -95,4 +99,4 @@ EXPOSE 5000
 ENV PORT=5000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["sh", "-c", "NEXT_PUBLIC_DEFAULT_GAME_ID=148 NEXT_PUBLIC_BASE_PATH=/game-148 PORT=5000 node custom-server.js"]
+CMD ["sh", "-c", "PORT=5000 node custom-server.js"]

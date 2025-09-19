@@ -9,5 +9,10 @@ registerGame({
         name: GAME_NAME,
         version: GAME_VERSION,
         description: GAME_DESCRIPTION
+    },
+    config: {
+        betPayloadFormat: 'single',
+        requiresClientSeedForBet: true,
+        allowDirectAccess: true
     }
 });

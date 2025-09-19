@@ -11,6 +11,8 @@
         "dev:standalone": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 NEXT_PUBLIC_BASE_PATH=/game-148 FAST_REFRESH=false next dev -p 3001",
         "build:standalone": "npm run generate-tolgee-data && cross-env NEXT_PUBLIC_BASE_PATH=/game-148 next build",
         "start:standalone": "cross-env NEXT_PUBLIC_DEFAULT_GAME_ID=148 NEXT_PUBLIC_BASE_PATH=/game-148 next start -p 3001",
+        "dev:dynamic": "node scripts/dev-dynamic.js",
+        "build:dynamic": "node scripts/build-dynamic.js",
         "proxy": "node reverse-proxy.js",
         "obfuscator-config-file": "node ./configs/config-obfuscator.js"
     },

@@ -5,6 +5,7 @@ import { Socket } from "socket.io-client";
 import { usePFStore } from "@shared/stores/pf-store/pf-store";
 import { useShallow } from "zustand/shallow";
 import { useClientSeedPF } from "@shared/react-hooks/use-client-seed-pf";
+import { gameRegistry } from "@shared/game-registry";
 
 export type PFWrapperProps = {
     socket: Socket;
@@ -35,8 +36,8 @@ export const PFWrapper = (props: PFWrapperProps) => {
                 return;
             }
 
-            // Force attach clientSeed for Sedie Multiplayer bet event
-            if (props.gameId === 148 && event === "bet") {
+            // Force attach clientSeed for games that require it for bet events
+            if (gameRegistry.requiresClientSeedForBet(props.gameId) && event === "bet") {
                 props.socket.emit(event, { ...data, clientSeed });
                 return;
             }

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { InitSocketIO, writeDebugLog } from "@shared/helpers";
 import { AnalyticsHelper } from "@shared/helpers/analytic-helper";
 import { broadcastOpeningGameId } from "@shared/helpers/global-events-helper";
+import { gameRegistry } from "@shared/game-registry";
 import { GameActionsContextProvider, GameContextProvider, PlayerContext, PlayerContextModel } from "@shared/react-contexts";
 import { GameEventActionType } from "@shared/react-contexts/game-state-context/game-event-action";
 import { PlaceBetEventActionType } from "@shared/react-contexts/game-state-context/place-bet-context/place-bet-action";
@@ -118,7 +119,7 @@ abstract class GameBase<P extends GameBaseProps, S extends GameBaseState> extend
                     this.props.gameSound.playPlaceBetSound();
                 },
                 gameId: this.props.id,
-                betPayloadFormat: this.props.id === 148 ? "single" : "map",
+                betPayloadFormat: gameRegistry.getBetPayloadFormat(this.props.id),
             });
 
         this.gameFinishHandler =

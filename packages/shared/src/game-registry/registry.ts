@@ -19,6 +19,26 @@ class GameRegistryImpl implements GameRegistry {
     isRegistered(gameId: number): boolean {
         return this.games.has(gameId);
     }
+
+    getConfig(gameId: number): GameRegistryEntry['config'] | null {
+        const entry = this.games.get(gameId);
+        return entry?.config || null;
+    }
+
+    getBetPayloadFormat(gameId: number): 'single' | 'map' {
+        const config = this.getConfig(gameId);
+        return config?.betPayloadFormat || 'map'; // Default to 'map' for unknown games
+    }
+
+    requiresClientSeedForBet(gameId: number): boolean {
+        const config = this.getConfig(gameId);
+        return config?.requiresClientSeedForBet || false;
+    }
+
+    allowsDirectAccess(gameId: number): boolean {
+        const config = this.getConfig(gameId);
+        return config?.allowDirectAccess || false;
+    }
 }
 
 // Global registry instance
