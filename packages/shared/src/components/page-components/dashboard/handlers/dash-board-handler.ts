@@ -1,5 +1,4 @@
 import { getOfferGamesIds } from '@shared/helpers';
-import { gameRegistry } from '@shared/game-registry';
 
 import { DashboardProps } from "../type";
 
@@ -12,8 +11,8 @@ export class DashboardHandler {
             return false;
         }
 
-        // Allow direct access for games that are configured to allow it
-        if (gameRegistry.allowsDirectAccess(this.props.queryGame)) {
+        // Allow direct access for SeDieMultiplayer (VG) even if not in offerGames
+        if (this.props.queryGame === 148) {
             return false;
         }
 
